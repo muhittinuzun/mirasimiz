@@ -91,19 +91,35 @@
                 </div>
             </div>
 
-            <!-- Language Selector -->
+            <!-- Language Selector with Round Flags -->
             <div class="relative group">
-                <button class="flex items-center space-x-2 text-sm font-bold text-gray-600 hover:text-primary transition py-2 px-3 rounded-full hover:bg-gray-50">
-                    <i class="fa-solid fa-globe text-lg"></i>
-                    <span id="current-lang-label">TR</span>
+                <button class="flex items-center space-x-2 text-sm font-bold text-gray-600 hover:text-primary transition py-2 px-3 rounded-full hover:bg-gray-50 border border-transparent hover:border-gray-100">
+                    <img id="current-lang-flag" src="https://flagcdn.com/w40/tr.png" class="w-6 h-6 rounded-full object-cover border border-gray-200 shadow-sm" alt="TR">
+                    <span id="current-lang-label" class="hidden md:inline">TR</span>
+                    <i class="fa-solid fa-chevron-down text-xs ml-1 text-gray-400"></i>
                 </button>
-                <div class="absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-xl py-2 hidden group-hover:block border border-gray-100 rtl:right-auto rtl:left-0 z-50 overflow-hidden ring-1 ring-black ring-opacity-5">
-                    <button onclick="setLanguage('tr')" class="block w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium">Türkçe</button>
-                    <button onclick="setLanguage('en')" class="block w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium">English</button>
-                    <button onclick="setLanguage('ar')" class="block w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic">العربية</button>
-                    <button onclick="setLanguage('fr')" class="block w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium">Français</button>
-                    <button onclick="setLanguage('ru')" class="block w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium">Русский</button>
-                    <button onclick="setLanguage('osm')" class="block w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic">عثمانليجه</button>
+                <!-- Düzeltme: mt-2 (margin) yerine pt-2 (padding) kullanılarak aradaki boşluk dolduruldu -->
+                <div class="absolute right-0 top-full pt-2 w-48 hidden group-hover:block rtl:right-auto rtl:left-0 z-50">
+                    <div class="bg-white rounded-xl shadow-xl py-2 border border-gray-100 overflow-hidden ring-1 ring-black ring-opacity-5">
+                        <button onclick="setLanguage('tr')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center group/item">
+                            <img src="https://flagcdn.com/w40/tr.png" class="w-5 h-5 rounded-full mr-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Türkçe
+                        </button>
+                        <button onclick="setLanguage('en')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center group/item">
+                            <img src="https://flagcdn.com/w40/gb.png" class="w-5 h-5 rounded-full mr-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> English
+                        </button>
+                        <button onclick="setLanguage('ar')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic flex items-center group/item">
+                            <img src="https://flagcdn.com/w40/sy.png" class="w-5 h-5 rounded-full ml-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> العربية
+                        </button>
+                        <button onclick="setLanguage('fr')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center group/item">
+                            <img src="https://flagcdn.com/w40/fr.png" class="w-5 h-5 rounded-full mr-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Français
+                        </button>
+                        <button onclick="setLanguage('ru')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center group/item">
+                            <img src="https://flagcdn.com/w40/ru.png" class="w-5 h-5 rounded-full mr-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Русский
+                        </button>
+                        <button onclick="setLanguage('osm')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic flex items-center group/item">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Ottoman_flag.svg/100px-Ottoman_flag.svg.png" class="w-5 h-5 rounded-full ml-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> عثمانليجه
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -127,20 +143,28 @@
     <!-- JAVASCRIPT LOGIC -->
     <script>
         // --- DATA (VERİTABANI SİMÜLASYONU) ---
-        // Halep Kalesi metni ve görselleri güncellendi.
+        // Görseller doğrudan verilen linklerden çekiliyor, yüklemeye gerek yok.
         const db = [
             {
                 id: 1,
                 mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.511397843764!2d36.30432631506456!3d33.51161998075678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1518e7343e745f9b%3A0x6b6f3d1430489295!2sUmayyad%20Mosque!5e0!3m2!1sen!2s!4v1625687452123!5m2!1sen!2s",
                 images: [
-                    "https://images.unsplash.com/photo-1595116708573-0301a0961806?w=800&q=80",
-                    "https://images.unsplash.com/photo-1580838686646-635c24d45084?w=800&q=80"
+                    "https://images.openai.com/thumbnails/url/8eWDdXicu5meUVJSUGylr5-al1xUWVCSmqJbkpRnoJdeXJJYkpmsl5yfq5-Zm5ieWmxfaAuUsXL0S7F0Tw7S9Q1Kcop0SczNMSj19rLwdjQNCy4xCXV0MnENcHP0MShIScsNDNF1CkkvVyu2NTQAAOh3I9A",
+                    "https://madainproject.com/content/media/collect/umayyad_mosque_009921.jpg",
+                    "https://img.piri.net/mnresize/900/-/resim/imagecrop/2020/04/13/09/47/resized_2503e-a2eb87d61.jpg",
+                    "https://live.staticflickr.com/2564/4160505965_9fd2dcbe81_b.jpg"
                 ],
                 content: {
                     tr: {
                         name: "Şam Emevi Camii",
                         location: "Şam, Suriye",
-                        desc: "Şam Emevi Camii, İslam dünyasının en eski ve en kutsal ibadethanelerinden biridir. M.S. 715 yılında Emevi Halifesi I. Velid tarafından yaptırılmıştır. Caminin içinde Hz. Yahya'nın başının bulunduğuna inanılan bir türbe bulunmaktadır.",
+                        desc: "Şam Emevi Camii, İslam tarihinin en eski ve en ihtişamlı mabetlerinden biridir. Şam’ın kalbinde yer alan bu büyük yapı, yalnızca bir cami değil; üç bin yıla yaklaşan kutsal mekân sürekliliğinin canlı bir şahididir. Aynı alan; Arami tapınağı, ardından Roma döneminde Jüpiter Mabedi, sonrasında Hristiyanlık döneminde Aziz Yahya (Vaftizci Yahya) Bazilikası olarak kullanılmış, nihayet Emevî Halifesi I. Velid döneminde (705–715) camiye dönüştürülmüştür.",
+                        detailDesc: `
+                            <p>Şam Emevi Camii, İslam tarihinin en eski ve en ihtişamlı mabetlerinden biridir. Şam’ın kalbinde yer alan bu büyük yapı, yalnızca bir cami değil; üç bin yıla yaklaşan kutsal mekân sürekliliğinin canlı bir şahididir. Aynı alan; Arami tapınağı, ardından Roma döneminde Jüpiter Mabedi, sonrasında Hristiyanlık döneminde Aziz Yahya (Vaftizci Yahya) Bazilikası olarak kullanılmış, nihayet Emevî Halifesi I. Velid döneminde (705–715) camiye dönüştürülmüştür. Bu yönüyle cami, dinler ve medeniyetler tarihinin üst üste yazıldığı eşsiz bir hafıza mekânıdır.</p>
+                            <p>Emevi Camii, mimarisiyle İslam sanatında bir dönüm noktası kabul edilir. Geniş avlusu, üç minaresi, görkemli harimi ve özellikle altın zeminli mozaikleri, erken dönem İslam estetiğinin zirvesini temsil eder. Bu mozaiklerde insan figürü yer almaz; cennet tasvirini andıran nehirler, şehirler ve bahçeler resmedilmiştir. Rivayete göre bu süslemelerde Bizanslı ustalar çalışmış, böylece Doğu Roma ile İslam sanat anlayışı aynı eserde buluşmuştur.</p>
+                            <p>Caminin en dikkat çekici bölümlerinden biri, Hz. Yahya’nın (a.s.) makamıdır. Hem Müslümanlar hem de Hristiyanlar için kutsal kabul edilen bu mekân, Şam Emevi Camii’ni evrensel bir ziyaret noktası hâline getirmiştir. Ayrıca cami, asırlar boyunca ilim halkalarına, hutbelere, devlet merasimlerine ve halkın günlük ibadet hayatına ev sahipliği yaparak Şam’ın sosyal ve ruhani merkezlerinden biri olmuştur.</p>
+                            <p>Bugün Emevi Camii’ni ziyaret eden bir turist; taş sütunlar arasında yürürken Emevîlerden Abbasîlere, Selçuklulardan Osmanlılara uzanan uzun bir tarih yolculuğuna çıkar. Hamdolsun, onca yangın, deprem ve savaşa rağmen ayakta kalan bu mabet, Şam’ın kalbi olmaya devam etmektedir. İnşallah, bu kadim yapı uzun yıllar boyunca insanlığa ortak bir miras ve huzur mekânı olarak hizmet etmeyi sürdürür.</p>
+                        `,
                         audioTitle: "Sesli Rehber: Tarihçe ve Mimari",
                     },
                     en: {
@@ -179,10 +203,9 @@
                 id: 2,
                 mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3255.4856086776185!2d37.16065531510255!3d36.1993419800768!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15255866f7771775%3A0x6a05322986423984!2sAleppo%20Citadel!5e0!3m2!1sen!2s!4v1625687500000!5m2!1sen!2s",
                 images: [
-                    "https://images.unsplash.com/photo-1542647702-863116df633e?w=800&q=80",
-                    "https://images.unsplash.com/photo-1572978345472-a1b9f71c2c36?w=800&q=80",
-                    "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800&q=80",
-                    "https://images.unsplash.com/photo-1599580424565-3850116b47c6?w=800&q=80"
+                    "https://upload.wikimedia.org/wikipedia/commons/5/54/Citadel_of_Aleppo.jpg",
+                    "https://nawafir-tours.com/wp-content/uploads/2024/03/Citadel-of-Aleppo-02.jpg",
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Citadel_of_Aleppo.jpg/1200px-Citadel_of_Aleppo.jpg"
                 ],
                 content: {
                     tr: {
@@ -236,14 +259,24 @@
                 id: 3,
                 mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3255.498123456789!2d37.15654321098765!3d36.19901234567890!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1525586612345678%3A0xabcdef1234567890!2sAl-Madina%20Souq!5e0!3m2!1sen!2s!4v1625687500000!5m2!1sen!2s",
                 images: [
-                    "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800&q=80",
-                    "https://images.unsplash.com/photo-1582236872517-db9f5a133dfd?w=800&q=80"
+                    "https://static.euronews.com/articles/stories/04/07/42/92/1200x675_cmsv2_6c4b4ae5-e71b-54e9-a818-88183636acae-4074292.jpg",
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Aleppo-suq-Alp.JPG/1200px-Aleppo-suq-Alp.JPG",
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtHDj5lgkHZ2hE7oAmlF-q5gBgRVsGchHRVA&s",
+                    "https://previews.123rf.com/images/jackmalipan/jackmalipan1512/jackmalipan151200086/50729712-bazaar-souk-market-interior-in-aleppo-old-town-syria.jpg",
+                    "https://i0.wp.com/www.thealeppoproject.com/wp-content/uploads/2017/02/IMG_2355.jpg?fit=3888%2C2592&ssl=1"
                 ],
                 content: {
                     tr: {
                         name: "Halep Kapalı Çarşısı",
                         location: "Halep, Suriye",
-                        desc: "Dünyanın en büyük ve en eski kapalı çarşılarından biridir. Toplam uzunluğu 13 kilometreyi bulan dar sokakları, hanları ve hamamlarıyla ünlüdür. İpek Yolu'nun önemli bir ticaret merkezi olmuştur.",
+                        desc: "İslam medeniyetinin ve dünya tarihinin en köklü merkezlerinden biri olan Halep, asırlardır kesintisiz yaşamın sürdüğü müstesna bir şehirdir. Bu kadim şehrin kalbinde uzanan Halep Kapalı Çarşısı (Souq al-Madina), UNESCO Dünya Mirası listesinde yer alan devasa bir yapılar topluluğudur.",
+                        detailDesc: `
+                            <p>İslam medeniyetinin ve dünya tarihinin en köklü merkezlerinden biri olan Halep, asırlardır kesintisiz yaşamın sürdüğü müstesna bir şehirdir. Bu kadim şehrin kalbinde, Halep Kalesi’nin heybetli gölgesinde uzanan Halep Kapalı Çarşısı (Souq al-Madina), UNESCO Dünya Mirası listesinde yer alan ve İslam kültürünün en önemli eserleri arasında kabul edilen devasa bir yapılar topluluğudur. "Dünyanın en uzun ve en büyük kapalı pazarı" olma unvanına sahip olan bu çarşı, Halep’in tarih boyunca küresel ticaretin merkezlerinden biri olmasını sağlamıştır.</p>
+                            <p>Çarşının kökleri Helenistik dönem sokak düzenine kadar uzansa da, bugünkü dokusu ağırlıklı olarak Memlük ve Osmanlı dönemlerinin mimari karakterini taşımaktadır. Tarihi İpek Yolu’nun stratejik bir kolu olan bu çarşı sistemi, Kuzey Suriye'den gelen kervanlara hizmet vererek Doğu ile Batı arasındaki ticari akışı yöneten bir merkez olmuştur. Özellikle Bab an-Nasr kapısından kaleye uzanan ana akslar, şehrin orijinal kentsel dokusunun temelini oluşturan "matrix" rotalar olarak tanımlanır ve bu yolların etrafında şekillenen ticaret ağı Halep’in ekonomik can damarıdır.</p>
+                            <p>Çarşının mimari yapısı, İslam kentsel morfolojisinin en tipik ve kompakt örneklerinden birini sergiler. Tonozlu geçitlerle birbirine bağlanan dar sokaklar; sadece dükkanları değil, aynı zamanda camileri, medreseleri, hamamları ve hanları içeren bütünleşik bir sistemdir. Osmanlı döneminde inşa edilen 16. yüzyıla tarihlenen Adliye Camii, Jami’ al-Mihmandar ve 18. yüzyılda inşa edilen al-Madrasa al-’Uthmaniyya gibi abidevi yapılar, çarşının sosyal ve dini önemini pekiştiren kültürel miras unsurlarıdır.</p>
+                            <p>Halep çarşılarının ihtişamı sadece ticaretle sınırlı değildir; burası aynı zamanda zengin bir üretim merkezidir. Bölgedeki meşhur sabun fabrikaları (masbana), kaysariyeler (küçük ölçekli atölyeler) ve hanlar, Halep’in tekstil ve sanayi alanındaki üstünlüğünü asırlarca korumasını sağlamıştır. Bu ticari tesislerin büyük bir kısmı vakıf müessesesi çatısı altında toplanmış olup, Masbanat az-Zanabili gibi önemli eserler asırlardır vakıf mülkiyetiyle korunarak günümüze ulaşmıştır.</p>
+                            <p>Ne yazık ki, 2012-2016 yılları arasında yaşanan Halep Savaşı, bu eşsiz kültürel miras alanında ağır tahribata yol açmıştır. Özellikle Suwayqat Ali bölgesi ve Khan Qurt Bek gibi anıtsal yapılar ciddi hasar görmüş, çarşının yüzyıllardır korunan kompakt dokusu yer yer yıkıma uğramıştır. UNESCO Dünya Mirası olan bu bölgedeki han ve dükkanların önemli bir kısmı çatışmalar sırasında terkedilmiş ve bakımsız kalmıştır. Halep Kapalı Çarşısı, uğradığı yıkıma rağmen bugün dahi İslam medeniyetinin ticari dehasını ve Osmanlı döneminin estetik anlayışını yansıtan en önemli tanıklardan biridir. Bu mirası aslına uygun şekilde korumak, dünya kültürel mirasının korunması açısından vazgeçilmez bir öneme sahiptir.</p>
+                        `,
                         audioTitle: "Sesli Rehber: Ticaret ve Gelenek",
                     },
                     en: {
@@ -294,6 +327,16 @@
         let currentLang = 'tr';
         let currentView = 'home';
         let currentPlaceId = null;
+        
+        // --- FLAGS CONFIGURATION ---
+        const flags = {
+            tr: "https://flagcdn.com/w40/tr.png",
+            en: "https://flagcdn.com/w40/gb.png",
+            ar: "https://flagcdn.com/w40/sy.png",
+            fr: "https://flagcdn.com/w40/fr.png",
+            ru: "https://flagcdn.com/w40/ru.png",
+            osm: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Ottoman_flag.svg/100px-Ottoman_flag.svg.png"
+        };
 
         // --- INITIALIZATION ---
         window.onload = function() {
@@ -386,7 +429,7 @@
                     <div class="bg-white rounded-2xl shadow-card hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer group flex flex-col h-full overflow-hidden border border-gray-100/50 card-item" onclick="router('detail', ${place.id})">
                         <div class="h-60 overflow-hidden relative">
                             <img src="${place.images[0]}" 
-                                 onerror="this.src='https://images.unsplash.com/photo-1542647702-863116df633e?w=800&q=80'"
+                                 onerror="this.src='https://via.placeholder.com/800x600?text=Gorsel+Yuklenemedi'"
                                  alt="${content.name}" 
                                  class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-in-out">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
@@ -444,7 +487,7 @@
                              <!-- Main Hero Image -->
                             <div class="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-lg group">
                                 <img src="${place.images[0]}" 
-                                     onerror="this.src='https://images.unsplash.com/photo-1542647702-863116df633e?w=800&q=80'"
+                                     onerror="this.src='https://via.placeholder.com/800x600?text=Gorsel+Yuklenemedi'"
                                      class="w-full h-full object-cover">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-8">
                                     <div class="w-full">
@@ -501,8 +544,8 @@
                                     <i class="fa-regular fa-images mr-2 text-primary"></i> ${texts.gallery}
                                 </h3>
                                 <div class="grid grid-cols-2 gap-3">
-                                    <img src="${place.images[0]}" onerror="this.src='https://images.unsplash.com/photo-1542647702-863116df633e?w=800&q=80'" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80 transition ring-2 ring-transparent hover:ring-primary/20">
-                                    <img src="${place.images[1]}" onerror="this.src='https://images.unsplash.com/photo-1572978345472-a1b9f71c2c36?w=800&q=80'" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80 transition ring-2 ring-transparent hover:ring-primary/20">
+                                    <img src="${place.images[0]}" onerror="this.src='https://via.placeholder.com/300?text=Gorsel+Yok'" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80 transition ring-2 ring-transparent hover:ring-primary/20">
+                                    <img src="${place.images[1]}" onerror="this.src='https://via.placeholder.com/300?text=Gorsel+Yok'" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80 transition ring-2 ring-transparent hover:ring-primary/20">
                                     ${place.images[2] ? `<img src="${place.images[2]}" onerror="this.src='https://via.placeholder.com/300?text=Hist+3'" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80 transition ring-2 ring-transparent hover:ring-primary/20">` : ''}
                                     ${place.images[3] ? `<img src="${place.images[3]}" onerror="this.src='https://via.placeholder.com/300?text=Hist+4'" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80 transition ring-2 ring-transparent hover:ring-primary/20">` : ''}
                                 </div>
@@ -510,7 +553,7 @@
                              <!-- Video Thumbnail -->
                              <div class="rounded-2xl overflow-hidden shadow-card relative group cursor-pointer border-2 border-white ring-1 ring-gray-100">
                                 <img src="${place.images[1]}" 
-                                     onerror="this.src='https://images.unsplash.com/photo-1572978345472-a1b9f71c2c36?w=800&q=80'"
+                                     onerror="this.src='https://via.placeholder.com/800x600?text=Video+Yok'"
                                      class="w-full h-48 object-cover filter brightness-75 group-hover:brightness-50 transition duration-500">
                                 <div class="absolute inset-0 flex items-center justify-center">
                                     <div class="w-14 h-14 bg-white/20 backdrop-blur-md border border-white/50 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition duration-300">
@@ -541,6 +584,13 @@
             } else {
                 document.body.classList.add('font-sans');
                 document.body.classList.remove('font-arabic');
+            }
+            
+            // Flag Update
+            const flagImg = document.getElementById('current-lang-flag');
+            if(flagImg && flags[lang]) {
+                flagImg.src = flags[lang];
+                flagImg.alt = lang.toUpperCase();
             }
 
             // Sayfayı Yenile
