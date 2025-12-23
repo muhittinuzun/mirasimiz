@@ -11,7 +11,7 @@
     <!-- Google Fonts (Tüm diller için uygun fontlar) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans:wght@400;700&family=Noto+Serif:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Serif:wght@400;700&display=swap" rel="stylesheet">
     
     <!-- FontAwesome (İkonlar için) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -21,7 +21,7 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#b45309', // Altın/Bakır tonu (Tarihi doku için)
+                        primary: '#b45309', // Altın/Bakır tonu
                         secondary: '#1f2937', // Koyu Gri
                         light: '#f3f4f6',
                         offwhite: '#fcfcfc',
@@ -51,7 +51,6 @@
         [dir="rtl"] body {
             font-family: 'Noto Naskh Arabic', serif;
         }
-        /* Görsel geçiş efektleri */
         .fade-in {
             animation: fadeIn 0.4s ease-out;
         }
@@ -59,68 +58,104 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        /* Ses oynatıcı özelleştirme */
         audio::-webkit-media-controls-panel {
             background-color: #f3f4f6;
         }
-        /* Detay metinleri için paragraf boşluğu */
         .detail-content p {
             margin-bottom: 1.25rem;
             line-height: 1.8;
         }
-        /* Desenli Arka Plan */
         .pattern-bg {
             background-color: #b45309;
             background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        /* Mobile Menu Animation */
+        #mobile-menu {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        #mobile-menu.open {
+            max-height: 300px;
+            opacity: 1;
         }
     </style>
 </head>
 <body class="bg-offwhite text-gray-800 min-h-screen flex flex-col transition-all duration-300">
 
     <!-- Navbar -->
-    <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <!-- Logo -->
-            <div class="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer group" onclick="router('home')">
-                <div class="bg-primary text-white p-2.5 rounded-lg shadow-md group-hover:bg-orange-700 transition duration-300">
-                    <i class="fa-solid fa-landmark text-xl"></i>
-                </div>
-                <div>
-                    <h1 class="font-bold text-xl leading-none text-gray-900 tracking-tight" id="nav-title">SURİYE MİRASI</h1>
-                    <p class="text-xs text-gray-500 font-medium mt-0.5 tracking-wide" id="nav-subtitle">Dijital Rehber</p>
-                </div>
-            </div>
-
-            <!-- Language Selector with Round Flags -->
-            <div class="relative group">
-                <button class="flex items-center space-x-2 text-sm font-bold text-gray-600 hover:text-primary transition py-2 px-3 rounded-full hover:bg-gray-50 border border-transparent hover:border-gray-100">
-                    <img id="current-lang-flag" src="https://flagcdn.com/w40/tr.png" class="w-6 h-6 rounded-full object-cover border border-gray-200 shadow-sm" alt="TR">
-                    <span id="current-lang-label" class="hidden md:inline">TR</span>
-                    <i class="fa-solid fa-chevron-down text-xs ml-1 text-gray-400"></i>
-                </button>
-                <!-- Düzeltme: mt-2 (margin) yerine pt-2 (padding) kullanılarak aradaki boşluk dolduruldu -->
-                <div class="absolute right-0 top-full pt-2 w-48 hidden group-hover:block rtl:right-auto rtl:left-0 z-50">
-                    <div class="bg-white rounded-xl shadow-xl py-2 border border-gray-100 overflow-hidden ring-1 ring-black ring-opacity-5">
-                        <button onclick="setLanguage('tr')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center group/item">
-                            <img src="https://flagcdn.com/w40/tr.png" class="w-5 h-5 rounded-full mr-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Türkçe
-                        </button>
-                        <button onclick="setLanguage('en')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center group/item">
-                            <img src="https://flagcdn.com/w40/gb.png" class="w-5 h-5 rounded-full mr-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> English
-                        </button>
-                        <button onclick="setLanguage('ar')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic flex items-center group/item">
-                            <img src="https://flagcdn.com/w40/sy.png" class="w-5 h-5 rounded-full ml-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> العربية
-                        </button>
-                        <button onclick="setLanguage('fr')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center group/item">
-                            <img src="https://flagcdn.com/w40/fr.png" class="w-5 h-5 rounded-full mr-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Français
-                        </button>
-                        <button onclick="setLanguage('ru')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center group/item">
-                            <img src="https://flagcdn.com/w40/ru.png" class="w-5 h-5 rounded-full mr-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Русский
-                        </button>
-                        <button onclick="setLanguage('osm')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic flex items-center group/item">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Ottoman_flag.svg/100px-Ottoman_flag.svg.png" class="w-5 h-5 rounded-full ml-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> عثمانليجه
-                        </button>
+    <nav class="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-200">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+                
+                <!-- Logo Section -->
+                <div class="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer group flex-shrink-0" onclick="router('home')">
+                    <div class="bg-primary text-white p-2 rounded-lg shadow-md group-hover:bg-orange-700 transition duration-300">
+                        <i class="fa-solid fa-landmark text-xl"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <h1 class="font-bold text-xl leading-none text-gray-900 tracking-tight uppercase" id="nav-title">SURİYE MİRASI</h1>
+                        <p class="text-xs text-gray-500 font-medium mt-0.5 tracking-wide uppercase" id="nav-subtitle">DİJİTAL REHBER</p>
                     </div>
                 </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-1 rtl:space-x-reverse">
+                    <button onclick="router('home')" class="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition" id="menu-home">Anasayfa</button>
+                    <button onclick="openModal('about')" class="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition" id="menu-about">Hakkımızda</button>
+                    <button onclick="openModal('contact')" class="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition" id="menu-contact">İletişim</button>
+                    
+                    <div class="h-6 w-px bg-gray-200 mx-2"></div> <!-- Separator -->
+
+                    <!-- Language Selector -->
+                    <div class="relative group">
+                        <button class="flex items-center space-x-2 text-sm font-bold text-gray-600 hover:text-primary transition py-2 px-3 rounded-full hover:bg-gray-50 border border-transparent hover:border-gray-100">
+                            <img id="current-lang-flag" src="https://flagcdn.com/w40/tr.png" class="w-6 h-6 rounded-full object-cover border border-gray-200 shadow-sm" alt="TR">
+                            <span id="current-lang-label" class="hidden lg:inline">TR</span>
+                            <i class="fa-solid fa-chevron-down text-xs ml-1 text-gray-400"></i>
+                        </button>
+                        <!-- Padding added to bridge the gap -->
+                        <div class="absolute right-0 top-full pt-2 w-48 hidden group-hover:block rtl:right-auto rtl:left-0 z-50">
+                            <div class="bg-white rounded-xl shadow-xl py-2 border border-gray-100 overflow-hidden ring-1 ring-black ring-opacity-5">
+                                <button onclick="setLanguage('tr')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center group/item">
+                                    <img src="https://flagcdn.com/w40/tr.png" class="w-5 h-5 rounded-full mr-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Türkçe
+                                </button>
+                                <button onclick="setLanguage('en')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center group/item">
+                                    <img src="https://flagcdn.com/w40/gb.png" class="w-5 h-5 rounded-full mr-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> English
+                                </button>
+                                <button onclick="setLanguage('ar')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic flex items-center group/item">
+                                    <img src="https://flagcdn.com/w40/sy.png" class="w-5 h-5 rounded-full ml-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> العربية
+                                </button>
+                                <button onclick="setLanguage('fr')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center group/item">
+                                    <img src="https://flagcdn.com/w40/fr.png" class="w-5 h-5 rounded-full mr-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Français
+                                </button>
+                                <button onclick="setLanguage('ru')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center group/item">
+                                    <img src="https://flagcdn.com/w40/ru.png" class="w-5 h-5 rounded-full mr-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Русский
+                                </button>
+                                <button onclick="setLanguage('osm')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic flex items-center group/item">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Ottoman_flag.svg/100px-Ottoman_flag.svg.png" class="w-5 h-5 rounded-full ml-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> عثمانليجه
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button onclick="toggleMobileMenu()" class="text-gray-600 hover:text-primary focus:outline-none p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="md:hidden bg-white border-t border-gray-100">
+            <div class="px-4 py-3 space-y-2">
+                <button onclick="router('home'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50" id="mobile-menu-home">Anasayfa</button>
+                <button onclick="openModal('about'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50" id="mobile-menu-about">Hakkımızda</button>
+                <button onclick="openModal('contact'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50" id="mobile-menu-contact">İletişim</button>
             </div>
         </div>
     </nav>
@@ -130,24 +165,47 @@
         <!-- İçerik buraya JavaScript ile yüklenecek -->
     </main>
 
+    <!-- Modal (About/Contact) -->
+    <div id="infoModal" class="fixed inset-0 bg-black/50 z-[60] hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity duration-300">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300" id="modalContent">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
+                    <h3 class="text-2xl font-bold text-gray-800" id="modalTitle">Başlık</h3>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-red-500 transition p-1">
+                        <i class="fa-solid fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="text-gray-600 leading-relaxed" id="modalBody">
+                    <!-- İçerik -->
+                </div>
+                <div class="mt-6 text-right">
+                    <button onclick="closeModal()" class="bg-gray-100 text-gray-700 px-5 py-2 rounded-lg hover:bg-gray-200 transition font-medium">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="bg-white border-t border-gray-200 py-8 mt-auto">
         <div class="container mx-auto px-4 text-center">
              <div class="flex justify-center items-center space-x-2 mb-4 text-primary opacity-80">
                 <i class="fa-solid fa-landmark text-2xl"></i>
             </div>
-            <p class="text-sm text-gray-500 font-medium" id="footer-text">© 2025 Suriye Mirası Projesi. Tüm hakları saklıdır.</p>
+            <p class="text-sm text-gray-500 font-medium mb-2" id="footer-text">© 2025 Suriye Mirası Projesi. Tüm hakları saklıdır.</p>
+            <p class="text-xs text-gray-400 font-bold tracking-widest mt-2 flex justify-center items-center gap-1">
+                ITT <i class="fa-solid fa-heart text-red-500 text-[10px]"></i> 2025
+            </p>
         </div>
     </footer>
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
         // --- DATA (VERİTABANI SİMÜLASYONU) ---
-        // Görseller doğrudan verilen linklerden çekiliyor, yüklemeye gerek yok.
         const db = [
             {
                 id: 1,
-                mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.511397843764!2d36.30432631506456!3d33.51161998075678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1518e7343e745f9b%3A0x6b6f3d1430489295!2sUmayyad%20Mosque!5e0!3m2!1sen!2s!4v1625687452123!5m2!1sen!2s",
+                // Şam Emevi Camii: 33.511296, 36.306721
+                mapUrl: "https://maps.google.com/maps?q=33.51129625696082,36.30672099150847&hl=tr&z=17&output=embed",
                 images: [
                     "https://images.openai.com/thumbnails/url/8eWDdXicu5meUVJSUGylr5-al1xUWVCSmqJbkpRnoJdeXJJYkpmsl5yfq5-Zm5ieWmxfaAuUsXL0S7F0Tw7S9Q1Kcop0SczNMSj19rLwdjQNCy4xCXV0MnENcHP0MShIScsNDNF1CkkvVyu2NTQAAOh3I9A",
                     "https://madainproject.com/content/media/collect/umayyad_mosque_009921.jpg",
@@ -201,7 +259,8 @@
             },
             {
                 id: 2,
-                mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3255.4856086776185!2d37.16065531510255!3d36.1993419800768!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15255866f7771775%3A0x6a05322986423984!2sAleppo%20Citadel!5e0!3m2!1sen!2s!4v1625687500000!5m2!1sen!2s",
+                // Halep Kalesi: 36.199453, 37.163032
+                mapUrl: "https://maps.google.com/maps?q=36.199453,37.163032&hl=tr&z=16&output=embed",
                 images: [
                     "https://upload.wikimedia.org/wikipedia/commons/5/54/Citadel_of_Aleppo.jpg",
                     "https://nawafir-tours.com/wp-content/uploads/2024/03/Citadel-of-Aleppo-02.jpg",
@@ -257,7 +316,8 @@
             },
             {
                 id: 3,
-                mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3255.498123456789!2d37.15654321098765!3d36.19901234567890!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1525586612345678%3A0xabcdef1234567890!2sAl-Madina%20Souq!5e0!3m2!1sen!2s!4v1625687500000!5m2!1sen!2s",
+                // Halep Kapalı Çarşısı (Souq al-Madina): 36.1995, 37.1568
+                mapUrl: "https://maps.google.com/maps?q=36.1995,37.1568&hl=tr&z=16&output=embed",
                 images: [
                     "https://static.euronews.com/articles/stories/04/07/42/92/1200x675_cmsv2_6c4b4ae5-e71b-54e9-a818-88183636acae-4074292.jpg",
                     "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Aleppo-suq-Alp.JPG/1200px-Aleppo-suq-Alp.JPG",
@@ -315,12 +375,120 @@
 
         // --- UI TEXT TRANSLATIONS ---
         const uiText = {
-            tr: { siteName: "SURİYE MİRASI", searchPlaceholder: "Mekan, şehir veya eser arayın...", homeTitle: "Suriye'nin Kültürel Mirası", homeSubtitle: "Geçmişin izlerini, tarihi yapıları ve kültürel zenginlikleri dijital arşivimizde keşfedin.", readMore: "Detaylı İncele", back: "Geri Dön", gallery: "Galeri", location: "Konum", playAudio: "Sesli Anlatım" },
-            en: { siteName: "SYRIAN HERITAGE", searchPlaceholder: "Search for places, cities or monuments...", homeTitle: "Cultural Heritage of Syria", homeSubtitle: "Discover the traces of the past, historical structures and cultural richness in our digital archive.", readMore: "Explore Detail", back: "Go Back", gallery: "Gallery", location: "Location", playAudio: "Audio Guide" },
-            ar: { siteName: "التراث السوري", searchPlaceholder: "ابحث عن الأماكن أو المدن أو الآثار...", homeTitle: "التراث الثقافي السوري", homeSubtitle: "اكتشف آثار الماضي والهياكل التاريخية والثراء الثقافي في أرشيفنا الرقمي.", readMore: "اكتشف التفاصيل", back: "رجوع", gallery: "معرض الصور", location: "الموقع", playAudio: "الدليل الصوتي" },
-            fr: { siteName: "PATRIMOINE SYRIEN", searchPlaceholder: "Rechercher des lieux, villes ou monuments...", homeTitle: "Patrimoine Culturel de la Syrie", homeSubtitle: "Découvrez les traces du passé, les structures historiques et la richesse culturelle dans notre archive numérique.", readMore: "Explorer en détail", back: "Retour", gallery: "Galerie", location: "Lieu", playAudio: "Guide Audio" },
-            ru: { siteName: "СИРИЙСКОЕ НАСЛЕДИЕ", searchPlaceholder: "Поиск мест, городов или памятников...", homeTitle: "Культурное наследие Сирии", homeSubtitle: "Откройте для себя следы прошлого, исторические сооружения и культурное богатство в нашем цифровом архиве.", readMore: "Подробнее", back: "Назад", gallery: "Галерея", location: "Местоположение", playAudio: "Аудиогид" },
-            osm: { siteName: "سوريه ميراثي", searchPlaceholder: "مكان، شهر ويا اثر آرايك...", homeTitle: "سوريه‌نك ثقافت ميراثي", homeSubtitle: "ماضينك ايزلريني، تاريخي ياپيلاري و ثقافت زنگينلكلريني ديجيتال ارشيفمزده كشف ايدك.", readMore: "تفصيلاتلي تدقيق", back: "كرو دون", gallery: "رسملر", location: "موقع", playAudio: "صوتي شرح" }
+            tr: { 
+                siteName: "SURİYE MİRASI", 
+                siteSubtitle: "DİJİTAL REHBER",
+                searchPlaceholder: "Mekan, şehir veya eser arayın...", 
+                homeTitle: "Suriye'nin Kültürel Mirası", 
+                homeSubtitle: "Geçmişin izlerini, tarihi yapıları ve kültürel zenginlikleri dijital arşivimizde keşfedin.", 
+                readMore: "Detaylı İncele", 
+                back: "Geri Dön", 
+                gallery: "Galeri", 
+                location: "Konum", 
+                playAudio: "Sesli Anlatım",
+                menuHome: "Anasayfa",
+                menuAbout: "Hakkımızda",
+                menuContact: "İletişim",
+                aboutTitle: "Hakkımızda",
+                aboutBody: "Suriye Mirası Projesi, bölgenin zengin tarihsel ve kültürel dokusunu dijital ortama taşıyarak gelecek nesillere aktarmayı hedefleyen bir girişimdir. Bu platform sayesinde, binlerce yıllık geçmişe sahip anıtlar, camiler, çarşılar ve kaleler, modern teknolojinin imkanlarıyla yeniden hayat bulmaktadır.",
+                contactTitle: "İletişim",
+                contactBody: "Görüş, öneri ve katkılarınız için bize ulaşabilirsiniz:<br><br><strong>E-posta:</strong> info@suriyemirasi.org<br><strong>Adres:</strong> Dijital Kültür Merkezi, İstanbul"
+            },
+            en: { 
+                siteName: "SYRIAN HERITAGE", 
+                siteSubtitle: "DIGITAL GUIDE",
+                searchPlaceholder: "Search for places, cities or monuments...", 
+                homeTitle: "Cultural Heritage of Syria", 
+                homeSubtitle: "Discover the traces of the past, historical structures and cultural richness in our digital archive.", 
+                readMore: "Explore Detail", 
+                back: "Go Back", 
+                gallery: "Gallery", 
+                location: "Location", 
+                playAudio: "Audio Guide",
+                menuHome: "Home",
+                menuAbout: "About Us",
+                menuContact: "Contact",
+                aboutTitle: "About Us",
+                aboutBody: "The Syrian Heritage Project is an initiative aiming to transfer the region's rich historical and cultural texture to the digital environment. Through this platform, monuments with thousands of years of history come to life again with modern technology.",
+                contactTitle: "Contact",
+                contactBody: "For your feedback and suggestions:<br><br><strong>Email:</strong> info@suriyemirasi.org"
+            },
+            ar: { 
+                siteName: "التراث السوري", 
+                siteSubtitle: "الدليل الرقمي",
+                searchPlaceholder: "ابحث عن الأماكن أو المدن أو الآثار...", 
+                homeTitle: "التراث الثقافي السوري", 
+                homeSubtitle: "اكتشف آثار الماضي والهياكل التاريخية والثراء الثقافي في أرشيفنا الرقمي.", 
+                readMore: "اكتشف التفاصيل", 
+                back: "رجوع", 
+                gallery: "معرض الصور", 
+                location: "الموقع", 
+                playAudio: "الدليل الصوتي",
+                menuHome: "الرئيسية",
+                menuAbout: "من نحن",
+                menuContact: "اتصل بنا",
+                aboutTitle: "من نحن",
+                aboutBody: "مشروع التراث السوري هو مبادرة تهدف إلى نقل النسيج التاريخي والثقافي الغني للمنطقة إلى البيئة الرقمية.",
+                contactTitle: "اتصل بنا",
+                contactBody: "للملاحظات والاقتراحات:<br><br><strong>البريد الإلكتروني:</strong> info@suriyemirasi.org"
+            },
+            fr: { 
+                siteName: "PATRIMOINE SYRIEN", 
+                siteSubtitle: "GUIDE NUMÉRIQUE",
+                searchPlaceholder: "Rechercher des lieux, villes ou monuments...", 
+                homeTitle: "Patrimoine Culturel de la Syrie", 
+                homeSubtitle: "Découvrez les traces du passé, les structures historiques et la richesse culturelle dans notre archive numérique.", 
+                readMore: "Explorer en détail", 
+                back: "Retour", 
+                gallery: "Galerie", 
+                location: "Lieu", 
+                playAudio: "Guide Audio",
+                menuHome: "Accueil",
+                menuAbout: "À Propos",
+                menuContact: "Contact",
+                aboutTitle: "À Propos",
+                aboutBody: "Le projet du patrimoine syrien est une initiative visant à transférer la riche texture historique et culturelle de la région vers l'environnement numérique.",
+                contactTitle: "Contact",
+                contactBody: "Contactez-nous:<br><br><strong>Email:</strong> info@suriyemirasi.org"
+            },
+            ru: { 
+                siteName: "СИРИЙСКОЕ НАСЛЕДИЕ", 
+                siteSubtitle: "ЦИФРОВОЙ ГИД",
+                searchPlaceholder: "Поиск мест, городов или памятников...", 
+                homeTitle: "Культурное наследие Сирии", 
+                homeSubtitle: "Откройте для себя следы прошлого, исторические сооружения и культурное богатство в нашем цифровом архиве.", 
+                readMore: "Подробнее", 
+                back: "Назад", 
+                gallery: "Галерея", 
+                location: "Местоположение", 
+                playAudio: "Аудиогид",
+                menuHome: "Главная",
+                menuAbout: "О нас",
+                menuContact: "Контакты",
+                aboutTitle: "О нас",
+                aboutBody: "Проект «Сирийское наследие» — это инициатива, направленная на перенос богатой исторической и культурной текстуры региона в цифровую среду.",
+                contactTitle: "Контакты",
+                contactBody: "Свяжитесь с нами:<br><br><strong>Email:</strong> info@suriyemirasi.org"
+            },
+            osm: { 
+                siteName: "سوريه ميراثي", 
+                siteSubtitle: "ديجيتال رهبر",
+                searchPlaceholder: "مكان، شهر ويا اثر آرايك...", 
+                homeTitle: "سوريه‌نك ثقافت ميراثي", 
+                homeSubtitle: "ماضينك ايزلريني، تاريخي ياپيلاري و ثقافت زنگينلكلريني ديجيتال ارشيفمزده كشف ايدك.", 
+                readMore: "تفصيلاتلي تدقيق", 
+                back: "كرو دون", 
+                gallery: "رسملر", 
+                location: "موقع", 
+                playAudio: "صوتي شرح",
+                menuHome: "آنا صفحه",
+                menuAbout: "حقيمزده",
+                menuContact: "مخابره",
+                aboutTitle: "حقيمزده",
+                aboutBody: "سوريه ميراثي پروژه‌سي، منطقه‌نك زنگين تاريخي و ثقافي دوقوسيني ديجيتال اورتامه طاشيه‌رق گله‌جك نسيللره آختارمایي هدفلاين بر تشبثدر.",
+                contactTitle: "مخابره",
+                contactBody: "رأي و تكليفلريكز ايچون:<br><br><strong>ا-پوسته:</strong> info@suriyemirasi.org"
+            }
         };
 
         // --- STATE MANAGEMENT ---
@@ -391,6 +559,61 @@
                 renderHome();
             }
         };
+
+        // --- MOBILE MENU FUNCTIONS ---
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('open')) {
+                menu.classList.remove('open');
+            } else {
+                menu.classList.add('open');
+            }
+        }
+
+        // --- MODAL FUNCTIONS ---
+        function openModal(type) {
+            const modal = document.getElementById('infoModal');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+            const texts = uiText[currentLang];
+
+            if (type === 'about') {
+                title.innerText = texts.aboutTitle;
+                body.innerHTML = texts.aboutBody;
+            } else if (type === 'contact') {
+                title.innerText = texts.contactTitle;
+                body.innerHTML = texts.contactBody;
+            }
+
+            modal.classList.remove('hidden');
+            // Animasyon için küçük bir gecikme
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                document.getElementById('modalContent').classList.remove('scale-95');
+                document.getElementById('modalContent').classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('infoModal');
+            
+            // Animasyonla kapat
+            modal.classList.add('opacity-0');
+            document.getElementById('modalContent').classList.remove('scale-100');
+            document.getElementById('modalContent').classList.add('scale-95');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Dışarı tıklayınca kapat
+        window.onclick = function(event) {
+            const modal = document.getElementById('infoModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
 
         // --- RENDER FUNCTIONS ---
         function renderHome() {
@@ -606,9 +829,19 @@
             const texts = uiText[currentLang];
             // Başlık mantığı güncellendi
             document.getElementById('nav-title').innerText = texts.siteName;
-            document.getElementById('nav-subtitle').innerText = texts.homeSubtitle.split(" ")[0] + "...";
+            document.getElementById('nav-subtitle').innerText = texts.siteSubtitle;
             document.getElementById('current-lang-label').innerText = currentLang.toUpperCase();
             
+            // Menu Items
+            document.getElementById('menu-home').innerText = texts.menuHome;
+            document.getElementById('menu-about').innerText = texts.menuAbout;
+            document.getElementById('menu-contact').innerText = texts.menuContact;
+            
+            // Mobile Menu Items
+            document.getElementById('mobile-menu-home').innerText = texts.menuHome;
+            document.getElementById('mobile-menu-about').innerText = texts.menuAbout;
+            document.getElementById('mobile-menu-contact').innerText = texts.menuContact;
+
             // Footer metni de güncellenebilir
             if(currentLang === 'ar' || currentLang === 'osm') {
                 document.getElementById('footer-text').innerText = "© 2025 مشروع التراث السوري. جميع الحقوق محفوظة.";
