@@ -24,11 +24,16 @@
                         primary: '#b45309', // Altın/Bakır tonu (Tarihi doku için)
                         secondary: '#1f2937', // Koyu Gri
                         light: '#f3f4f6',
+                        offwhite: '#fcfcfc',
                     },
                     fontFamily: {
                         sans: ['"Noto Sans"', 'sans-serif'],
                         serif: ['"Noto Serif"', 'serif'],
                         arabic: ['"Noto Naskh Arabic"', 'serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                        'card': '0 0 0 1px rgba(0,0,0,0.03), 0 2px 8px rgba(0,0,0,0.04)',
                     }
                 }
             }
@@ -48,7 +53,7 @@
         }
         /* Görsel geçiş efektleri */
         .fade-in {
-            animation: fadeIn 0.3s ease-in-out;
+            animation: fadeIn 0.4s ease-out;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -60,53 +65,62 @@
         }
         /* Detay metinleri için paragraf boşluğu */
         .detail-content p {
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
+        }
+        /* Desenli Arka Plan */
+        .pattern-bg {
+            background-color: #b45309;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col transition-all duration-300">
+<body class="bg-offwhite text-gray-800 min-h-screen flex flex-col transition-all duration-300">
 
     <!-- Navbar -->
-    <nav class="bg-white shadow-md sticky top-0 z-50">
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <!-- Logo -->
-            <div class="flex items-center space-x-2 rtl:space-x-reverse cursor-pointer" onclick="router('home')">
-                <div class="bg-primary text-white p-2 rounded-lg">
+            <div class="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer group" onclick="router('home')">
+                <div class="bg-primary text-white p-2.5 rounded-lg shadow-md group-hover:bg-orange-700 transition duration-300">
                     <i class="fa-solid fa-landmark text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-lg leading-tight uppercase" id="nav-title">SURİYE MİRASI</h1>
-                    <p class="text-xs text-gray-500" id="nav-subtitle">Dijital Rehber</p>
+                    <h1 class="font-bold text-xl leading-none text-gray-900 tracking-tight" id="nav-title">SURİYE MİRASI</h1>
+                    <p class="text-xs text-gray-500 font-medium mt-0.5 tracking-wide" id="nav-subtitle">Dijital Rehber</p>
                 </div>
             </div>
 
             <!-- Language Selector -->
             <div class="relative group">
-                <button class="flex items-center space-x-1 text-sm font-semibold hover:text-primary transition">
-                    <i class="fa-solid fa-globe"></i>
+                <button class="flex items-center space-x-2 text-sm font-bold text-gray-600 hover:text-primary transition py-2 px-3 rounded-full hover:bg-gray-50">
+                    <i class="fa-solid fa-globe text-lg"></i>
                     <span id="current-lang-label">TR</span>
                 </button>
-                <div class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-xl py-1 hidden group-hover:block border border-gray-100 rtl:right-auto rtl:left-0 z-50">
-                    <button onclick="setLanguage('tr')" class="block w-full text-left rtl:text-right px-4 py-2 text-sm hover:bg-gray-100">Türkçe</button>
-                    <button onclick="setLanguage('en')" class="block w-full text-left rtl:text-right px-4 py-2 text-sm hover:bg-gray-100">English</button>
-                    <button onclick="setLanguage('ar')" class="block w-full text-left rtl:text-right px-4 py-2 text-sm hover:bg-gray-100 font-arabic">العربية</button>
-                    <button onclick="setLanguage('fr')" class="block w-full text-left rtl:text-right px-4 py-2 text-sm hover:bg-gray-100">Français</button>
-                    <button onclick="setLanguage('ru')" class="block w-full text-left rtl:text-right px-4 py-2 text-sm hover:bg-gray-100">Русский</button>
-                    <button onclick="setLanguage('osm')" class="block w-full text-left rtl:text-right px-4 py-2 text-sm hover:bg-gray-100 font-arabic">عثمانليجه</button>
+                <div class="absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-xl py-2 hidden group-hover:block border border-gray-100 rtl:right-auto rtl:left-0 z-50 overflow-hidden ring-1 ring-black ring-opacity-5">
+                    <button onclick="setLanguage('tr')" class="block w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium">Türkçe</button>
+                    <button onclick="setLanguage('en')" class="block w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium">English</button>
+                    <button onclick="setLanguage('ar')" class="block w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic">العربية</button>
+                    <button onclick="setLanguage('fr')" class="block w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium">Français</button>
+                    <button onclick="setLanguage('ru')" class="block w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium">Русский</button>
+                    <button onclick="setLanguage('osm')" class="block w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic">عثمانليجه</button>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main id="app" class="flex-grow container mx-auto px-4 py-6">
+    <main id="app" class="flex-grow container mx-auto px-4 py-8">
         <!-- İçerik buraya JavaScript ile yüklenecek -->
     </main>
 
     <!-- Footer -->
-    <footer class="bg-secondary text-white py-6 mt-auto">
+    <footer class="bg-white border-t border-gray-200 py-8 mt-auto">
         <div class="container mx-auto px-4 text-center">
-            <p class="text-sm opacity-70" id="footer-text">© 2025 Suriye Mirası Projesi. Tüm hakları saklıdır.</p>
+             <div class="flex justify-center items-center space-x-2 mb-4 text-primary opacity-80">
+                <i class="fa-solid fa-landmark text-2xl"></i>
+            </div>
+            <p class="text-sm text-gray-500 font-medium" id="footer-text">© 2025 Suriye Mirası Projesi. Tüm hakları saklıdır.</p>
         </div>
     </footer>
 
@@ -268,12 +282,12 @@
 
         // --- UI TEXT TRANSLATIONS ---
         const uiText = {
-            tr: { siteName: "SURİYE MİRASI", searchPlaceholder: "Mekan ara...", homeTitle: "Tarihi Mirası Keşfedin", homeSubtitle: "Geçmişin izlerini dijital dünyada takip edin.", readMore: "İncele", back: "Geri Dön", gallery: "Galeri", location: "Konum", playAudio: "Sesli Anlatım" },
-            en: { siteName: "SYRIAN HERITAGE", searchPlaceholder: "Search places...", homeTitle: "Discover the Heritage", homeSubtitle: "Trace the past in the digital world.", readMore: "Explore", back: "Go Back", gallery: "Gallery", location: "Location", playAudio: "Audio Guide" },
-            ar: { siteName: "التراث السوري", searchPlaceholder: "البحث عن الأماكن...", homeTitle: "اكتشف التراث", homeSubtitle: "تتبع آثار الماضي في العالم الرقمي.", readMore: "اكتشف", back: "رجوع", gallery: "معرض الصور", location: "الموقع", playAudio: "الدليل الصوتي" },
-            fr: { siteName: "PATRIMOINE SYRIEN", searchPlaceholder: "Rechercher...", homeTitle: "Découvrez le Patrimoine", homeSubtitle: "Retracez le passé dans le monde numérique.", readMore: "Explorer", back: "Retour", gallery: "Galerie", location: "Lieu", playAudio: "Guide Audio" },
-            ru: { siteName: "СИРИЙСКОЕ НАСЛЕДИЕ", searchPlaceholder: "Поиск мест...", homeTitle: "Откройте для себя наследие", homeSubtitle: "Следите за прошлым в цифровом мире.", readMore: "Исследовать", back: "Назад", gallery: "Галерея", location: "Местоположение", playAudio: "Аудиогид" },
-            osm: { siteName: "سوريه ميراثي", searchPlaceholder: "مكان آرامق...", homeTitle: "تاريخي ميراثي كشف ايدك", homeSubtitle: "ماضينك ايزلريني ديجيتال دنياده تعقيب ايدك.", readMore: "تفكيك", back: "كرو دون", gallery: "رسملر", location: "موقع", playAudio: "صوتي شرح" }
+            tr: { siteName: "SURİYE MİRASI", searchPlaceholder: "Mekan, şehir veya eser arayın...", homeTitle: "Suriye'nin Kültürel Mirası", homeSubtitle: "Geçmişin izlerini, tarihi yapıları ve kültürel zenginlikleri dijital arşivimizde keşfedin.", readMore: "Detaylı İncele", back: "Geri Dön", gallery: "Galeri", location: "Konum", playAudio: "Sesli Anlatım" },
+            en: { siteName: "SYRIAN HERITAGE", searchPlaceholder: "Search for places, cities or monuments...", homeTitle: "Cultural Heritage of Syria", homeSubtitle: "Discover the traces of the past, historical structures and cultural richness in our digital archive.", readMore: "Explore Detail", back: "Go Back", gallery: "Gallery", location: "Location", playAudio: "Audio Guide" },
+            ar: { siteName: "التراث السوري", searchPlaceholder: "ابحث عن الأماكن أو المدن أو الآثار...", homeTitle: "التراث الثقافي السوري", homeSubtitle: "اكتشف آثار الماضي والهياكل التاريخية والثراء الثقافي في أرشيفنا الرقمي.", readMore: "اكتشف التفاصيل", back: "رجوع", gallery: "معرض الصور", location: "الموقع", playAudio: "الدليل الصوتي" },
+            fr: { siteName: "PATRIMOINE SYRIEN", searchPlaceholder: "Rechercher des lieux, villes ou monuments...", homeTitle: "Patrimoine Culturel de la Syrie", homeSubtitle: "Découvrez les traces du passé, les structures historiques et la richesse culturelle dans notre archive numérique.", readMore: "Explorer en détail", back: "Retour", gallery: "Galerie", location: "Lieu", playAudio: "Guide Audio" },
+            ru: { siteName: "СИРИЙСКОЕ НАСЛЕДИЕ", searchPlaceholder: "Поиск мест, городов или памятников...", homeTitle: "Культурное наследие Сирии", homeSubtitle: "Откройте для себя следы прошлого, исторические сооружения и культурное богатство в нашем цифровом архиве.", readMore: "Подробнее", back: "Назад", gallery: "Галерея", location: "Местоположение", playAudio: "Аудиогид" },
+            osm: { siteName: "سوريه ميراثي", searchPlaceholder: "مكان، شهر ويا اثر آرايك...", homeTitle: "سوريه‌نك ثقافت ميراثي", homeSubtitle: "ماضينك ايزلريني، تاريخي ياپيلاري و ثقافت زنگينلكلريني ديجيتال ارشيفمزده كشف ايدك.", readMore: "تفصيلاتلي تدقيق", back: "كرو دون", gallery: "رسملر", location: "موقع", playAudio: "صوتي شرح" }
         };
 
         // --- STATE MANAGEMENT ---
@@ -342,43 +356,56 @@
             const isRTL = (currentLang === 'ar' || currentLang === 'osm');
 
             let html = `
-                <!-- Hero Section -->
-                <div class="bg-gradient-to-r from-primary to-orange-700 rounded-2xl p-8 mb-8 text-white shadow-lg fade-in">
-                    <h2 class="text-3xl font-bold mb-2">${texts.homeTitle}</h2>
-                    <p class="opacity-90">${texts.homeSubtitle}</p>
-                </div>
-
-                <!-- Search Bar -->
-                <div class="relative mb-8 fade-in">
-                    <input type="text" id="searchInput" onkeyup="filterPlaces()" 
-                        placeholder="${texts.searchPlaceholder}" 
-                        class="w-full p-4 rounded-xl border border-gray-200 shadow-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none pl-12 rtl:pl-4 rtl:pr-12 transition">
-                    <i class="fa-solid fa-magnifying-glass absolute top-1/2 transform -translate-y-1/2 text-gray-400 left-4 rtl:left-auto rtl:right-4 text-xl"></i>
+                <!-- Modern Portal Hero Section -->
+                <div class="relative pattern-bg rounded-3xl mb-12 shadow-xl overflow-hidden fade-in mx-2 lg:mx-0">
+                    <div class="absolute inset-0 bg-black/10"></div>
+                    <div class="relative z-10 px-6 py-16 md:py-24 text-center">
+                        <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white tracking-tight drop-shadow-sm leading-tight">${texts.homeTitle}</h2>
+                        <p class="text-white/90 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-medium leading-relaxed">${texts.homeSubtitle}</p>
+                        
+                        <!-- Search Bar Container -->
+                        <div class="max-w-2xl mx-auto relative group">
+                            <div class="absolute inset-0 bg-white/20 blur-xl rounded-full transform group-hover:bg-white/30 transition duration-500"></div>
+                            <div class="relative">
+                                <input type="text" id="searchInput" onkeyup="filterPlaces()" 
+                                    placeholder="${texts.searchPlaceholder}" 
+                                    class="w-full py-5 px-8 rounded-full shadow-2xl text-gray-800 placeholder-gray-400 focus:ring-4 focus:ring-white/30 border-0 outline-none pl-14 rtl:pl-8 rtl:pr-14 transition-all duration-300 text-lg font-medium">
+                                <i class="fa-solid fa-magnifying-glass absolute top-1/2 transform -translate-y-1/2 text-gray-400 left-6 rtl:left-auto rtl:right-6 text-xl group-hover:text-primary transition-colors"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="placesGrid">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-2 lg:px-0" id="placesGrid">
             `;
 
             db.forEach(place => {
                 const content = place.content[currentLang];
                 html += `
-                    <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition transform hover:-translate-y-1 cursor-pointer group card-item" onclick="router('detail', ${place.id})">
-                        <div class="h-48 overflow-hidden relative">
+                    <div class="bg-white rounded-2xl shadow-card hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer group flex flex-col h-full overflow-hidden border border-gray-100/50 card-item" onclick="router('detail', ${place.id})">
+                        <div class="h-60 overflow-hidden relative">
                             <img src="${place.images[0]}" 
                                  onerror="this.src='https://images.unsplash.com/photo-1542647702-863116df633e?w=800&q=80'"
                                  alt="${content.name}" 
-                                 class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                            <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/70 to-transparent p-4">
-                                <span class="text-white text-xs font-semibold uppercase tracking-wider"><i class="fa-solid fa-map-pin mr-1"></i> ${content.location}</span>
+                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-in-out">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
+                            <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">
+                                <span class="text-primary text-xs font-bold uppercase tracking-wider flex items-center gap-1">
+                                    <i class="fa-solid fa-location-dot"></i> ${content.location}
+                                </span>
                             </div>
                         </div>
-                        <div class="p-5">
-                            <h3 class="text-xl font-bold mb-2 text-gray-800">${content.name}</h3>
-                            <p class="text-gray-600 text-sm line-clamp-2 mb-4 leading-relaxed">${content.desc}</p>
-                            <button class="w-full py-2 bg-gray-50 text-primary font-semibold rounded-lg group-hover:bg-primary group-hover:text-white transition">
-                                ${texts.readMore} <i class="fa-solid ${isRTL ? 'fa-arrow-left' : 'fa-arrow-right'} ml-1 rtl:ml-0 rtl:mr-1"></i>
-                            </button>
+                        <div class="p-6 flex flex-col flex-grow relative">
+                            <h3 class="text-xl font-bold mb-3 text-gray-800 group-hover:text-primary transition-colors leading-snug">${content.name}</h3>
+                            <p class="text-gray-500 text-sm line-clamp-3 mb-6 leading-relaxed flex-grow">${content.desc}</p>
+                            
+                            <div class="pt-4 border-t border-gray-50 flex justify-between items-center mt-auto">
+                                <span class="text-xs font-semibold text-gray-400 group-hover:text-gray-600 transition">Dijital Arşiv No: #${place.id.toString().padStart(4, '0')}</span>
+                                <span class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-primary group-hover:text-white transition-colors">
+                                    <i class="fa-solid ${isRTL ? 'fa-arrow-left' : 'fa-arrow-right'} text-sm"></i>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -401,81 +428,96 @@
             const descriptionHtml = content.detailDesc || `<p>${content.desc}</p>`;
 
             app.innerHTML = `
-                <div class="fade-in max-w-4xl mx-auto">
-                    <!-- Back Button -->
-                    <button onclick="router('home')" class="mb-6 flex items-center text-gray-500 hover:text-primary transition font-medium">
-                        <i class="fa-solid ${isRTL ? 'fa-arrow-right' : 'fa-arrow-left'} mr-2 rtl:mr-0 rtl:ml-2"></i> ${texts.back}
-                    </button>
-
-                    <!-- Main Image (Slider Simülasyonu) -->
-                    <div class="relative h-64 md:h-96 rounded-2xl overflow-hidden shadow-2xl mb-8 group">
-                        <img src="${place.images[0]}" 
-                             onerror="this.src='https://images.unsplash.com/photo-1542647702-863116df633e?w=800&q=80'"
-                             class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6 md:p-10">
-                            <div>
-                                <h1 class="text-3xl md:text-5xl font-bold text-white mb-2 shadow-sm">${content.name}</h1>
-                                <p class="text-white/90 text-lg"><i class="fa-solid fa-location-dot mr-2"></i>${content.location}</p>
-                            </div>
-                        </div>
-                        <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-md p-2 rounded-full cursor-pointer hover:bg-white/40 transition">
-                            <i class="fa-solid fa-share-nodes text-white text-xl"></i>
-                        </div>
+                <div class="fade-in max-w-6xl mx-auto px-2 lg:px-0">
+                    <!-- Breadcrumb / Back -->
+                    <div class="mb-6 flex items-center justify-between">
+                         <button onclick="router('home')" class="flex items-center text-gray-500 hover:text-primary transition font-semibold bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100 hover:shadow-md">
+                            <i class="fa-solid ${isRTL ? 'fa-arrow-right' : 'fa-arrow-left'} mr-2 rtl:mr-0 rtl:ml-2"></i> ${texts.back}
+                        </button>
+                        <div class="hidden md:block text-sm text-gray-400 font-mono">ID: #${place.id.toString().padStart(4, '0')}</div>
                     </div>
 
-                    <!-- Audio Player Section -->
-                    <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100 mb-8 flex items-center space-x-4 rtl:space-x-reverse">
-                        <div class="bg-primary/10 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-primary">
-                            <i class="fa-solid fa-headphones text-xl"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <p class="text-xs text-primary font-bold uppercase tracking-wider mb-1">${texts.playAudio}</p>
-                            <h4 class="text-sm font-semibold text-gray-800 mb-2">${content.audioTitle}</h4>
-                            <audio controls class="w-full h-8">
-                                <source src="#" type="audio/mpeg">
-                                Tarayıcınız ses elementini desteklemiyor.
-                            </audio>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <!-- Left: Content -->
-                        <div class="lg:col-span-2 space-y-8">
-                            <!-- Description -->
-                            <div class="bg-white p-6 rounded-xl shadow-sm leading-loose text-lg text-gray-700 text-justify detail-content">
-                                ${descriptionHtml}
-                            </div>
-
-                            <!-- Video Placeholder -->
-                            <div class="rounded-xl overflow-hidden shadow-md relative group cursor-pointer">
-                                <img src="${place.images[1]}" 
-                                     onerror="this.src='https://images.unsplash.com/photo-1572978345472-a1b9f71c2c36?w=800&q=80'"
-                                     class="w-full h-64 object-cover filter brightness-75 group-hover:brightness-50 transition">
-                                <div class="absolute inset-0 flex items-center justify-center">
-                                    <div class="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition">
-                                        <i class="fa-solid fa-play text-primary text-2xl ml-1"></i>
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        
+                        <!-- Left Column: Main Content (8 cols) -->
+                        <div class="lg:col-span-8 space-y-8">
+                             <!-- Main Hero Image -->
+                            <div class="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-lg group">
+                                <img src="${place.images[0]}" 
+                                     onerror="this.src='https://images.unsplash.com/photo-1542647702-863116df633e?w=800&q=80'"
+                                     class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-8">
+                                    <div class="w-full">
+                                        <div class="flex items-center text-orange-200 text-sm font-bold uppercase tracking-wider mb-2">
+                                            <i class="fa-solid fa-location-dot mr-2"></i> ${content.location}
+                                        </div>
+                                        <h1 class="text-3xl md:text-5xl font-bold text-white mb-2 shadow-sm leading-tight">${content.name}</h1>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Right: Sidebar -->
-                        <div class="space-y-6">
-                            <!-- Map -->
-                            <div class="bg-white p-2 rounded-xl shadow-sm border border-gray-100">
-                                <h3 class="font-bold text-gray-800 p-2 border-b border-gray-100 mb-2">${texts.location}</h3>
-                                <iframe src="${place.mapUrl}" width="100%" height="250" style="border:0; border-radius: 0.5rem;" allowfullscreen="" loading="lazy"></iframe>
+                            <!-- Audio Player -->
+                            <div class="bg-white p-5 rounded-xl shadow-card border border-gray-100 flex flex-col md:flex-row items-center gap-4">
+                                <div class="bg-orange-50 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-primary">
+                                    <i class="fa-solid fa-headphones text-xl"></i>
+                                </div>
+                                <div class="flex-grow w-full md:w-auto text-center md:text-left rtl:md:text-right">
+                                    <p class="text-xs text-primary font-bold uppercase tracking-wider mb-0.5 opacity-80">${texts.playAudio}</p>
+                                    <h4 class="text-sm font-bold text-gray-800">${content.audioTitle}</h4>
+                                </div>
+                                <audio controls class="w-full md:w-64 h-10 rounded-lg">
+                                    <source src="#" type="audio/mpeg">
+                                    Tarayıcınız ses elementini desteklemiyor.
+                                </audio>
                             </div>
 
-                            <!-- Mini Gallery -->
-                            <div class="bg-white p-4 rounded-xl shadow-sm">
-                                <h3 class="font-bold text-gray-800 mb-4">${texts.gallery}</h3>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <img src="${place.images[0]}" onerror="this.src='https://images.unsplash.com/photo-1542647702-863116df633e?w=800&q=80'" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80">
-                                    <img src="${place.images[1]}" onerror="this.src='https://images.unsplash.com/photo-1572978345472-a1b9f71c2c36?w=800&q=80'" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80">
-                                    ${place.images[2] ? `<img src="${place.images[2]}" onerror="this.src='https://via.placeholder.com/300?text=Hist+3'" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80">` : ''}
-                                    ${place.images[3] ? `<img src="${place.images[3]}" onerror="this.src='https://via.placeholder.com/300?text=Hist+4'" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80">` : ''}
+                            <!-- Text Content -->
+                            <div class="bg-white p-8 rounded-2xl shadow-card border border-gray-100">
+                                <h3 class="text-xl font-bold text-gray-800 mb-6 border-b border-gray-100 pb-4">Hakkında</h3>
+                                <div class="leading-relaxed text-lg text-gray-600 text-justify detail-content font-light">
+                                    ${descriptionHtml}
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Sidebar (4 cols) -->
+                        <div class="lg:col-span-4 space-y-6">
+                            
+                            <!-- Map Card -->
+                            <div class="bg-white p-1 rounded-2xl shadow-card border border-gray-100 overflow-hidden">
+                                <div class="p-4 border-b border-gray-50 flex justify-between items-center bg-gray-50/50">
+                                    <h3 class="font-bold text-gray-800">${texts.location}</h3>
+                                    <i class="fa-solid fa-map text-gray-400"></i>
+                                </div>
+                                <iframe src="${place.mapUrl}" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                                <a href="${place.mapUrl.replace('embed', 'search')}" target="_blank" class="block text-center py-3 text-sm text-primary font-semibold hover:bg-gray-50 transition">
+                                    Haritada Aç <i class="fa-solid fa-external-link-alt ml-1 text-xs"></i>
+                                </a>
+                            </div>
+
+                            <!-- Multimedia / Gallery -->
+                            <div class="bg-white p-5 rounded-2xl shadow-card border border-gray-100">
+                                <h3 class="font-bold text-gray-800 mb-4 flex items-center">
+                                    <i class="fa-regular fa-images mr-2 text-primary"></i> ${texts.gallery}
+                                </h3>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <img src="${place.images[0]}" onerror="this.src='https://images.unsplash.com/photo-1542647702-863116df633e?w=800&q=80'" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80 transition ring-2 ring-transparent hover:ring-primary/20">
+                                    <img src="${place.images[1]}" onerror="this.src='https://images.unsplash.com/photo-1572978345472-a1b9f71c2c36?w=800&q=80'" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80 transition ring-2 ring-transparent hover:ring-primary/20">
+                                    ${place.images[2] ? `<img src="${place.images[2]}" onerror="this.src='https://via.placeholder.com/300?text=Hist+3'" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80 transition ring-2 ring-transparent hover:ring-primary/20">` : ''}
+                                    ${place.images[3] ? `<img src="${place.images[3]}" onerror="this.src='https://via.placeholder.com/300?text=Hist+4'" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80 transition ring-2 ring-transparent hover:ring-primary/20">` : ''}
+                                </div>
+                            </div>
+                             <!-- Video Thumbnail -->
+                             <div class="rounded-2xl overflow-hidden shadow-card relative group cursor-pointer border-2 border-white ring-1 ring-gray-100">
+                                <img src="${place.images[1]}" 
+                                     onerror="this.src='https://images.unsplash.com/photo-1572978345472-a1b9f71c2c36?w=800&q=80'"
+                                     class="w-full h-48 object-cover filter brightness-75 group-hover:brightness-50 transition duration-500">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="w-14 h-14 bg-white/20 backdrop-blur-md border border-white/50 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition duration-300">
+                                        <i class="fa-solid fa-play text-white text-xl ml-1"></i>
+                                    </div>
+                                </div>
+                                <div class="absolute bottom-3 left-3 text-white font-bold text-sm drop-shadow-md">Tanıtım Videosu</div>
                             </div>
                         </div>
                     </div>
@@ -532,7 +574,7 @@
             cards.forEach(card => {
                 const text = card.innerText.toLowerCase();
                 if (text.includes(query)) {
-                    card.style.display = 'block';
+                    card.style.display = 'flex'; // Grid yapısını bozmamak için flex
                 } else {
                     card.style.display = 'none';
                 }
