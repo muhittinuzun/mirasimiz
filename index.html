@@ -301,22 +301,39 @@
             currentPlaceId = id;
             window.scrollTo(0, 0);
 
+            // URL Güncelleme (GitHub Pages'de çalışır, Preview'da hata vermez)
+            try {
+                if (view === 'home') {
+                    // Ana sayfaya dönünce URL'i temizle
+                    const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                    window.history.pushState({ path: cleanUrl }, '', cleanUrl);
+                } else if (view === 'detail' && id) {
+                    // Detay sayfasına girince URL'e ?id=X ekle
+                    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?id=' + id;
+                    window.history.pushState({ path: newUrl }, '', newUrl);
+                }
+            } catch (e) {
+                // Önizleme ortamında history API kısıtlı olabilir, yoksay.
+                console.log("URL güncelleme pas geçildi (Local/Preview ortamı).");
+            }
+
             if (view === 'home') {
                 renderHome();
-                try {
-                    window.history.pushState({}, document.title, window.location.pathname);
-                } catch (e) {
-                    console.log("Navigation update skipped due to environment restrictions");
-                }
             } else if (view === 'detail' && id) {
                 renderDetail(id);
-                try {
-                   // window.history.pushState({}, document.title, "?id=" + id);
-                } catch (e) {
-                   console.log("Navigation update skipped due to environment restrictions");
-                }
             }
         }
+
+        // Tarayıcı Geri Butonu Desteği
+        window.onpopstate = function(event) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const idParam = urlParams.get('id');
+            if (idParam) {
+                renderDetail(parseInt(idParam));
+            } else {
+                renderHome();
+            }
+        };
 
         // --- RENDER FUNCTIONS ---
         function renderHome() {
