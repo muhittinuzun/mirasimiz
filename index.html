@@ -8,6 +8,9 @@
     <!-- Tailwind CSS (Tasarım için) -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Leaflet CSS (Harita için) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    
     <!-- Google Fonts (Tüm diller için uygun fontlar) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,6 +18,9 @@
     
     <!-- FontAwesome (İkonlar için) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Leaflet JS (Harita için) -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <script>
         tailwind.config = {
@@ -80,6 +86,22 @@
             max-height: 300px;
             opacity: 1;
         }
+        /* Map Container Height */
+        #map-container {
+            height: calc(100vh - 180px);
+            min-height: 500px;
+            z-index: 1;
+        }
+        /* Leaflet Popup Customization */
+        .leaflet-popup-content-wrapper {
+            border-radius: 0.75rem;
+            overflow: hidden;
+            padding: 0;
+        }
+        .leaflet-popup-content {
+            margin: 0;
+            width: 280px !important;
+        }
     </style>
 </head>
 <body class="bg-offwhite text-gray-800 min-h-screen flex flex-col transition-all duration-300">
@@ -103,6 +125,7 @@
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-1 rtl:space-x-reverse">
                     <button onclick="router('home')" class="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition" id="menu-home">Anasayfa</button>
+                    <button onclick="router('map')" class="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition" id="menu-map">Harita</button>
                     <button onclick="openModal('about')" class="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition" id="menu-about">Hakkımızda</button>
                     <button onclick="openModal('contact')" class="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition" id="menu-contact">İletişim</button>
                     
@@ -154,6 +177,7 @@
         <div id="mobile-menu" class="md:hidden bg-white border-t border-gray-100">
             <div class="px-4 py-3 space-y-2">
                 <button onclick="router('home'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50" id="mobile-menu-home">Anasayfa</button>
+                <button onclick="router('map'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50" id="mobile-menu-map">Harita</button>
                 <button onclick="openModal('about'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50" id="mobile-menu-about">Hakkımızda</button>
                 <button onclick="openModal('contact'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50" id="mobile-menu-contact">İletişim</button>
             </div>
@@ -205,6 +229,7 @@
             {
                 id: 1,
                 // Şam Emevi Camii: 33.511296, 36.306721
+                coords: [33.511296, 36.306721],
                 mapUrl: "https://maps.google.com/maps?q=33.51129625696082,36.30672099150847&hl=tr&z=17&output=embed",
                 images: [
                     "https://images.openai.com/thumbnails/url/8eWDdXicu5meUVJSUGylr5-al1xUWVCSmqJbkpRnoJdeXJJYkpmsl5yfq5-Zm5ieWmxfaAuUsXL0S7F0Tw7S9Q1Kcop0SczNMSj19rLwdjQNCy4xCXV0MnENcHP0MShIScsNDNF1CkkvVyu2NTQAAOh3I9A",
@@ -260,6 +285,7 @@
             {
                 id: 2,
                 // Halep Kalesi: 36.199453, 37.163032
+                coords: [36.199453, 37.163032],
                 mapUrl: "https://maps.google.com/maps?q=36.199453,37.163032&hl=tr&z=16&output=embed",
                 images: [
                     "https://upload.wikimedia.org/wikipedia/commons/5/54/Citadel_of_Aleppo.jpg",
@@ -317,6 +343,7 @@
             {
                 id: 3,
                 // Halep Kapalı Çarşısı (Souq al-Madina): 36.1995, 37.1568
+                coords: [36.1995, 37.1568],
                 mapUrl: "https://maps.google.com/maps?q=36.1995,37.1568&hl=tr&z=16&output=embed",
                 images: [
                     "https://static.euronews.com/articles/stories/04/07/42/92/1200x675_cmsv2_6c4b4ae5-e71b-54e9-a818-88183636acae-4074292.jpg",
@@ -387,6 +414,7 @@
                 location: "Konum", 
                 playAudio: "Sesli Anlatım",
                 menuHome: "Anasayfa",
+                menuMap: "Harita",
                 menuAbout: "Hakkımızda",
                 menuContact: "İletişim",
                 aboutTitle: "Hakkımızda",
@@ -406,6 +434,7 @@
                 location: "Location", 
                 playAudio: "Audio Guide",
                 menuHome: "Home",
+                menuMap: "Map",
                 menuAbout: "About Us",
                 menuContact: "Contact",
                 aboutTitle: "About Us",
@@ -425,6 +454,7 @@
                 location: "الموقع", 
                 playAudio: "الدليل الصوتي",
                 menuHome: "الرئيسية",
+                menuMap: "خريطة",
                 menuAbout: "من نحن",
                 menuContact: "اتصل بنا",
                 aboutTitle: "من نحن",
@@ -444,6 +474,7 @@
                 location: "Lieu", 
                 playAudio: "Guide Audio",
                 menuHome: "Accueil",
+                menuMap: "Carte",
                 menuAbout: "À Propos",
                 menuContact: "Contact",
                 aboutTitle: "À Propos",
@@ -463,6 +494,7 @@
                 location: "Местоположение", 
                 playAudio: "Аудиогид",
                 menuHome: "Главная",
+                menuMap: "Карта",
                 menuAbout: "О нас",
                 menuContact: "Контакты",
                 aboutTitle: "О нас",
@@ -482,6 +514,7 @@
                 location: "موقع", 
                 playAudio: "صوتي شرح",
                 menuHome: "آنا صفحه",
+                menuMap: "خريطه",
                 menuAbout: "حقيمزده",
                 menuContact: "مخابره",
                 aboutTitle: "حقيمزده",
@@ -526,19 +559,19 @@
             currentPlaceId = id;
             window.scrollTo(0, 0);
 
-            // URL Güncelleme (GitHub Pages'de çalışır, Preview'da hata vermez)
+            // URL Güncelleme
             try {
+                const url = new URL(window.location);
                 if (view === 'home') {
-                    // Ana sayfaya dönünce URL'i temizle
-                    const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-                    window.history.pushState({ path: cleanUrl }, '', cleanUrl);
+                    url.search = '';
                 } else if (view === 'detail' && id) {
-                    // Detay sayfasına girince URL'e ?id=X ekle
-                    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?id=' + id;
-                    window.history.pushState({ path: newUrl }, '', newUrl);
+                    url.searchParams.set('id', id);
+                } else if (view === 'map') {
+                    url.searchParams.set('view', 'map');
+                    url.searchParams.delete('id');
                 }
+                window.history.pushState({}, '', url);
             } catch (e) {
-                // Önizleme ortamında history API kısıtlı olabilir, yoksay.
                 console.log("URL güncelleme pas geçildi (Local/Preview ortamı).");
             }
 
@@ -546,6 +579,8 @@
                 renderHome();
             } else if (view === 'detail' && id) {
                 renderDetail(id);
+            } else if (view === 'map') {
+                renderMap();
             }
         }
 
@@ -553,8 +588,12 @@
         window.onpopstate = function(event) {
             const urlParams = new URLSearchParams(window.location.search);
             const idParam = urlParams.get('id');
+            const viewParam = urlParams.get('view');
+
             if (idParam) {
                 renderDetail(parseInt(idParam));
+            } else if (viewParam === 'map') {
+                renderMap();
             } else {
                 renderHome();
             }
@@ -586,7 +625,6 @@
             }
 
             modal.classList.remove('hidden');
-            // Animasyon için küçük bir gecikme
             setTimeout(() => {
                 modal.classList.remove('opacity-0');
                 document.getElementById('modalContent').classList.remove('scale-95');
@@ -596,18 +634,14 @@
 
         function closeModal() {
             const modal = document.getElementById('infoModal');
-            
-            // Animasyonla kapat
             modal.classList.add('opacity-0');
             document.getElementById('modalContent').classList.remove('scale-100');
             document.getElementById('modalContent').classList.add('scale-95');
-
             setTimeout(() => {
                 modal.classList.add('hidden');
             }, 300);
         }
 
-        // Dışarı tıklayınca kapat
         window.onclick = function(event) {
             const modal = document.getElementById('infoModal');
             if (event.target == modal) {
@@ -690,12 +724,10 @@
             const content = place.content[currentLang];
             const isRTL = (currentLang === 'ar' || currentLang === 'osm');
 
-            // Detay metnini belirle: Varsa detaylı HTML (detailDesc), yoksa normal desc
             const descriptionHtml = content.detailDesc || `<p>${content.desc}</p>`;
 
             app.innerHTML = `
                 <div class="fade-in max-w-6xl mx-auto px-2 lg:px-0">
-                    <!-- Breadcrumb / Back -->
                     <div class="mb-6 flex items-center justify-between">
                          <button onclick="router('home')" class="flex items-center text-gray-500 hover:text-primary transition font-semibold bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100 hover:shadow-md">
                             <i class="fa-solid ${isRTL ? 'fa-arrow-right' : 'fa-arrow-left'} mr-2 rtl:mr-0 rtl:ml-2"></i> ${texts.back}
@@ -704,10 +736,7 @@
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                        
-                        <!-- Left Column: Main Content (8 cols) -->
                         <div class="lg:col-span-8 space-y-8">
-                             <!-- Main Hero Image -->
                             <div class="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-lg group">
                                 <img src="${place.images[0]}" 
                                      onerror="this.src='https://via.placeholder.com/800x600?text=Gorsel+Yuklenemedi'"
@@ -722,7 +751,6 @@
                                 </div>
                             </div>
 
-                            <!-- Audio Player -->
                             <div class="bg-white p-5 rounded-xl shadow-card border border-gray-100 flex flex-col md:flex-row items-center gap-4">
                                 <div class="bg-orange-50 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-primary">
                                     <i class="fa-solid fa-headphones text-xl"></i>
@@ -737,7 +765,6 @@
                                 </audio>
                             </div>
 
-                            <!-- Text Content -->
                             <div class="bg-white p-8 rounded-2xl shadow-card border border-gray-100">
                                 <h3 class="text-xl font-bold text-gray-800 mb-6 border-b border-gray-100 pb-4">Hakkında</h3>
                                 <div class="leading-relaxed text-lg text-gray-600 text-justify detail-content font-light">
@@ -746,10 +773,7 @@
                             </div>
                         </div>
 
-                        <!-- Right Column: Sidebar (4 cols) -->
                         <div class="lg:col-span-4 space-y-6">
-                            
-                            <!-- Map Card -->
                             <div class="bg-white p-1 rounded-2xl shadow-card border border-gray-100 overflow-hidden">
                                 <div class="p-4 border-b border-gray-50 flex justify-between items-center bg-gray-50/50">
                                     <h3 class="font-bold text-gray-800">${texts.location}</h3>
@@ -761,7 +785,6 @@
                                 </a>
                             </div>
 
-                            <!-- Multimedia / Gallery -->
                             <div class="bg-white p-5 rounded-2xl shadow-card border border-gray-100">
                                 <h3 class="font-bold text-gray-800 mb-4 flex items-center">
                                     <i class="fa-regular fa-images mr-2 text-primary"></i> ${texts.gallery}
@@ -773,7 +796,6 @@
                                     ${place.images[3] ? `<img src="${place.images[3]}" onerror="this.src='https://via.placeholder.com/300?text=Hist+4'" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80 transition ring-2 ring-transparent hover:ring-primary/20">` : ''}
                                 </div>
                             </div>
-                             <!-- Video Thumbnail -->
                              <div class="rounded-2xl overflow-hidden shadow-card relative group cursor-pointer border-2 border-white ring-1 ring-gray-100">
                                 <img src="${place.images[1]}" 
                                      onerror="this.src='https://via.placeholder.com/800x600?text=Video+Yok'"
@@ -789,6 +811,64 @@
                     </div>
                 </div>
             `;
+        }
+
+        // --- MAP RENDER FUNCTION ---
+        function renderMap() {
+            const app = document.getElementById('app');
+            const texts = uiText[currentLang];
+            const isRTL = (currentLang === 'ar' || currentLang === 'osm');
+
+            app.innerHTML = `
+                <div class="fade-in h-full">
+                    <div class="flex justify-between items-center mb-4 px-2">
+                        <h2 class="text-2xl font-bold text-gray-800">${texts.menuMap}</h2>
+                        <button onclick="router('home')" class="text-sm font-semibold text-primary hover:underline flex items-center">
+                            <i class="fa-solid ${isRTL ? 'fa-arrow-right' : 'fa-arrow-left'} mr-1 rtl:mr-0 rtl:ml-1"></i> ${texts.back}
+                        </button>
+                    </div>
+                    <div id="map-container" class="rounded-2xl shadow-xl overflow-hidden border border-gray-200"></div>
+                </div>
+            `;
+
+            // Harita başlatma (Leaflet)
+            setTimeout(() => {
+                // Merkez koordinatı (Suriye geneli veya ilk mekan)
+                const map = L.map('map-container').setView([35.0, 38.0], 7);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+                // Tüm mekanları pinle
+                const markers = [];
+                db.forEach(place => {
+                    if(place.coords) {
+                        const content = place.content[currentLang];
+                        const marker = L.marker(place.coords).addTo(map);
+                        
+                        // Popup içeriği
+                        const popupContent = `
+                            <div class="text-center p-2">
+                                <h3 class="font-bold text-sm mb-2">${content.name}</h3>
+                                <img src="${place.images[0]}" class="w-full h-24 object-cover rounded-md mb-2" onerror="this.src='https://via.placeholder.com/150'">
+                                <button onclick="router('detail', ${place.id})" class="text-xs bg-primary text-white px-3 py-1 rounded hover:bg-orange-700 transition w-full">
+                                    ${texts.readMore}
+                                </button>
+                            </div>
+                        `;
+                        
+                        marker.bindPopup(popupContent);
+                        markers.push(marker);
+                    }
+                });
+
+                // Haritayı pinlere göre otomatik yakınlaştır
+                if (markers.length > 0) {
+                    const group = new L.featureGroup(markers);
+                    map.fitBounds(group.getBounds().pad(0.1));
+                }
+            }, 100);
         }
 
         // --- HELPER FUNCTIONS ---
@@ -820,6 +900,8 @@
             updateUIText();
             if (currentView === 'home') {
                 renderHome();
+            } else if (currentView === 'map') {
+                renderMap();
             } else {
                 renderDetail(currentPlaceId);
             }
@@ -834,11 +916,13 @@
             
             // Menu Items
             document.getElementById('menu-home').innerText = texts.menuHome;
+            document.getElementById('menu-map').innerText = texts.menuMap;
             document.getElementById('menu-about').innerText = texts.menuAbout;
             document.getElementById('menu-contact').innerText = texts.menuContact;
             
             // Mobile Menu Items
             document.getElementById('mobile-menu-home').innerText = texts.menuHome;
+            document.getElementById('mobile-menu-map').innerText = texts.menuMap;
             document.getElementById('mobile-menu-about').innerText = texts.menuAbout;
             document.getElementById('mobile-menu-contact').innerText = texts.menuContact;
 
