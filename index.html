@@ -5,30 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Suriye Mirası - Dijital Rehber</title>
     
-    <!-- Tailwind CSS (Tasarım için) -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Leaflet CSS (Harita için) -->
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     
-    <!-- Google Fonts (Tüm diller için uygun fontlar) -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Serif:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- FontAwesome (İkonlar için) -->
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Leaflet JS (Harita için) -->
+    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- SUPABASE JS CLIENT -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#b45309', // Altın/Bakır tonu
-                        secondary: '#1f2937', // Koyu Gri
+                        primary: '#b45309', 
+                        secondary: '#1f2937', 
                         light: '#f3f4f6',
                         offwhite: '#fcfcfc',
                     },
@@ -40,6 +43,13 @@
                     boxShadow: {
                         'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
                         'card': '0 0 0 1px rgba(0,0,0,0.03), 0 2px 8px rgba(0,0,0,0.04)',
+                    },
+                    zIndex: {
+                        '60': '60',
+                        '70': '70',
+                        '80': '80',
+                        '90': '90',
+                        '100': '100',
                     }
                 }
             }
@@ -64,6 +74,9 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        audio {
+            outline: none;
+        }
         audio::-webkit-media-controls-panel {
             background-color: #f3f4f6;
         }
@@ -75,7 +88,6 @@
             background-color: #b45309;
             background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
-        /* Mobile Menu Animation */
         #mobile-menu {
             transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
             max-height: 0;
@@ -86,13 +98,12 @@
             max-height: 300px;
             opacity: 1;
         }
-        /* Map Container Height */
         #map-container {
             height: calc(100vh - 180px);
             min-height: 500px;
-            z-index: 1;
+            z-index: 1; 
+            position: relative;
         }
-        /* Leaflet Popup Customization */
         .leaflet-popup-content-wrapper {
             border-radius: 0.75rem;
             overflow: hidden;
@@ -101,6 +112,28 @@
         .leaflet-popup-content {
             margin: 0;
             width: 280px !important;
+        }
+        .lightbox-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+            padding: 1rem;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 100;
+            transition: background-color 0.3s;
+            border: none;
+            outline: none;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox-nav-btn:hover {
+            background-color: rgba(255,255,255,0.2);
         }
     </style>
 </head>
@@ -113,9 +146,9 @@
                 
                 <!-- Logo Section -->
                 <div class="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer group flex-shrink-0" onclick="router('home')">
-                    <div class="bg-primary text-white p-2 rounded-lg shadow-md group-hover:bg-orange-700 transition duration-300">
-                        <i class="fa-solid fa-landmark text-xl"></i>
-                    </div>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Flag_of_Syria_%282025-%29.svg/1200px-Flag_of_Syria_%282025-%29.svg.png" 
+                         class="w-10 h-10 rounded-lg shadow-md object-cover border border-gray-200 group-hover:scale-105 transition duration-300" 
+                         alt="Site Logo">
                     <div class="flex flex-col">
                         <h1 class="font-bold text-xl leading-none text-gray-900 tracking-tight uppercase" id="nav-title">SURİYE MİRASI</h1>
                         <p class="text-xs text-gray-500 font-medium mt-0.5 tracking-wide uppercase" id="nav-subtitle">DİJİTAL REHBER</p>
@@ -129,38 +162,23 @@
                     <button onclick="openModal('about')" class="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition" id="menu-about">Hakkımızda</button>
                     <button onclick="openModal('contact')" class="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition" id="menu-contact">İletişim</button>
                     
-                    <div class="h-6 w-px bg-gray-200 mx-2"></div> <!-- Separator -->
+                    <div class="h-6 w-px bg-gray-200 mx-2"></div>
 
                     <!-- Language Selector -->
                     <div class="relative group">
-                        <!-- gap-2 ile ikon ve yazı hizalaması düzeltildi -->
                         <button class="flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-primary transition py-2 px-3 rounded-full hover:bg-gray-50 border border-transparent hover:border-gray-100">
                             <img id="current-lang-flag" src="https://flagcdn.com/w40/tr.png" class="w-6 h-6 rounded-full object-cover border border-gray-200 shadow-sm" alt="TR">
                             <span id="current-lang-label" class="hidden lg:inline">TR</span>
                             <i class="fa-solid fa-chevron-down text-xs ml-1 text-gray-400"></i>
                         </button>
-                        <!-- Padding added to bridge the gap -->
                         <div class="absolute right-0 top-full pt-2 w-48 hidden group-hover:block rtl:right-auto rtl:left-0 z-50">
                             <div class="bg-white rounded-xl shadow-xl py-2 border border-gray-100 overflow-hidden ring-1 ring-black ring-opacity-5">
-                                <!-- gap-3 ve margin temizliği ile liste hizalaması düzeltildi -->
-                                <button onclick="setLanguage('tr')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center gap-3 group/item">
-                                    <img src="https://flagcdn.com/w40/tr.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Türkçe
-                                </button>
-                                <button onclick="setLanguage('en')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center gap-3 group/item">
-                                    <img src="https://flagcdn.com/w40/gb.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> English
-                                </button>
-                                <button onclick="setLanguage('ar')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic flex items-center gap-3 group/item">
-                                    <img src="https://flagcdn.com/w40/sy.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> العربية
-                                </button>
-                                <button onclick="setLanguage('fr')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center gap-3 group/item">
-                                    <img src="https://flagcdn.com/w40/fr.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Français
-                                </button>
-                                <button onclick="setLanguage('ru')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center gap-3 group/item">
-                                    <img src="https://flagcdn.com/w40/ru.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Русский
-                                </button>
-                                <button onclick="setLanguage('osm')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic flex items-center gap-3 group/item">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Ottoman_flag.svg/100px-Ottoman_flag.svg.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> عثمانليجه
-                                </button>
+                                <button onclick="setLanguage('tr')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center gap-3 group/item"><img src="https://flagcdn.com/w40/tr.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Türkçe</button>
+                                <button onclick="setLanguage('en')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center gap-3 group/item"><img src="https://flagcdn.com/w40/gb.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> English</button>
+                                <button onclick="setLanguage('ar')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic flex items-center gap-3 group/item"><img src="https://flagcdn.com/w40/sy.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> العربية</button>
+                                <button onclick="setLanguage('fr')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center gap-3 group/item"><img src="https://flagcdn.com/w40/fr.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Français</button>
+                                <button onclick="setLanguage('ru')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center gap-3 group/item"><img src="https://flagcdn.com/w40/ru.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Русский</button>
+                                <button onclick="setLanguage('osm')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic flex items-center gap-3 group/item"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Osmanli-nisani.svg/100px-Osmanli-nisani.svg.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition bg-white" alt="Osmanlı Arması"> عثمانليجه</button>
                             </div>
                         </div>
                     </div>
@@ -175,7 +193,7 @@
             </div>
         </div>
 
-        <!-- Mobile Menu (Hidden by default) -->
+        <!-- Mobile Menu -->
         <div id="mobile-menu" class="md:hidden bg-white border-t border-gray-100">
             <div class="px-4 py-3 space-y-2">
                 <button onclick="router('home'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50" id="mobile-menu-home">Anasayfa</button>
@@ -191,7 +209,21 @@
         <!-- İçerik buraya JavaScript ile yüklenecek -->
     </main>
 
-    <!-- Modal (About/Contact) -->
+    <!-- Lightbox -->
+    <div id="lightbox" class="fixed inset-0 z-[100] hidden bg-black/95 backdrop-blur-md flex items-center justify-center p-4 transition-opacity duration-300 opacity-0" onclick="closeLightbox(event)">
+        <button class="absolute top-4 right-4 text-white hover:text-gray-300 z-[110] p-2 bg-black/50 rounded-full w-10 h-10 flex items-center justify-center" onclick="closeLightbox()">
+            <i class="fa-solid fa-times text-xl"></i>
+        </button>
+        <button id="lightbox-prev" class="lightbox-nav-btn left-4" onclick="prevImage(event)">
+            <i class="fa-solid fa-chevron-left text-xl"></i>
+        </button>
+        <img id="lightbox-img" src="" alt="Büyük Resim" class="max-w-full max-h-[90vh] rounded-lg shadow-2xl transform transition-transform duration-300 select-none">
+        <button id="lightbox-next" class="lightbox-nav-btn right-4" onclick="nextImage(event)">
+            <i class="fa-solid fa-chevron-right text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Modal -->
     <div id="infoModal" class="fixed inset-0 bg-black/50 z-[60] hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity duration-300">
         <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300" id="modalContent">
             <div class="p-6">
@@ -201,9 +233,7 @@
                         <i class="fa-solid fa-times text-xl"></i>
                     </button>
                 </div>
-                <div class="text-gray-600 leading-relaxed" id="modalBody">
-                    <!-- İçerik -->
-                </div>
+                <div class="text-gray-600 leading-relaxed" id="modalBody"></div>
                 <div class="mt-6 text-right">
                     <button onclick="closeModal()" class="bg-gray-100 text-gray-700 px-5 py-2 rounded-lg hover:bg-gray-200 transition font-medium">Kapat</button>
                 </div>
@@ -215,7 +245,9 @@
     <footer class="bg-white border-t border-gray-200 py-8 mt-auto">
         <div class="container mx-auto px-4 text-center">
              <div class="flex justify-center items-center space-x-2 mb-4 text-primary opacity-80">
-                <i class="fa-solid fa-landmark text-2xl"></i>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Flag_of_Syria_%282025-%29.svg/1200px-Flag_of_Syria_%282025-%29.svg.png" 
+                     class="w-12 h-12 rounded-lg shadow-sm object-cover border border-gray-200" 
+                     alt="Site Logo">
             </div>
             <p class="text-sm text-gray-500 font-medium mb-2" id="footer-text">© 2025 Suriye Mirası Projesi. Tüm hakları saklıdır.</p>
             <p class="text-xs text-gray-400 font-bold tracking-widest mt-2 flex justify-center items-center gap-1">
@@ -226,408 +258,150 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // --- DATA (VERİTABANI SİMÜLASYONU) ---
-        const db = [
-            {
-                id: 1,
-                // Şam Emevi Camii: 33.511296, 36.306721
-                coords: [33.511296, 36.306721],
-                mapUrl: "https://maps.google.com/maps?q=33.51129625696082,36.30672099150847&hl=tr&z=17&output=embed",
-                images: [
-                    "https://images.openai.com/thumbnails/url/8eWDdXicu5meUVJSUGylr5-al1xUWVCSmqJbkpRnoJdeXJJYkpmsl5yfq5-Zm5ieWmxfaAuUsXL0S7F0Tw7S9Q1Kcop0SczNMSj19rLwdjQNCy4xCXV0MnENcHP0MShIScsNDNF1CkkvVyu2NTQAAOh3I9A",
-                    "https://madainproject.com/content/media/collect/umayyad_mosque_009921.jpg",
-                    "https://img.piri.net/mnresize/900/-/resim/imagecrop/2020/04/13/09/47/resized_2503e-a2eb87d61.jpg",
-                    "https://live.staticflickr.com/2564/4160505965_9fd2dcbe81_b.jpg"
-                ],
-                content: {
-                    tr: {
-                        name: "Şam Emevi Camii",
-                        location: "Şam, Suriye",
-                        desc: "Şam Emevi Camii, İslam tarihinin en eski ve en ihtişamlı mabetlerinden biridir. Şam’ın kalbinde yer alan bu büyük yapı, yalnızca bir cami değil; üç bin yıla yaklaşan kutsal mekân sürekliliğinin canlı bir şahididir. Aynı alan; Arami tapınağı, ardından Roma döneminde Jüpiter Mabedi, sonrasında Hristiyanlık döneminde Aziz Yahya (Vaftizci Yahya) Bazilikası olarak kullanılmış, nihayet Emevî Halifesi I. Velid döneminde (705–715) camiye dönüştürülmüştür.",
-                        detailDesc: `
-                            <p>Şam Emevi Camii, İslam tarihinin en eski ve en ihtişamlı mabetlerinden biridir. Şam’ın kalbinde yer alan bu büyük yapı, yalnızca bir cami değil; üç bin yıla yaklaşan kutsal mekân sürekliliğinin canlı bir şahididir. Aynı alan; Arami tapınağı, ardından Roma döneminde Jüpiter Mabedi, sonrasında Hristiyanlık döneminde Aziz Yahya (Vaftizci Yahya) Bazilikası olarak kullanılmış, nihayet Emevî Halifesi I. Velid döneminde (705–715) camiye dönüştürülmüştür. Bu yönüyle cami, dinler ve medeniyetler tarihinin üst üste yazıldığı eşsiz bir hafıza mekânıdır.</p>
-                            <p>Emevi Camii, mimarisiyle İslam sanatında bir dönüm noktası kabul edilir. Geniş avlusu, üç minaresi, görkemli harimi ve özellikle altın zeminli mozaikleri, erken dönem İslam estetiğinin zirvesini temsil eder. Bu mozaiklerde insan figürü yer almaz; cennet tasvirini andıran nehirler, şehirler ve bahçeler resmedilmiştir. Rivayete göre bu süslemelerde Bizanslı ustalar çalışmış, böylece Doğu Roma ile İslam sanat anlayışı aynı eserde buluşmuştur.</p>
-                            <p>Caminin en dikkat çekici bölümlerinden biri, Hz. Yahya’nın (a.s.) makamıdır. Hem Müslümanlar hem de Hristiyanlar için kutsal kabul edilen bu mekân, Şam Emevi Camii’ni evrensel bir ziyaret noktası hâline getirmiştir. Ayrıca cami, asırlar boyunca ilim halkalarına, hutbelere, devlet merasimlerine ve halkın günlük ibadet hayatına ev sahipliği yaparak Şam’ın sosyal ve ruhani merkezlerinden biri olmuştur.</p>
-                            <p>Bugün Emevi Camii’ni ziyaret eden bir turist; taş sütunlar arasında yürürken Emevîlerden Abbasîlere, Selçuklulardan Osmanlılara uzanan uzun bir tarih yolculuğuna çıkar. Hamdolsun, onca yangın, deprem ve savaşa rağmen ayakta kalan bu mabet, Şam’ın kalbi olmaya devam etmektedir. İnşallah, bu kadim yapı uzun yıllar boyunca insanlığa ortak bir miras ve huzur mekânı olarak hizmet etmeyi sürdürür.</p>
-                        `,
-                        audioTitle: "Sesli Rehber: Tarihçe ve Mimari",
-                    },
-                    en: {
-                        name: "Umayyad Mosque",
-                        location: "Damascus, Syria",
-                        desc: "The Umayyad Mosque is one of the oldest and holiest mosques in the Islamic world. It was built by the Umayyad Caliph Al-Walid I in 715 AD. Inside contains a shrine believed to contain the head of John the Baptist.",
-                        audioTitle: "Audio Guide: History and Architecture",
-                    },
-                    ar: {
-                        name: "الجامع الأموي",
-                        location: "دمشق، سوريا",
-                        desc: "يعتبر الجامع الأموي من أقدم وأقدس المساجد في العالم الإسلامي. بناه الخليفة الأموي الوليد بن عبد الملك عام 715 م. يحتوي المسجد على ضريح يُعتقد أنه يضم رأس النبي يحيى (يوحنا المعمدان).",
-                        audioTitle: "الدليل الصوتي: التاريخ والعمارة",
-                    },
-                    fr: {
-                        name: "Grande Mosquée des Omeyyades",
-                        location: "Damas, Syrie",
-                        desc: "La Grande Mosquée des Omeyyades est l'une des plus anciennes et des plus saintes mosquées du monde musulman. Construite par le calife Al-Walid Ier en 715 après J.-C., elle abrite un sanctuaire dédié à Jean le Baptiste.",
-                        audioTitle: "Audio Guide: Histoire et Architecture",
-                    },
-                    ru: {
-                        name: "Мечеть Омейядов",
-                        location: "Дамаск, Сирия",
-                        desc: "Мечеть Омейядов — одна из старейших и святейших мечетей в исламском мире. Построена халифом Валидом I в 715 году н.э. Внутри находится святыня, где, как полагают, покоится голова Иоанна Крестителя.",
-                        audioTitle: "Аудиогид: История и Архитектура",
-                    },
-                    osm: {
-                        name: "جامع اموي",
-                        location: "شام شريف، سوريه",
-                        desc: "جامع اموي، عالم اسلامك اك قديم و مقدس معبدلرندن بريدر. ميلادي ٧١٥ سنه‌سنده اموي خليفه‌سي اول وليد طرفندن ياپديرلمشدر. جامعك ايچنده حضرت يحيانك مبارك باشينك بولونديغنه اينانيلان بر تربه بولونمقده‌در.",
-                        audioTitle: "صوتي رهبر: تاريخچه و معماري",
-                    }
-                }
-            },
-            {
-                id: 2,
-                // Halep Kalesi: 36.199453, 37.163032
-                coords: [36.199453, 37.163032],
-                mapUrl: "https://maps.google.com/maps?q=36.199453,37.163032&hl=tr&z=16&output=embed",
-                images: [
-                    "https://upload.wikimedia.org/wikipedia/commons/5/54/Citadel_of_Aleppo.jpg",
-                    "https://nawafir-tours.com/wp-content/uploads/2024/03/Citadel-of-Aleppo-02.jpg",
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Citadel_of_Aleppo.jpg/1200px-Citadel_of_Aleppo.jpg"
-                ],
-                content: {
-                    tr: {
-                        name: "Halep Kalesi",
-                        location: "Halep, Suriye",
-                        desc: "Halep Kalesi, Suriye’nin kuzeyinde yer alan ve binlerce yıllık geçmişiyle ayakta duran en görkemli tarihî yapılardan biridir. Halep şehrinin tam merkezinde, yapay olarak yükseltilmiş bir tepe üzerinde konumlanan kale; sadece askerî bir yapı değil, aynı zamanda medeniyetlerin üst üste biriktiği canlı bir şehir belleğidir.",
-                        detailDesc: `
-                            <p>Halep Kalesi, Suriye’nin kuzeyinde yer alan ve binlerce yıllık geçmişiyle ayakta duran en görkemli tarihî yapılardan biridir. Halep şehrinin tam merkezinde, yapay olarak yükseltilmiş bir tepe üzerinde konumlanan kale; sadece askerî bir yapı değil, aynı zamanda medeniyetlerin üst üste biriktiği canlı bir şehir belleğidir. Arkeolojik bulgular, bu tepenin MÖ 3. binyıla kadar uzanan bir yerleşim alanı olduğunu göstermektedir.</p>
-                            
-                            <p>Tarih boyunca kale; Hititler, Asurlular, Persler, Helenistik krallıklar, Romalılar ve Bizanslılar tarafından kullanılmış, ancak bugünkü görkemli siluetini özellikle İslam medeniyeti döneminde kazanmıştır. Hamdanîler, Eyyûbîler (özellikle Selahaddin Eyyûbî devri), Memlükler ve Osmanlılar kaleyi hem askerî üs hem de idari merkez olarak değerlendirmiştir. Özellikle Eyyûbîler döneminde surlar güçlendirilmiş, giriş köprüsü, saray yapıları, cami ve su sistemleri inşa edilmiştir.</p>
-                            
-                            <p>Halep Kalesi, yalnızca savunma amaçlı değil; içinde saraylar, hamamlar, mescitler, tahıl depoları ve yeraltı su kanalları barındıran küçük bir şehir gibidir. Bu yönüyle kale, Halep’in ticaret, kültür ve siyaset hayatının yüzyıllar boyunca kalbinin attığı yer olmuştur. Kaleden aşağı bakıldığında görülen eski Halep sokakları, çarşılar ve hanlar, bu tarihsel sürekliliğin sessiz tanıklarıdır.</p>
-                            
-                            <p>UNESCO Dünya Mirası Listesi’nde yer alan Halep Kalesi, ne yazık ki Suriye’deki iç savaş sırasında zarar görmüş olsa da, hâlâ ayakta duran ihtişamıyla ziyaretçilerine derin bir tarih hissi sunar. Bugün burayı gezen bir turist; taş duvarların arasında dolaşırken, geçmişin izlerini adım adım hisseder. Hamdolsun, bu kadim miras hâlâ insanlığa “medeniyetler geçer, izler kalır” gerçeğini hatırlatmaya devam etmektedir.</p>
-                        `,
-                        audioTitle: "Sesli Rehber: Kalenin Savunma Sistemi",
-                        audioUrl: "halep_kalesi_tr.mp3" // BURAYA DİKKAT: Ses dosyası eklendi.
-                    },
-                    en: {
-                        name: "Citadel of Aleppo",
-                        location: "Aleppo, Syria",
-                        desc: "One of the oldest and largest castles in the world, the Citadel of Aleppo rises on a natural hill in the city center. Most of the current structure dates back to the Ayyubid period (12-13th century). Famous for its walls and palace ruins.",
-                        audioTitle: "Audio Guide: Defense Systems",
-                        // Diğer diller için audioUrl buraya eklenecek
-                    },
-                    ar: {
-                        name: "قلعة حلب",
-                        location: "حلب، سوريا",
-                        desc: "تعتبر قلعة حلب من أقدم وأكبر القلاع في العالم، وتنتصب فوق تلة طبيعية وسط المدينة. يعود معظم البناء الحالي إلى العهد الأيوبي (القرن 12-13). تشتهر القلعة بأسوارها وبقايا القصور والحمامات.",
-                        audioTitle: "الدليل الصوتي: أنظمة الدفاع",
-                    },
-                    fr: {
-                        name: "Citadelle d'Alep",
-                        location: "Alep, Syrie",
-                        desc: "L'une des plus anciennes et des plus grandes forteresses du monde, la Citadelle d'Alep domine la ville. La plupart de la structure actuelle date de la période ayyoubide (XIIe-XIIIe siècles).",
-                        audioTitle: "Audio Guide: Le Système Défensif",
-                    },
-                    ru: {
-                        name: "Цитадель Алеппо",
-                        location: "Алеппо, Сирия",
-                        desc: "Цитадель Алеппо — одна из старейших и крупнейших крепостей в мире, возвышающаяся на холме в центре города. Большая часть нынешней постройки относится к периоду Айюбидов (12-13 вв).",
-                        audioTitle: "Аудиогид: Оборонительные системы",
-                    },
-                    osm: {
-                        name: "حلب قلعه‌سي",
-                        location: "حلب، سوريه",
-                        desc: "دنيانك اك قديم و اك بيوك قلعه‌لرندن بري اولان حلب قلعه‌سي، شهرك مركزنده طبيعي بر تپه اوزرنده يوكسلير. موجود ياپينك چوغو ايوبي دورينه (١٢-١٣نجي يوزييل) عائددر. قلعه، سورلري و سراي بقايايي ايله مشهوردر.",
-                        audioTitle: "صوتي رهبر: قلعه‌نك مدافعه سيستمي",
-                    }
-                }
-            },
-            {
-                id: 3,
-                // Halep Kapalı Çarşısı (Souq al-Madina): 36.1995, 37.1568
-                coords: [36.1995, 37.1568],
-                mapUrl: "https://maps.google.com/maps?q=36.1995,37.1568&hl=tr&z=16&output=embed",
-                images: [
-                    "https://static.euronews.com/articles/stories/04/07/42/92/1200x675_cmsv2_6c4b4ae5-e71b-54e9-a818-88183636acae-4074292.jpg",
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Aleppo-suq-Alp.JPG/1200px-Aleppo-suq-Alp.JPG",
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtHDj5lgkHZ2hE7oAmlF-q5gBgRVsGchHRVA&s",
-                    "https://previews.123rf.com/images/jackmalipan/jackmalipan1512/jackmalipan151200086/50729712-bazaar-souk-market-interior-in-aleppo-old-town-syria.jpg",
-                    "https://i0.wp.com/www.thealeppoproject.com/wp-content/uploads/2017/02/IMG_2355.jpg?fit=3888%2C2592&ssl=1"
-                ],
-                content: {
-                    tr: {
-                        name: "Halep Kapalı Çarşısı",
-                        location: "Halep, Suriye",
-                        desc: "İslam medeniyetinin ve dünya tarihinin en köklü merkezlerinden biri olan Halep, asırlardır kesintisiz yaşamın sürdüğü müstesna bir şehirdir. Bu kadim şehrin kalbinde uzanan Halep Kapalı Çarşısı (Souq al-Madina), UNESCO Dünya Mirası listesinde yer alan devasa bir yapılar topluluğudur.",
-                        detailDesc: `
-                            <p>İslam medeniyetinin ve dünya tarihinin en köklü merkezlerinden biri olan Halep, asırlardır kesintisiz yaşamın sürdüğü müstesna bir şehirdir. Bu kadim şehrin kalbinde, Halep Kalesi’nin heybetli gölgesinde uzanan Halep Kapalı Çarşısı (Souq al-Madina), UNESCO Dünya Mirası listesinde yer alan ve İslam kültürünün en önemli eserleri arasında kabul edilen devasa bir yapılar topluluğudur. "Dünyanın en uzun ve en büyük kapalı pazarı" olma unvanına sahip olan bu çarşı, Halep’in tarih boyunca küresel ticaretin merkezlerinden biri olmasını sağlamıştır.</p>
-                            <p>Çarşının kökleri Helenistik dönem sokak düzenine kadar uzansa da, bugünkü dokusu ağırlıklı olarak Memlük ve Osmanlı dönemlerinin mimari karakterini taşımaktadır. Tarihi İpek Yolu’nun stratejik bir kolu olan bu çarşı sistemi, Kuzey Suriye'den gelen kervanlara hizmet vererek Doğu ile Batı arasındaki ticari akışı yöneten bir merkez olmuştur. Özellikle Bab an-Nasr kapısından kaleye uzanan ana akslar, şehrin orijinal kentsel dokusunun temelini oluşturan "matrix" rotalar olarak tanımlanır ve bu yolların etrafında şekillenen ticaret ağı Halep’in ekonomik can damarıdır.</p>
-                            <p>Çarşının mimari yapısı, İslam kentsel morfolojisinin en tipik ve kompakt örneklerinden birini sergiler. Tonozlu geçitlerle birbirine bağlanan dar sokaklar; sadece dükkanları değil, aynı zamanda camileri, medreseleri, hamamları ve hanları içeren bütünleşik bir sistemdir. Osmanlı döneminde inşa edilen 16. yüzyıla tarihlenen Adliye Camii, Jami’ al-Mihmandar ve 18. yüzyılda inşa edilen al-Madrasa al-’Uthmaniyya gibi abidevi yapılar, çarşının sosyal ve dini önemini pekiştiren kültürel miras unsurlarıdır.</p>
-                            <p>Halep çarşılarının ihtişamı sadece ticaretle sınırlı değildir; burası aynı zamanda zengin bir üretim merkezidir. Bölgedeki meşhur sabun fabrikaları (masbana), kaysariyeler (küçük ölçekli atölyeler) ve hanlar, Halep’in tekstil ve sanayi alanındaki üstünlüğünü asırlarca korumasını sağlamıştır. Bu ticari tesislerin büyük bir kısmı vakıf müessesesi çatısı altında toplanmış olup, Masbanat az-Zanabili gibi önemli eserler asırlardır vakıf mülkiyetiyle korunarak günümüze ulaşmıştır.</p>
-                            <p>Ne yazık ki, 2012-2016 yılları arasında yaşanan Halep Savaşı, bu eşsiz kültürel miras alanında ağır tahribata yol açmıştır. Özellikle Suwayqat Ali bölgesi ve Khan Qurt Bek gibi anıtsal yapılar ciddi hasar görmüş, çarşının yüzyıllardır korunan kompakt dokusu yer yer yıkıma uğramıştır. UNESCO Dünya Mirası olan bu bölgedeki han ve dükkanların önemli bir kısmı çatışmalar sırasında terkedilmiş ve bakımsız kalmıştır. Halep Kapalı Çarşısı, uğradığı yıkıma rağmen bugün dahi İslam medeniyetinin ticari dehasını ve Osmanlı döneminin estetik anlayışını yansıtan en önemli tanıklardan biridir. Bu mirası aslına uygun şekilde korumak, dünya kültürel mirasının korunması açısından vazgeçilmez bir öneme sahiptir.</p>
-                        `,
-                        audioTitle: "Sesli Rehber: Ticaret ve Gelenek",
-                    },
-                    en: {
-                        name: "Al-Madina Souq",
-                        location: "Aleppo, Syria",
-                        desc: "One of the largest and oldest covered markets in the world. Famous for its narrow alleys, khans, and baths with a total length of 13 kilometers. It was a major trade hub on the Silk Road.",
-                        audioTitle: "Audio Guide: Trade and Tradition",
-                    },
-                    ar: {
-                        name: "سوق المدينة",
-                        location: "حلب، سوريا",
-                        desc: "يعد من أكبر وأقدم الأسواق المسقوفة في العالم. يشتهر بأزقته الضيقة وخاناته وحماماته التي يبلغ طولها الإجمالي 13 كيلومترًا. كان مركزًا تجاريًا هامًا على طريق الحرير.",
-                        audioTitle: "الدليل الصوتي: التجارة والتقاليد",
-                    },
-                    fr: {
-                        name: "Souk d'Alep",
-                        location: "Alep, Syrie",
-                        desc: "L'un des plus grands et des plus anciens marchés couverts du monde. Célèbre pour ses ruelles étroites, ses khans et ses bains, il s'étend sur 13 km. C'était un centre commercial majeur sur la route de la soie.",
-                        audioTitle: "Audio Guide: Commerce et Tradition",
-                    },
-                    ru: {
-                        name: "Рынок Аль-Мадина",
-                        location: "Алеппо, Сирия",
-                        desc: "Один из крупнейших и старейших крытых рынков в мире. Известен своими узкими улочками, ханами и банями общей протяженностью 13 километров. Был важным торговым центром на Шелковом пути.",
-                        audioTitle: "Аудиогид: Торговля и Традиции",
-                    },
-                    osm: {
-                        name: "حلب قپالي چارشوسي",
-                        location: "حلب، سوريه",
-                        desc: "دنيانك اك بيوك و اك قديم قپالي چارشولرندن بريدر. طوپلام اوزونلوغي ١٣ كيلومتره‌يي بولان طار سوقاقلري، خانلري و حماملري ايله مشهوردر. ايپك يولينك مهم بر تجارت مركزي اولمشدر.",
-                        audioTitle: "صوتي رهبر: تجارت و عنعنه",
-                    }
-                }
-            }
-        ];
+        // --- SUPABASE ---
+        const SUPABASE_URL = "https://kmgbjztsouolzarimebc.supabase.co"; 
+        const SUPABASE_ANON_KEY = "sb_publishable_jZQ1O8C1UglGdrL-28Axfg_erTIuO-L";
 
-        // --- UI TEXT TRANSLATIONS ---
+        let supabaseClient = null; 
+        if (SUPABASE_URL && SUPABASE_ANON_KEY) {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        }
+
+        // --- GLOBAL ---
+        let db = []; 
+        let currentGalleryImages = [];
+        let currentImageIndex = 0;
+
+        // --- YENİ: URL TEMİZLEME FONKSİYONU ---
+        // Veritabanından gelen bozuk [link](link) formatlarını temizler
+        function cleanUrl(url) {
+            if (!url) return null;
+            // Eğer URL temizse dokunma
+            if (url.startsWith('http') && !url.includes('[')) return url;
+            
+            // [url](url)/path formatını temizle
+            let clean = url.replace(/[\[\]]/g, '');
+            // Tekrar eden (domain) kısmını sil
+            clean = clean.replace(/\([^\)]+\)/g, '');
+            
+            return clean.trim();
+        }
+
+        // --- UI TEXT ---
         const uiText = {
             tr: { 
-                siteName: "SURİYE MİRASI", 
-                siteSubtitle: "DİJİTAL REHBER",
-                searchPlaceholder: "Mekan, şehir veya eser arayın...", 
-                homeTitle: "Suriye'nin Kültürel Mirası", 
-                homeSubtitle: "Geçmişin izlerini, tarihi yapıları ve kültürel zenginlikleri dijital arşivimizde keşfedin.", 
-                readMore: "Detaylı İncele", 
-                back: "Geri Dön", 
-                gallery: "Galeri", 
-                location: "Konum", 
-                playAudio: "Sesli Anlatım",
-                menuHome: "Anasayfa",
-                menuMap: "Harita",
-                menuAbout: "Hakkımızda",
-                menuContact: "İletişim",
-                aboutTitle: "Hakkımızda",
-                aboutBody: "Suriye Mirası Projesi, bölgenin zengin tarihsel ve kültürel dokusunu dijital ortama taşıyarak gelecek nesillere aktarmayı hedefleyen bir girişimdir. Bu platform sayesinde, binlerce yıllık geçmişe sahip anıtlar, camiler, çarşılar ve kaleler, modern teknolojinin imkanlarıyla yeniden hayat bulmaktadır.",
-                contactTitle: "İletişim",
-                contactBody: "Görüş, öneri ve katkılarınız için bize ulaşabilirsiniz:<br><br><strong>E-posta:</strong> info@suriyemirasi.org<br><strong>Adres:</strong> Dijital Kültür Merkezi, İstanbul"
+                siteName: "SURİYE MİRASI", siteSubtitle: "DİJİTAL REHBER", searchPlaceholder: "Mekan, şehir veya eser arayın...", homeTitle: "Suriye'nin Kültürel Mirası", homeSubtitle: "Geçmişin izlerini, tarihi yapıları ve kültürel zenginlikleri dijital arşivimizde keşfedin.", readMore: "Detaylı İncele", back: "Geri Dön", gallery: "Galeri", location: "Konum", playAudio: "Sesli Anlatım", menuHome: "Anasayfa", menuMap: "Harita", menuAbout: "Hakkımızda", menuContact: "İletişim", aboutTitle: "Hakkımızda", aboutBody: "Suriye Mirası Projesi, bölgenin zengin tarihsel ve kültürel dokusunu dijital ortama taşıyarak gelecek nesillere aktarmayı hedefleyen bir girişimdir.", contactTitle: "İletişim", contactBody: "Görüş, öneri ve katkılarınız için bize ulaşabilirsiniz:<br><br><strong>E-posta:</strong> info@suriyemirasi.org"
             },
             en: { 
-                siteName: "SYRIAN HERITAGE", 
-                siteSubtitle: "DIGITAL GUIDE",
-                searchPlaceholder: "Search for places, cities or monuments...", 
-                homeTitle: "Cultural Heritage of Syria", 
-                homeSubtitle: "Discover the traces of the past, historical structures and cultural richness in our digital archive.", 
-                readMore: "Explore Detail", 
-                back: "Go Back", 
-                gallery: "Gallery", 
-                location: "Location", 
-                playAudio: "Audio Guide",
-                menuHome: "Home",
-                menuMap: "Map",
-                menuAbout: "About Us",
-                menuContact: "Contact",
-                aboutTitle: "About Us",
-                aboutBody: "The Syrian Heritage Project is an initiative aiming to transfer the region's rich historical and cultural texture to the digital environment. Through this platform, monuments with thousands of years of history come to life again with modern technology.",
-                contactTitle: "Contact",
-                contactBody: "For your feedback and suggestions:<br><br><strong>Email:</strong> info@suriyemirasi.org"
+                siteName: "SYRIAN HERITAGE", siteSubtitle: "DIGITAL GUIDE", searchPlaceholder: "Search for places...", homeTitle: "Cultural Heritage of Syria", homeSubtitle: "Discover the traces of the past in our digital archive.", readMore: "Explore Detail", back: "Go Back", gallery: "Gallery", location: "Location", playAudio: "Audio Guide", menuHome: "Home", menuMap: "Map", menuAbout: "About Us", menuContact: "Contact", aboutTitle: "About Us", aboutBody: "The Syrian Heritage Project is an initiative aiming to transfer the region's rich historical and cultural texture to the digital environment.", contactTitle: "Contact", contactBody: "Contact us at: info@suriyemirasi.org"
             },
             ar: { 
-                siteName: "التراث السوري", 
-                siteSubtitle: "الدليل الرقمي",
-                searchPlaceholder: "ابحث عن الأماكن أو المدن أو الآثار...", 
-                homeTitle: "التراث الثقافي السوري", 
-                homeSubtitle: "اكتشف آثار الماضي والهياكل التاريخية والثراء الثقافي في أرشيفنا الرقمي.", 
-                readMore: "اكتشف التفاصيل", 
-                back: "رجوع", 
-                gallery: "معرض الصور", 
-                location: "الموقع", 
-                playAudio: "الدليل الصوتي",
-                menuHome: "الرئيسية",
-                menuMap: "خريطة",
-                menuAbout: "من نحن",
-                menuContact: "اتصل بنا",
-                aboutTitle: "من نحن",
-                aboutBody: "مشروع التراث السوري هو مبادرة تهدف إلى نقل النسيج التاريخي والثقافي الغني للمنطقة إلى البيئة الرقمية.",
-                contactTitle: "اتصل بنا",
-                contactBody: "للملاحظات والاقتراحات:<br><br><strong>البريد الإلكتروني:</strong> info@suriyemirasi.org"
+                siteName: "التراث السوري", siteSubtitle: "الدليل الرقمي", searchPlaceholder: "ابحث عن الأماكن...", homeTitle: "التراث الثقافي السوري", homeSubtitle: "اكتشف آثار الماضي في أرشيفنا الرقمي.", readMore: "اكتشف التفاصيل", back: "رجوع", gallery: "معرض الصور", location: "الموقع", playAudio: "الدليل الصوتي", menuHome: "الرئيسية", menuMap: "خريطة", menuAbout: "من نحن", menuContact: "اتصل بنا", aboutTitle: "من نحن", aboutBody: "مشروع التراث السوري هو مبادرة تهدف إلى نقل النسيج التاريخي والثقافي الغني للمنطقة إلى البيئة الرقمية.", contactTitle: "اتصل بنا", contactBody: "اتصل بنا: info@suriyemirasi.org"
             },
-            fr: { 
-                siteName: "PATRIMOINE SYRIEN", 
-                siteSubtitle: "GUIDE NUMÉRIQUE",
-                searchPlaceholder: "Rechercher des lieux, villes ou monuments...", 
-                homeTitle: "Patrimoine Culturel de la Syrie", 
-                homeSubtitle: "Découvrez les traces du passé, les structures historiques et la richesse culturelle dans notre archive numérique.", 
-                readMore: "Explorer en détail", 
-                back: "Retour", 
-                gallery: "Galerie", 
-                location: "Lieu", 
-                playAudio: "Guide Audio",
-                menuHome: "Accueil",
-                menuMap: "Carte",
-                menuAbout: "À Propos",
-                menuContact: "Contact",
-                aboutTitle: "À Propos",
-                aboutBody: "Le projet du patrimoine syrien est une initiative visant à transférer la riche texture historique et culturelle de la région vers l'environnement numérique.",
-                contactTitle: "Contact",
-                contactBody: "Contactez-nous:<br><br><strong>Email:</strong> info@suriyemirasi.org"
-            },
-            ru: { 
-                siteName: "СИРИЙСКОЕ НАСЛЕДИЕ", 
-                siteSubtitle: "ЦИФРОВОЙ ГИД",
-                searchPlaceholder: "Поиск мест, городов или памятников...", 
-                homeTitle: "Культурное наследие Сирии", 
-                homeSubtitle: "Откройте для себя следы прошлого, исторические сооружения и культурное богатство в нашем цифровом архиве.", 
-                readMore: "Подробнее", 
-                back: "Назад", 
-                gallery: "Галерея", 
-                location: "Местоположение", 
-                playAudio: "Аудиогид",
-                menuHome: "Главная",
-                menuMap: "Карта",
-                menuAbout: "О нас",
-                menuContact: "Контакты",
-                aboutTitle: "О нас",
-                aboutBody: "Проект «Сирийское наследие» — это инициатива, направленная на перенос богатой исторической и культурной текстуры региона в цифровую среду.",
-                contactTitle: "Контакты",
-                contactBody: "Свяжитесь с нами:<br><br><strong>Email:</strong> info@suriyemirasi.org"
-            },
-            osm: { 
-                siteName: "سوريه ميراثي", 
-                siteSubtitle: "ديجيتال رهبر",
-                searchPlaceholder: "مكان، شهر ويا اثر آرايك...", 
-                homeTitle: "سوريه‌نك ثقافت ميراثي", 
-                homeSubtitle: "ماضينك ايزلريني، تاريخي ياپيلاري و ثقافت زنگينلكلريني ديجيتال ارشيفمزده كشف ايدك.", 
-                readMore: "تفصيلاتلي تدقيق", 
-                back: "كرو دون", 
-                gallery: "رسملر", 
-                location: "موقع", 
-                playAudio: "صوتي شرح",
-                menuHome: "آنا صفحه",
-                menuMap: "خريطه",
-                menuAbout: "حقيمزده",
-                menuContact: "مخابره",
-                aboutTitle: "حقيمزده",
-                aboutBody: "سوريه ميراثي پروژه‌سي، منطقه‌نك زنگين تاريخي و ثقافي دوقوسيني ديجيتال اورتامه طاشيه‌رق گله‌جك نسيللره آختارمایي هدفلاين بر تشبثدر.",
-                contactTitle: "مخابره",
-                contactBody: "رأي و تكليفلريكز ايچون:<br><br><strong>ا-پوسته:</strong> info@suriyemirasi.org"
-            }
+            fr: { siteName: "PATRIMOINE SYRIEN", siteSubtitle: "GUIDE NUMÉRIQUE", searchPlaceholder: "Rechercher...", homeTitle: "Patrimoine Culturel", homeSubtitle: "Découvrez les traces du passé.", readMore: "Explorer", back: "Retour", gallery: "Galerie", location: "Lieu", playAudio: "Guide Audio", menuHome: "Accueil", menuMap: "Carte", menuAbout: "À Propos", menuContact: "Contact", aboutTitle: "À Propos", aboutBody: "Projet du patrimoine syrien.", contactTitle: "Contact", contactBody: "Email: info@suriyemirasi.org" },
+            ru: { siteName: "СИРИЙСКОЕ НАСЛЕДИЕ", siteSubtitle: "ЦИФРОВОЙ ГИД", searchPlaceholder: "Поиск...", homeTitle: "Культурное наследие", homeSubtitle: "Откройте для себя следы прошлого.", readMore: "Подробнее", back: "Назад", gallery: "Галерея", location: "Местоположение", playAudio: "Аудиогид", menuHome: "Главная", menuMap: "Карта", menuAbout: "О нас", menuContact: "Контакты", aboutTitle: "О нас", aboutBody: "Проект Сирийское наследие.", contactTitle: "Контакты", contactBody: "Email: info@suriyemirasi.org" },
+            osm: { siteName: "سوريه ميراثي", siteSubtitle: "ديجيتال رهبر", searchPlaceholder: "آرامق...", homeTitle: "سوريه‌نك ثقافت ميراثي", homeSubtitle: "ماضينك ايزلريني كشف ايدك.", readMore: "تفصيلاتلي تدقيق", back: "كرو دون", gallery: "رسملر", location: "موقع", playAudio: "صوتي شرح", menuHome: "آنا صفحه", menuMap: "خريطه", menuAbout: "حقيمزده", menuContact: "مخابره", aboutTitle: "حقيمزده", aboutBody: "سوريه ميراثي پروژه‌سي.", contactTitle: "مخابره", contactBody: "ا-پوسته: info@suriyemirasi.org" }
         };
 
-        // --- STATE MANAGEMENT ---
+        // --- STATE ---
         let currentLang = 'tr';
         let currentView = 'home';
         let currentPlaceId = null;
         
-        // --- FLAGS CONFIGURATION ---
         const flags = {
             tr: "https://flagcdn.com/w40/tr.png",
             en: "https://flagcdn.com/w40/gb.png",
             ar: "https://flagcdn.com/w40/sy.png",
             fr: "https://flagcdn.com/w40/fr.png",
             ru: "https://flagcdn.com/w40/ru.png",
-            osm: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Ottoman_flag.svg/100px-Ottoman_flag.svg.png"
+            osm: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Osmanli-nisani.svg/100px-Osmanli-nisani.svg.png"
         };
 
-        // --- INITIALIZATION ---
-        window.onload = function() {
-            // URL'de ID var mı kontrol et (QR Code simülasyonu)
-            const urlParams = new URLSearchParams(window.location.search);
-            const idParam = urlParams.get('id');
-
-            if (idParam) {
-                renderDetail(parseInt(idParam));
-            } else {
-                renderHome();
-            }
-            updateUIText();
+        // --- INIT ---
+        window.onload = async function() {
+            await initApp();
         };
 
-        // --- ROUTING / NAVIGATION ---
-        function router(view, id = null) {
-            currentView = view;
-            currentPlaceId = id;
-            window.scrollTo(0, 0);
+        async function initApp() {
+            if (supabaseClient) { 
+                try {
+                    const { data, error } = await supabaseClient 
+                        .from('mekanlar')
+                        .select('*')
+                        .order('id', { ascending: true });
 
-            // URL Güncelleme
-            try {
-                const url = new URL(window.location);
-                if (view === 'home') {
-                    url.search = '';
-                } else if (view === 'detail' && id) {
-                    url.searchParams.set('id', id);
-                } else if (view === 'map') {
-                    url.searchParams.set('view', 'map');
-                    url.searchParams.delete('id');
+                    if (!error && data && data.length > 0) {
+                        db = data.map(item => ({
+                            id: item.id,
+                            coords: [item.lat, item.lng],
+                            mapUrl: item.map_url,
+                            images: item.images || [],
+                            content: {
+                                tr: { name: item.isim_tr, location: "Suriye", desc: item.aciklama_tr, detailDesc: item.detay_tr, audioTitle: "Sesli Rehber", audioUrl: cleanUrl(item.ses_tr) },
+                                en: { name: item.isim_en, location: "Syria", desc: item.aciklama_en, detailDesc: item.detay_en, audioTitle: "Audio Guide", audioUrl: cleanUrl(item.ses_en) },
+                                ar: { name: item.isim_ar, location: "سوريا", desc: item.aciklama_ar, detailDesc: item.detay_ar, audioTitle: "الدليل الصوتي", audioUrl: cleanUrl(item.ses_ar) },
+                                fr: { name: item.isim_fr || item.isim_en, location: "Syrie", desc: item.aciklama_fr || item.aciklama_en, detailDesc: item.detay_fr, audioTitle: "Guide Audio", audioUrl: cleanUrl(item.ses_fr) },
+                                ru: { name: item.isim_ru || item.isim_en, location: "Сирия", desc: item.aciklama_ru || item.aciklama_en, detailDesc: item.detay_ru, audioTitle: "Аудиогид", audioUrl: cleanUrl(item.ses_ru) },
+                                osm: { name: item.isim_osm || item.isim_tr, location: "سوريه", desc: item.aciklama_osm || item.aciklama_tr, detailDesc: item.detay_osm, audioTitle: "صوتي رهبر", audioUrl: cleanUrl(item.ses_osm) }
+                            }
+                        }));
+                    } else {
+                        db = [];
+                    }
+                } catch (err) {
+                    db = [];
                 }
-                window.history.pushState({}, '', url);
-            } catch (e) {
-                console.log("URL güncelleme pas geçildi (Local/Preview ortamı).");
+            } else {
+                db = [];
             }
 
-            if (view === 'home') {
-                renderHome();
-            } else if (view === 'detail' && id) {
-                renderDetail(id);
-            } else if (view === 'map') {
-                renderMap();
-            }
-        }
-
-        // Tarayıcı Geri Butonu Desteği
-        window.onpopstate = function(event) {
             const urlParams = new URLSearchParams(window.location.search);
             const idParam = urlParams.get('id');
             const viewParam = urlParams.get('view');
 
-            if (idParam) {
-                renderDetail(parseInt(idParam));
-            } else if (viewParam === 'map') {
-                renderMap();
-            } else {
-                renderHome();
-            }
-        };
-
-        // --- MOBILE MENU FUNCTIONS ---
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            if (menu.classList.contains('open')) {
-                menu.classList.remove('open');
-            } else {
-                menu.classList.add('open');
-            }
+            if (idParam) renderDetail(parseInt(idParam));
+            else if (viewParam === 'map') renderMap();
+            else renderHome();
+            updateUIText();
         }
 
-        // --- MODAL FUNCTIONS ---
+        function router(view, id = null) {
+            currentView = view;
+            currentPlaceId = id;
+            window.scrollTo(0, 0);
+            try {
+                const url = new URL(window.location);
+                if (view === 'home') url.search = '';
+                else if (view === 'detail' && id) url.searchParams.set('id', id);
+                else if (view === 'map') { url.searchParams.set('view', 'map'); url.searchParams.delete('id'); }
+                window.history.pushState({}, '', url);
+            } catch (e) {}
+            if (view === 'home') renderHome();
+            else if (view === 'detail' && id) renderDetail(id);
+            else if (view === 'map') renderMap();
+        }
+
+        window.onpopstate = function(event) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const idParam = urlParams.get('id');
+            const viewParam = urlParams.get('view');
+            if (idParam) renderDetail(parseInt(idParam));
+            else if (viewParam === 'map') renderMap();
+            else renderHome();
+        };
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('open')) menu.classList.remove('open'); else menu.classList.add('open');
+        }
+
         function openModal(type) {
             const modal = document.getElementById('infoModal');
             const title = document.getElementById('modalTitle');
             const body = document.getElementById('modalBody');
             const texts = uiText[currentLang];
-
-            if (type === 'about') {
-                title.innerText = texts.aboutTitle;
-                body.innerHTML = texts.aboutBody;
-            } else if (type === 'contact') {
-                title.innerText = texts.contactTitle;
-                body.innerHTML = texts.contactBody;
-            }
-
+            if (type === 'about') { title.innerText = texts.aboutTitle; body.innerHTML = texts.aboutBody; }
+            else if (type === 'contact') { title.innerText = texts.contactTitle; body.innerHTML = texts.contactBody; }
             modal.classList.remove('hidden');
             setTimeout(() => {
                 modal.classList.remove('opacity-0');
@@ -641,390 +415,228 @@
             modal.classList.add('opacity-0');
             document.getElementById('modalContent').classList.remove('scale-100');
             document.getElementById('modalContent').classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 300);
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
         }
 
-        window.onclick = function(event) {
-            const modal = document.getElementById('infoModal');
-            if (event.target == modal) {
-                closeModal();
-            }
+        function openLightbox(index, images) {
+            if (images) currentGalleryImages = images;
+            else if (currentGalleryImages.length === 0) return;
+            currentImageIndex = index;
+            updateLightboxImage();
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('hidden');
+            setTimeout(() => { lightbox.classList.remove('opacity-0'); }, 10);
         }
 
-        // --- RENDER FUNCTIONS ---
+        function updateLightboxImage() {
+            document.getElementById('lightbox-img').src = currentGalleryImages[currentImageIndex];
+        }
+
+        function closeLightbox(e) {
+            if (e && e.target.id !== 'lightbox' && !e.target.closest('button')) return;
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.add('opacity-0');
+            setTimeout(() => { lightbox.classList.add('hidden'); document.getElementById('lightbox-img').src = ""; }, 300);
+        }
+        function forceCloseLightbox() {
+             const lightbox = document.getElementById('lightbox');
+            lightbox.classList.add('opacity-0');
+            setTimeout(() => { lightbox.classList.add('hidden'); }, 300);
+        }
+
+        function nextImage(e) {
+            if(e) e.stopPropagation();
+            currentImageIndex = (currentImageIndex + 1) % currentGalleryImages.length;
+            updateLightboxImage();
+        }
+
+        function prevImage(e) {
+            if(e) e.stopPropagation();
+            currentImageIndex = (currentImageIndex - 1 + currentGalleryImages.length) % currentGalleryImages.length;
+            updateLightboxImage();
+        }
+
+        document.addEventListener('keydown', function(e) {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox.classList.contains('hidden')) return;
+            if (e.key === 'Escape') forceCloseLightbox();
+            if (e.key === 'ArrowRight') nextImage();
+            if (e.key === 'ArrowLeft') prevImage();
+        });
+
+        window.onclick = function(event) { if (event.target == document.getElementById('infoModal')) closeModal(); }
+
         function renderHome() {
+            if (window.map && window.map.remove) { window.map.remove(); window.map = null; }
             const app = document.getElementById('app');
             const texts = uiText[currentLang];
             const isRTL = (currentLang === 'ar' || currentLang === 'osm');
-
             let html = `
-                <!-- Modern Portal Hero Section -->
                 <div class="relative pattern-bg rounded-3xl mb-12 shadow-xl overflow-hidden fade-in mx-2 lg:mx-0">
                     <div class="absolute inset-0 bg-black/10"></div>
                     <div class="relative z-10 px-6 py-16 md:py-24 text-center">
                         <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white tracking-tight drop-shadow-sm leading-tight">${texts.homeTitle}</h2>
                         <p class="text-white/90 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-medium leading-relaxed">${texts.homeSubtitle}</p>
-                        
-                        <!-- Search Bar Container -->
                         <div class="max-w-2xl mx-auto relative group">
                             <div class="absolute inset-0 bg-white/20 blur-xl rounded-full transform group-hover:bg-white/30 transition duration-500"></div>
                             <div class="relative">
-                                <input type="text" id="searchInput" onkeyup="filterPlaces()" 
-                                    placeholder="${texts.searchPlaceholder}" 
-                                    class="w-full py-5 px-8 rounded-full shadow-2xl text-gray-800 placeholder-gray-400 focus:ring-4 focus:ring-white/30 border-0 outline-none pl-14 rtl:pl-8 rtl:pr-14 transition-all duration-300 text-lg font-medium">
-                                <i class="fa-solid fa-magnifying-glass absolute top-1/2 transform -translate-y-1/2 text-gray-400 left-6 rtl:left-auto rtl:right-6 text-xl group-hover:text-primary transition-colors"></i>
+                                <input type="text" id="searchInput" onkeyup="filterPlaces()" placeholder="${texts.searchPlaceholder}" class="w-full py-5 px-8 rounded-full shadow-2xl text-gray-800 placeholder-gray-400 focus:ring-4 focus:ring-white/30 border-0 outline-none pl-14 rtl:pl-8 rtl:pr-14 transition-all duration-300 text-lg font-medium"><i class="fa-solid fa-magnifying-glass absolute top-1/2 transform -translate-y-1/2 text-gray-400 left-6 rtl:left-auto rtl:right-6 text-xl group-hover:text-primary transition-colors"></i>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-2 lg:px-0" id="placesGrid">
             `;
-
             db.forEach(place => {
-                const content = place.content[currentLang];
+                const content = place.content[currentLang] || place.content['tr']; 
                 html += `
                     <div class="bg-white rounded-2xl shadow-card hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer group flex flex-col h-full overflow-hidden border border-gray-100/50 card-item" onclick="router('detail', ${place.id})">
                         <div class="h-60 overflow-hidden relative">
-                            <img src="${place.images[0]}" 
-                                 onerror="this.src='https://via.placeholder.com/800x600?text=Gorsel+Yuklenemedi'"
-                                 alt="${content.name}" 
-                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-in-out">
+                            <img src="${place.images[0]}" onerror="this.src='https://via.placeholder.com/800x600?text=Gorsel+Yuklenemedi'" alt="${content.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-in-out">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
-                            <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">
-                                <span class="text-primary text-xs font-bold uppercase tracking-wider flex items-center gap-1">
-                                    <i class="fa-solid fa-location-dot"></i> ${content.location}
-                                </span>
-                            </div>
+                            <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm"><span class="text-primary text-xs font-bold uppercase tracking-wider flex items-center gap-1"><i class="fa-solid fa-location-dot"></i> ${content.location}</span></div>
                         </div>
                         <div class="p-6 flex flex-col flex-grow relative">
                             <h3 class="text-xl font-bold mb-3 text-gray-800 group-hover:text-primary transition-colors leading-snug">${content.name}</h3>
                             <p class="text-gray-500 text-sm line-clamp-3 mb-6 leading-relaxed flex-grow">${content.desc}</p>
-                            
                             <div class="pt-4 border-t border-gray-50 flex justify-between items-center mt-auto">
-                                <span class="text-xs font-semibold text-gray-400 group-hover:text-gray-600 transition">Dijital Arşiv No: #${place.id.toString().padStart(4, '0')}</span>
-                                <span class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-primary group-hover:text-white transition-colors">
-                                    <i class="fa-solid ${isRTL ? 'fa-arrow-left' : 'fa-arrow-right'} text-sm"></i>
-                                </span>
+                                <span class="text-xs font-semibold text-gray-400 group-hover:text-gray-600 transition">#${place.id.toString().padStart(4, '0')}</span>
+                                <span class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-primary group-hover:text-white transition-colors"><i class="fa-solid ${isRTL ? 'fa-arrow-left' : 'fa-arrow-right'} text-sm"></i></span>
                             </div>
                         </div>
                     </div>
                 `;
             });
-
             html += `</div>`;
             app.innerHTML = html;
         }
 
         function renderDetail(id) {
+            if (window.map && window.map.remove) { window.map.remove(); window.map = null; }
             const place = db.find(p => p.id === id);
             if (!place) return renderHome();
-
+            currentGalleryImages = place.images;
             const app = document.getElementById('app');
             const texts = uiText[currentLang];
-            const content = place.content[currentLang];
+            const content = place.content[currentLang] || place.content['tr'];
             const isRTL = (currentLang === 'ar' || currentLang === 'osm');
-
             const descriptionHtml = content.detailDesc || `<p>${content.desc}</p>`;
-
             app.innerHTML = `
                 <div class="fade-in max-w-6xl mx-auto px-2 lg:px-0">
-                    <div class="mb-6 flex items-center justify-between">
-                         <button onclick="router('home')" class="flex items-center text-gray-500 hover:text-primary transition font-semibold bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100 hover:shadow-md">
-                            <i class="fa-solid ${isRTL ? 'fa-arrow-right' : 'fa-arrow-left'} mr-2 rtl:mr-0 rtl:ml-2"></i> ${texts.back}
-                        </button>
-                        <div class="hidden md:block text-sm text-gray-400 font-mono">ID: #${place.id.toString().padStart(4, '0')}</div>
-                    </div>
-
+                    <div class="mb-6 flex items-center justify-between"><button onclick="router('home')" class="flex items-center text-gray-500 hover:text-primary transition font-semibold bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100 hover:shadow-md"><i class="fa-solid ${isRTL ? 'fa-arrow-right' : 'fa-arrow-left'} mr-2 rtl:mr-0 rtl:ml-2"></i> ${texts.back}</button><div class="hidden md:block text-sm text-gray-400 font-mono">ID: #${place.id.toString().padStart(4, '0')}</div></div>
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                         <div class="lg:col-span-8 space-y-8">
-                             <!-- Main Hero Image -->
                             <div class="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-lg group">
-                                <img src="${place.images[0]}" 
-                                     onerror="this.src='https://via.placeholder.com/800x600?text=Gorsel+Yuklenemedi'"
-                                     class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-8">
-                                    <div class="w-full">
-                                        <div class="flex items-center text-orange-200 text-sm font-bold uppercase tracking-wider mb-2">
-                                            <i class="fa-solid fa-location-dot mr-2"></i> ${content.location}
-                                        </div>
-                                        <h1 class="text-3xl md:text-5xl font-bold text-white mb-2 shadow-sm leading-tight">${content.name}</h1>
-                                    </div>
+                                <img src="${place.images[0]}" onerror="this.src='https://via.placeholder.com/800x600?text=Gorsel+Yuklenemedi'" class="w-full h-full object-cover cursor-pointer" onclick="openLightbox(0)">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-8 pointer-events-none">
+                                    <div class="w-full"><div class="flex items-center text-orange-200 text-sm font-bold uppercase tracking-wider mb-2"><i class="fa-solid fa-location-dot mr-2"></i> ${content.location}</div><h1 class="text-3xl md:text-5xl font-bold text-white mb-2 shadow-sm leading-tight">${content.name}</h1></div>
                                 </div>
                             </div>
-
-                            <!-- Audio Player (Dinamik ve Koşullu) -->
-                            ${content.audioUrl ? `
-                            <div class="bg-white p-5 rounded-xl shadow-card border border-gray-100 flex flex-col md:flex-row items-center gap-4">
-                                <div class="bg-orange-50 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-primary">
-                                    <i class="fa-solid fa-headphones text-xl"></i>
-                                </div>
-                                <div class="flex-grow w-full md:w-auto text-center md:text-left rtl:md:text-right">
-                                    <p class="text-xs text-primary font-bold uppercase tracking-wider mb-0.5 opacity-80">${texts.playAudio}</p>
-                                    <h4 class="text-sm font-bold text-gray-800">${content.audioTitle}</h4>
-                                </div>
-                                <audio controls class="w-full md:w-64 h-10 rounded-lg">
-                                    <source src="${content.audioUrl}" type="audio/mpeg">
-                                    Tarayıcınız ses elementini desteklemiyor.
-                                </audio>
-                            </div>
-                            ` : ''}
-
-                            <!-- Text Content -->
-                            <div class="bg-white p-8 rounded-2xl shadow-card border border-gray-100">
-                                <h3 class="text-xl font-bold text-gray-800 mb-6 border-b border-gray-100 pb-4">Hakkında</h3>
-                                <div class="leading-relaxed text-lg text-gray-600 text-justify detail-content font-light">
-                                    ${descriptionHtml}
-                                </div>
-                            </div>
+                            ${content.audioUrl ? `<div class="bg-white p-5 rounded-xl shadow-card border border-gray-100 flex flex-col md:flex-row items-center gap-4"><div class="bg-orange-50 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-primary"><i class="fa-solid fa-headphones text-xl"></i></div><div class="flex-grow w-full md:w-auto text-center md:text-left rtl:md:text-right"><p class="text-xs text-primary font-bold uppercase tracking-wider mb-0.5 opacity-80">${texts.playAudio}</p><h4 class="text-sm font-bold text-gray-800">${content.audioTitle}</h4></div><audio controls preload="auto" class="w-full md:w-64 h-10 rounded-lg bg-gray-50" src="${content.audioUrl}">Tarayıcınız ses elementini desteklemiyor.</audio></div>` : ''}
+                            <div class="bg-white p-8 rounded-2xl shadow-card border border-gray-100"><h3 class="text-xl font-bold text-gray-800 mb-6 border-b border-gray-100 pb-4">Hakkında</h3><div class="leading-relaxed text-lg text-gray-600 text-justify detail-content font-light">${descriptionHtml}</div></div>
                         </div>
-
                         <div class="lg:col-span-4 space-y-6">
-                            <div class="bg-white p-1 rounded-2xl shadow-card border border-gray-100 overflow-hidden">
-                                <div class="p-4 border-b border-gray-50 flex justify-between items-center bg-gray-50/50">
-                                    <h3 class="font-bold text-gray-800">${texts.location}</h3>
-                                    <i class="fa-solid fa-map text-gray-400"></i>
-                                </div>
-                                <iframe src="${place.mapUrl}" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                                <a href="${place.mapUrl.replace('embed', 'search')}" target="_blank" class="block text-center py-3 text-sm text-primary font-semibold hover:bg-gray-50 transition">
-                                    Haritada Aç <i class="fa-solid fa-external-link-alt ml-1 text-xs"></i>
-                                </a>
-                            </div>
-
-                            <div class="bg-white p-5 rounded-2xl shadow-card border border-gray-100">
-                                <h3 class="font-bold text-gray-800 mb-4 flex items-center">
-                                    <i class="fa-regular fa-images mr-2 text-primary"></i> ${texts.gallery}
-                                </h3>
-                                <div class="grid grid-cols-2 gap-3">
-                                    <img src="${place.images[0]}" onerror="this.src='https://via.placeholder.com/300?text=Gorsel+Yok'" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80 transition ring-2 ring-transparent hover:ring-primary/20">
-                                    <img src="${place.images[1]}" onerror="this.src='https://via.placeholder.com/300?text=Gorsel+Yok'" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80 transition ring-2 ring-transparent hover:ring-primary/20">
-                                    ${place.images[2] ? `<img src="${place.images[2]}" onerror="this.src='https://via.placeholder.com/300?text=Hist+3'" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80 transition ring-2 ring-transparent hover:ring-primary/20">` : ''}
-                                    ${place.images[3] ? `<img src="${place.images[3]}" onerror="this.src='https://via.placeholder.com/300?text=Hist+4'" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80 transition ring-2 ring-transparent hover:ring-primary/20">` : ''}
-                                </div>
-                            </div>
-                             <div class="rounded-2xl overflow-hidden shadow-card relative group cursor-pointer border-2 border-white ring-1 ring-gray-100">
-                                <img src="${place.images[1]}" 
-                                     onerror="this.src='https://via.placeholder.com/800x600?text=Video+Yok'"
-                                     class="w-full h-48 object-cover filter brightness-75 group-hover:brightness-50 transition duration-500">
-                                <div class="absolute inset-0 flex items-center justify-center">
-                                    <div class="w-14 h-14 bg-white/20 backdrop-blur-md border border-white/50 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition duration-300">
-                                        <i class="fa-solid fa-play text-white text-xl ml-1"></i>
-                                    </div>
-                                </div>
-                                <div class="absolute bottom-3 left-3 text-white font-bold text-sm drop-shadow-md">Tanıtım Videosu</div>
-                            </div>
+                            <div class="bg-white p-1 rounded-2xl shadow-card border border-gray-100 overflow-hidden"><div class="p-4 border-b border-gray-50 flex justify-between items-center bg-gray-50/50"><h3 class="font-bold text-gray-800">${texts.location}</h3><i class="fa-solid fa-map text-gray-400"></i></div><iframe src="${place.mapUrl}" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe><a href="${place.mapUrl.replace('embed', 'search')}" target="_blank" class="block text-center py-3 text-sm text-primary font-semibold hover:bg-gray-50 transition">Haritada Aç <i class="fa-solid fa-external-link-alt ml-1 text-xs"></i></a></div>
+                            <div class="bg-white p-5 rounded-2xl shadow-card border border-gray-100"><h3 class="font-bold text-gray-800 mb-4 flex items-center"><i class="fa-regular fa-images mr-2 text-primary"></i> ${texts.gallery}</h3><div class="grid grid-cols-2 gap-3">${place.images.map((img, idx) => `<img src="${img}" onerror="this.src='https://via.placeholder.com/300?text=Yok'" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80 transition ring-2 ring-transparent hover:ring-primary/20" onclick="openLightbox(${idx})">`).join('')}</div></div>
                         </div>
                     </div>
                 </div>
             `;
+            const audioEl = document.querySelector('audio');
+            if(audioEl) { audioEl.load(); }
         }
 
-        // --- MAP RENDER FUNCTION ---
         function renderMap() {
+            const container = document.getElementById('map-container');
+            if(container) { container.innerHTML = ""; container._leaflet_id = null; }
+            if (window.map) { window.map.remove(); window.map = null; }
             const app = document.getElementById('app');
             const texts = uiText[currentLang];
             const isRTL = (currentLang === 'ar' || currentLang === 'osm');
-
             app.innerHTML = `
                 <div class="fade-in h-full relative">
-                    <div class="flex justify-between items-center mb-4 px-2">
-                        <h2 class="text-2xl font-bold text-gray-800">${texts.menuMap}</h2>
-                        <button onclick="router('home')" class="text-sm font-semibold text-primary hover:underline flex items-center">
-                            <i class="fa-solid ${isRTL ? 'fa-arrow-right' : 'fa-arrow-left'} mr-1 rtl:mr-0 rtl:ml-1"></i> ${texts.back}
-                        </button>
-                    </div>
-                    
-                    <!-- Map Search Container -->
-                    <div class="absolute top-16 left-4 z-[400] w-64 md:w-80 shadow-lg">
-                        <div class="relative">
-                            <input type="text" id="mapSearchInput" 
-                                placeholder="${texts.searchPlaceholder}" 
-                                class="w-full py-3 px-4 rounded-lg shadow-md border border-gray-200 focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm"
-                                onkeyup="filterMapMarkers()">
-                            <i class="fa-solid fa-magnifying-glass absolute top-1/2 transform -translate-y-1/2 right-4 text-gray-400"></i>
-                        </div>
-                        <div id="mapSearchResults" class="bg-white mt-1 rounded-lg shadow-lg overflow-hidden hidden max-h-60 overflow-y-auto">
-                            <!-- Arama sonuçları buraya gelecek -->
-                        </div>
-                    </div>
-
-                    <div id="map-container" class="rounded-2xl shadow-xl overflow-hidden border border-gray-200"></div>
+                    <div class="flex justify-between items-center mb-4 px-2"><h2 class="text-2xl font-bold text-gray-800">${texts.menuMap}</h2><button onclick="router('home')" class="text-sm font-semibold text-primary hover:underline flex items-center"><i class="fa-solid ${isRTL ? 'fa-arrow-right' : 'fa-arrow-left'} mr-1 rtl:mr-0 rtl:ml-1"></i> ${texts.back}</button></div>
+                    <div class="absolute top-16 left-4 z-[100] w-64 md:w-80 shadow-lg"><div class="relative"><input type="text" id="mapSearchInput" placeholder="${texts.searchPlaceholder}" class="w-full py-3 px-4 rounded-lg shadow-md border border-gray-200 focus:ring-2 focus:ring-primary outline-none text-sm" onkeyup="filterMapMarkers()"><i class="fa-solid fa-magnifying-glass absolute top-1/2 transform -translate-y-1/2 right-4 text-gray-400"></i></div><div id="mapSearchResults" class="bg-white mt-1 rounded-lg shadow-lg overflow-hidden hidden max-h-60 overflow-y-auto"></div></div>
+                    <div id="map-container" class="rounded-2xl shadow-xl overflow-hidden border border-gray-200 z-0"></div>
                 </div>
             `;
-
-            // Harita başlatma (Leaflet)
             setTimeout(() => {
-                // Merkez koordinatı (Suriye geneli veya ilk mekan)
                 window.map = L.map('map-container').setView([35.0, 38.0], 7);
-
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                }).addTo(window.map);
-
-                // Tüm mekanları pinle ve global değişkene ata
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(window.map);
                 window.mapMarkers = [];
-                
                 db.forEach(place => {
                     if(place.coords) {
-                        const content = place.content[currentLang];
+                        const content = place.content[currentLang] || place.content['tr'];
                         const marker = L.marker(place.coords).addTo(window.map);
-                        
-                        // Popup içeriği
-                        const popupContent = `
-                            <div class="text-center p-2">
-                                <h3 class="font-bold text-sm mb-2">${content.name}</h3>
-                                <img src="${place.images[0]}" class="w-full h-24 object-cover rounded-md mb-2" onerror="this.src='https://via.placeholder.com/150'">
-                                <button onclick="router('detail', ${place.id})" class="text-xs bg-primary text-white px-3 py-1 rounded hover:bg-orange-700 transition w-full">
-                                    ${texts.readMore}
-                                </button>
-                            </div>
-                        `;
-                        
+                        const popupContent = `<div class="text-center p-2"><h3 class="font-bold text-sm mb-2">${content.name}</h3><img src="${place.images[0]}" class="w-full h-24 object-cover rounded-md mb-2" onerror="this.src='https://via.placeholder.com/150'"><button onclick="router('detail', ${place.id})" class="text-xs bg-primary text-white px-3 py-1 rounded hover:bg-orange-700 transition w-full">${texts.readMore}</button></div>`;
                         marker.bindPopup(popupContent);
-                        // Marker'a veri ekle (arama için)
-                        marker.placeData = {
-                            id: place.id,
-                            name: content.name.toLowerCase()
-                        };
-                        
+                        marker.placeData = { id: place.id, name: content.name.toLowerCase() };
                         window.mapMarkers.push(marker);
                     }
                 });
-
-                // Haritayı pinlere göre otomatik yakınlaştır
-                if (window.mapMarkers.length > 0) {
-                    const group = new L.featureGroup(window.mapMarkers);
-                    window.map.fitBounds(group.getBounds().pad(0.1));
-                }
-            }, 100);
+                if (window.mapMarkers.length > 0) window.map.fitBounds(new L.featureGroup(window.mapMarkers).getBounds().pad(0.1));
+            }, 200); 
         }
 
-        // Harita Filtreleme Fonksiyonu
         function filterMapMarkers() {
             const input = document.getElementById('mapSearchInput');
             const filter = input.value.toLowerCase();
             const resultsContainer = document.getElementById('mapSearchResults');
-            const texts = uiText[currentLang];
-            
-            // Sonuçları temizle
             resultsContainer.innerHTML = '';
-            
-            if (filter.length < 1) {
-                resultsContainer.classList.add('hidden');
-                return;
-            }
-
+            if (filter.length < 1) { resultsContainer.classList.add('hidden'); return; }
             let hasResults = false;
-
-            // Markerlar üzerinde döngü
             window.mapMarkers.forEach(marker => {
                 if (marker.placeData.name.includes(filter)) {
                     hasResults = true;
-                    // Listeye ekle
                     const div = document.createElement('div');
                     div.className = 'p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-0 text-sm font-medium';
-                    // İsmi orijinal veriden bul (lowercase olmayan)
                     const place = db.find(p => p.id === marker.placeData.id);
-                    const originalName = place.content[currentLang].name;
-                    
+                    const originalName = (place.content[currentLang] || place.content['tr']).name;
                     div.innerHTML = `<i class="fa-solid fa-location-dot text-primary mr-2"></i> ${originalName}`;
-                    div.onclick = function() {
-                        // Haritada o noktaya git ve popup aç
-                        window.map.flyTo(marker.getLatLng(), 16);
-                        marker.openPopup();
-                        // Arama kutusunu temizle/gizle
-                        resultsContainer.classList.add('hidden');
-                        input.value = originalName;
-                    };
+                    div.onclick = function() { window.map.flyTo(marker.getLatLng(), 16); marker.openPopup(); resultsContainer.classList.add('hidden'); input.value = originalName; };
                     resultsContainer.appendChild(div);
                 }
             });
-
-            if (hasResults) {
-                resultsContainer.classList.remove('hidden');
-            } else {
-                resultsContainer.innerHTML = `<div class="p-3 text-gray-500 text-sm">Sonuç bulunamadı</div>`;
-                resultsContainer.classList.remove('hidden');
-            }
+            resultsContainer.classList.toggle('hidden', !hasResults);
+            if (!hasResults) { resultsContainer.innerHTML = `<div class="p-3 text-gray-500 text-sm">Sonuç bulunamadı</div>`; resultsContainer.classList.remove('hidden'); }
         }
 
-        // --- HELPER FUNCTIONS ---
         function setLanguage(lang) {
             currentLang = lang;
-            
-            // RTL Ayarı
             const isRTL = (lang === 'ar' || lang === 'osm');
             document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
             document.documentElement.lang = lang;
-
-            // Font Ayarı (Görsel tutarlılık için)
-            if (isRTL) {
-                document.body.classList.add('font-arabic');
-                document.body.classList.remove('font-sans');
-            } else {
-                document.body.classList.add('font-sans');
-                document.body.classList.remove('font-arabic');
-            }
-            
-            // Flag Update
+            if (isRTL) { document.body.classList.add('font-arabic'); document.body.classList.remove('font-sans'); }
+            else { document.body.classList.add('font-sans'); document.body.classList.remove('font-arabic'); }
             const flagImg = document.getElementById('current-lang-flag');
-            if(flagImg && flags[lang]) {
-                flagImg.src = flags[lang];
-                flagImg.alt = lang.toUpperCase();
-            }
-
-            // Sayfayı Yenile
+            if(flagImg && flags[lang]) { flagImg.src = flags[lang]; flagImg.alt = lang.toUpperCase(); }
             updateUIText();
-            if (currentView === 'home') {
-                renderHome();
-            } else if (currentView === 'map') {
-                renderMap();
-            } else {
-                renderDetail(currentPlaceId);
-            }
+            if (currentView === 'home') renderHome(); else if (currentView === 'map') renderMap(); else renderDetail(currentPlaceId);
         }
 
         function updateUIText() {
             const texts = uiText[currentLang];
-            // Başlık mantığı güncellendi
             document.getElementById('nav-title').innerText = texts.siteName;
             document.getElementById('nav-subtitle').innerText = texts.siteSubtitle;
             document.getElementById('current-lang-label').innerText = currentLang.toUpperCase();
-            
-            // Menu Items
             document.getElementById('menu-home').innerText = texts.menuHome;
             document.getElementById('menu-map').innerText = texts.menuMap;
             document.getElementById('menu-about').innerText = texts.menuAbout;
             document.getElementById('menu-contact').innerText = texts.menuContact;
-            
-            // Mobile Menu Items
             document.getElementById('mobile-menu-home').innerText = texts.menuHome;
             document.getElementById('mobile-menu-map').innerText = texts.menuMap;
             document.getElementById('mobile-menu-about').innerText = texts.menuAbout;
             document.getElementById('mobile-menu-contact').innerText = texts.menuContact;
-
-            // Footer metni de güncellenebilir
-            if(currentLang === 'ar' || currentLang === 'osm') {
-                document.getElementById('footer-text').innerText = "© 2025 مشروع التراث السوري. جميع الحقوق محفوظة.";
-            } else {
-                document.getElementById('footer-text').innerText = "© 2025 Syrian Heritage Project. All rights reserved.";
-            }
+            if(currentLang === 'ar' || currentLang === 'osm') document.getElementById('footer-text').innerText = "© 2025 مشروع التراث السوري. جميع الحقوق محفوظة.";
+            else document.getElementById('footer-text').innerText = "© 2025 Syrian Heritage Project. All rights reserved.";
         }
 
         function filterPlaces() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             const cards = document.querySelectorAll('.card-item');
-            
             cards.forEach(card => {
                 const text = card.innerText.toLowerCase();
-                if (text.includes(query)) {
-                    card.style.display = 'flex'; // Grid yapısını bozmamak için flex
-                } else {
-                    card.style.display = 'none';
-                }
+                if (text.includes(query)) card.style.display = 'flex'; else card.style.display = 'none';
             });
         }
     </script>
