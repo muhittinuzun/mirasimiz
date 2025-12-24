@@ -133,7 +133,8 @@
 
                     <!-- Language Selector -->
                     <div class="relative group">
-                        <button class="flex items-center space-x-2 text-sm font-bold text-gray-600 hover:text-primary transition py-2 px-3 rounded-full hover:bg-gray-50 border border-transparent hover:border-gray-100">
+                        <!-- gap-2 ile ikon ve yazı hizalaması düzeltildi -->
+                        <button class="flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-primary transition py-2 px-3 rounded-full hover:bg-gray-50 border border-transparent hover:border-gray-100">
                             <img id="current-lang-flag" src="https://flagcdn.com/w40/tr.png" class="w-6 h-6 rounded-full object-cover border border-gray-200 shadow-sm" alt="TR">
                             <span id="current-lang-label" class="hidden lg:inline">TR</span>
                             <i class="fa-solid fa-chevron-down text-xs ml-1 text-gray-400"></i>
@@ -141,23 +142,24 @@
                         <!-- Padding added to bridge the gap -->
                         <div class="absolute right-0 top-full pt-2 w-48 hidden group-hover:block rtl:right-auto rtl:left-0 z-50">
                             <div class="bg-white rounded-xl shadow-xl py-2 border border-gray-100 overflow-hidden ring-1 ring-black ring-opacity-5">
-                                <button onclick="setLanguage('tr')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center group/item">
-                                    <img src="https://flagcdn.com/w40/tr.png" class="w-5 h-5 rounded-full mr-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Türkçe
+                                <!-- gap-3 ve margin temizliği ile liste hizalaması düzeltildi -->
+                                <button onclick="setLanguage('tr')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center gap-3 group/item">
+                                    <img src="https://flagcdn.com/w40/tr.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Türkçe
                                 </button>
-                                <button onclick="setLanguage('en')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center group/item">
-                                    <img src="https://flagcdn.com/w40/gb.png" class="w-5 h-5 rounded-full mr-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> English
+                                <button onclick="setLanguage('en')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center gap-3 group/item">
+                                    <img src="https://flagcdn.com/w40/gb.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> English
                                 </button>
-                                <button onclick="setLanguage('ar')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic flex items-center group/item">
-                                    <img src="https://flagcdn.com/w40/sy.png" class="w-5 h-5 rounded-full ml-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> العربية
+                                <button onclick="setLanguage('ar')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic flex items-center gap-3 group/item">
+                                    <img src="https://flagcdn.com/w40/sy.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> العربية
                                 </button>
-                                <button onclick="setLanguage('fr')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center group/item">
-                                    <img src="https://flagcdn.com/w40/fr.png" class="w-5 h-5 rounded-full mr-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Français
+                                <button onclick="setLanguage('fr')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center gap-3 group/item">
+                                    <img src="https://flagcdn.com/w40/fr.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Français
                                 </button>
-                                <button onclick="setLanguage('ru')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center group/item">
-                                    <img src="https://flagcdn.com/w40/ru.png" class="w-5 h-5 rounded-full mr-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Русский
+                                <button onclick="setLanguage('ru')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center gap-3 group/item">
+                                    <img src="https://flagcdn.com/w40/ru.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Русский
                                 </button>
-                                <button onclick="setLanguage('osm')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic flex items-center group/item">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Ottoman_flag.svg/100px-Ottoman_flag.svg.png" class="w-5 h-5 rounded-full ml-3 border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> عثمانليجه
+                                <button onclick="setLanguage('osm')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic flex items-center gap-3 group/item">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Ottoman_flag.svg/100px-Ottoman_flag.svg.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> عثمانليجه
                                 </button>
                             </div>
                         </div>
@@ -307,12 +309,14 @@
                             <p>UNESCO Dünya Mirası Listesi’nde yer alan Halep Kalesi, ne yazık ki Suriye’deki iç savaş sırasında zarar görmüş olsa da, hâlâ ayakta duran ihtişamıyla ziyaretçilerine derin bir tarih hissi sunar. Bugün burayı gezen bir turist; taş duvarların arasında dolaşırken, geçmişin izlerini adım adım hisseder. Hamdolsun, bu kadim miras hâlâ insanlığa “medeniyetler geçer, izler kalır” gerçeğini hatırlatmaya devam etmektedir.</p>
                         `,
                         audioTitle: "Sesli Rehber: Kalenin Savunma Sistemi",
+                        audioUrl: "halep_kalesi_tr.mp3" // BURAYA DİKKAT: Ses dosyası eklendi.
                     },
                     en: {
                         name: "Citadel of Aleppo",
                         location: "Aleppo, Syria",
                         desc: "One of the oldest and largest castles in the world, the Citadel of Aleppo rises on a natural hill in the city center. Most of the current structure dates back to the Ayyubid period (12-13th century). Famous for its walls and palace ruins.",
                         audioTitle: "Audio Guide: Defense Systems",
+                        // Diğer diller için audioUrl buraya eklenecek
                     },
                     ar: {
                         name: "قلعة حلب",
@@ -737,6 +741,7 @@
 
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                         <div class="lg:col-span-8 space-y-8">
+                             <!-- Main Hero Image -->
                             <div class="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-lg group">
                                 <img src="${place.images[0]}" 
                                      onerror="this.src='https://via.placeholder.com/800x600?text=Gorsel+Yuklenemedi'"
@@ -751,6 +756,8 @@
                                 </div>
                             </div>
 
+                            <!-- Audio Player (Dinamik ve Koşullu) -->
+                            ${content.audioUrl ? `
                             <div class="bg-white p-5 rounded-xl shadow-card border border-gray-100 flex flex-col md:flex-row items-center gap-4">
                                 <div class="bg-orange-50 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-primary">
                                     <i class="fa-solid fa-headphones text-xl"></i>
@@ -760,11 +767,13 @@
                                     <h4 class="text-sm font-bold text-gray-800">${content.audioTitle}</h4>
                                 </div>
                                 <audio controls class="w-full md:w-64 h-10 rounded-lg">
-                                    <source src="#" type="audio/mpeg">
+                                    <source src="${content.audioUrl}" type="audio/mpeg">
                                     Tarayıcınız ses elementini desteklemiyor.
                                 </audio>
                             </div>
+                            ` : ''}
 
+                            <!-- Text Content -->
                             <div class="bg-white p-8 rounded-2xl shadow-card border border-gray-100">
                                 <h3 class="text-xl font-bold text-gray-800 mb-6 border-b border-gray-100 pb-4">Hakkında</h3>
                                 <div class="leading-relaxed text-lg text-gray-600 text-justify detail-content font-light">
