@@ -113,6 +113,10 @@
             margin: 0;
             width: 280px !important;
         }
+        /* Leaflet Image Fix */
+        .leaflet-pane img {
+            max-width: none !important;
+        }
         .lightbox-nav-btn {
             position: absolute;
             top: 50%;
@@ -146,9 +150,11 @@
                 
                 <!-- Logo Section -->
                 <div class="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer group flex-shrink-0" onclick="router('home')">
+                    <!-- Bayrak Görseli -->
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Flag_of_Syria_%282025-%29.svg/1200px-Flag_of_Syria_%282025-%29.svg.png" 
                          class="w-10 h-10 rounded-lg shadow-md object-cover border border-gray-200 group-hover:scale-105 transition duration-300" 
                          alt="Site Logo">
+                    
                     <div class="flex flex-col">
                         <h1 class="font-bold text-xl leading-none text-gray-900 tracking-tight uppercase" id="nav-title">SURİYE MİRASI</h1>
                         <p class="text-xs text-gray-500 font-medium mt-0.5 tracking-wide uppercase" id="nav-subtitle">DİJİTAL REHBER</p>
@@ -162,7 +168,7 @@
                     <button onclick="openModal('about')" class="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition" id="menu-about">Hakkımızda</button>
                     <button onclick="openModal('contact')" class="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition" id="menu-contact">İletişim</button>
                     
-                    <div class="h-6 w-px bg-gray-200 mx-2"></div>
+                    <div class="h-6 w-px bg-gray-200 mx-2"></div> <!-- Separator -->
 
                     <!-- Language Selector -->
                     <div class="relative group">
@@ -171,14 +177,27 @@
                             <span id="current-lang-label" class="hidden lg:inline">TR</span>
                             <i class="fa-solid fa-chevron-down text-xs ml-1 text-gray-400"></i>
                         </button>
+                        
                         <div class="absolute right-0 top-full pt-2 w-48 hidden group-hover:block rtl:right-auto rtl:left-0 z-50">
                             <div class="bg-white rounded-xl shadow-xl py-2 border border-gray-100 overflow-hidden ring-1 ring-black ring-opacity-5">
-                                <button onclick="setLanguage('tr')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center gap-3 group/item"><img src="https://flagcdn.com/w40/tr.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Türkçe</button>
-                                <button onclick="setLanguage('en')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center gap-3 group/item"><img src="https://flagcdn.com/w40/gb.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> English</button>
-                                <button onclick="setLanguage('ar')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic flex items-center gap-3 group/item"><img src="https://flagcdn.com/w40/sy.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> العربية</button>
-                                <button onclick="setLanguage('fr')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center gap-3 group/item"><img src="https://flagcdn.com/w40/fr.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Français</button>
-                                <button onclick="setLanguage('ru')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center gap-3 group/item"><img src="https://flagcdn.com/w40/ru.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Русский</button>
-                                <button onclick="setLanguage('osm')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic flex items-center gap-3 group/item"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Osmanli-nisani.svg/100px-Osmanli-nisani.svg.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition bg-white" alt="Osmanlı Arması"> عثمانليجه</button>
+                                <button onclick="setLanguage('tr')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center gap-3 group/item">
+                                    <img src="https://flagcdn.com/w40/tr.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Türkçe
+                                </button>
+                                <button onclick="setLanguage('en')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center gap-3 group/item">
+                                    <img src="https://flagcdn.com/w40/gb.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> English
+                                </button>
+                                <button onclick="setLanguage('ar')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic flex items-center gap-3 group/item">
+                                    <img src="https://flagcdn.com/w40/sy.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> العربية
+                                </button>
+                                <button onclick="setLanguage('fr')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center gap-3 group/item">
+                                    <img src="https://flagcdn.com/w40/fr.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Français
+                                </button>
+                                <button onclick="setLanguage('ru')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium flex items-center gap-3 group/item">
+                                    <img src="https://flagcdn.com/w40/ru.png" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition"> Русский
+                                </button>
+                                <button onclick="setLanguage('osm')" class="w-full text-left rtl:text-right px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 font-medium font-arabic flex items-center gap-3 group/item">
+                                    <img src="https://www.tabloshop.com/image/cache/webp/data/urun/osmanli-oryantal-tablolar/OS-47__model_3-1000x1000.webp" class="w-5 h-5 rounded-full border border-gray-200 shadow-sm group-hover/item:scale-110 transition bg-white" alt="Osmanlı Arması"> عثمانليجه
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -209,21 +228,28 @@
         <!-- İçerik buraya JavaScript ile yüklenecek -->
     </main>
 
-    <!-- Lightbox -->
+    <!-- Lightbox (Büyük Resim Görüntüleyici) -->
     <div id="lightbox" class="fixed inset-0 z-[100] hidden bg-black/95 backdrop-blur-md flex items-center justify-center p-4 transition-opacity duration-300 opacity-0" onclick="closeLightbox(event)">
+        <!-- Kapat Butonu -->
         <button class="absolute top-4 right-4 text-white hover:text-gray-300 z-[110] p-2 bg-black/50 rounded-full w-10 h-10 flex items-center justify-center" onclick="closeLightbox()">
             <i class="fa-solid fa-times text-xl"></i>
         </button>
+        
+        <!-- Sol Ok -->
         <button id="lightbox-prev" class="lightbox-nav-btn left-4" onclick="prevImage(event)">
             <i class="fa-solid fa-chevron-left text-xl"></i>
         </button>
+
+        <!-- Resim -->
         <img id="lightbox-img" src="" alt="Büyük Resim" class="max-w-full max-h-[90vh] rounded-lg shadow-2xl transform transition-transform duration-300 select-none">
+
+        <!-- Sağ Ok -->
         <button id="lightbox-next" class="lightbox-nav-btn right-4" onclick="nextImage(event)">
             <i class="fa-solid fa-chevron-right text-xl"></i>
         </button>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal (About/Contact) -->
     <div id="infoModal" class="fixed inset-0 bg-black/50 z-[60] hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity duration-300">
         <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300" id="modalContent">
             <div class="p-6">
@@ -233,7 +259,9 @@
                         <i class="fa-solid fa-times text-xl"></i>
                     </button>
                 </div>
-                <div class="text-gray-600 leading-relaxed" id="modalBody"></div>
+                <div class="text-gray-600 leading-relaxed" id="modalBody">
+                    <!-- İçerik -->
+                </div>
                 <div class="mt-6 text-right">
                     <button onclick="closeModal()" class="bg-gray-100 text-gray-700 px-5 py-2 rounded-lg hover:bg-gray-200 transition font-medium">Kapat</button>
                 </div>
@@ -245,6 +273,7 @@
     <footer class="bg-white border-t border-gray-200 py-8 mt-auto">
         <div class="container mx-auto px-4 text-center">
              <div class="flex justify-center items-center space-x-2 mb-4 text-primary opacity-80">
+                <!-- Footer Logo -->
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Flag_of_Syria_%282025-%29.svg/1200px-Flag_of_Syria_%282025-%29.svg.png" 
                      class="w-12 h-12 rounded-lg shadow-sm object-cover border border-gray-200" 
                      alt="Site Logo">
@@ -258,36 +287,51 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // --- SUPABASE ---
+        // --- SUPABASE KONFİGÜRASYONU ---
         const SUPABASE_URL = "https://kmgbjztsouolzarimebc.supabase.co"; 
         const SUPABASE_ANON_KEY = "sb_publishable_jZQ1O8C1UglGdrL-28Axfg_erTIuO-L";
 
         let supabaseClient = null; 
         if (SUPABASE_URL && SUPABASE_ANON_KEY) {
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        } else {
+            console.warn("UYARI: Supabase URL veya Anon Key eksik!");
         }
 
-        // --- GLOBAL ---
+        // --- GLOBAL DEĞİŞKENLER ---
         let db = []; 
         let currentGalleryImages = [];
         let currentImageIndex = 0;
 
-        // --- YENİ: URL TEMİZLEME FONKSİYONU ---
-        // Veritabanından gelen bozuk [link](link) formatlarını temizler
+        // --- GÜVENLİ URL TEMİZLEME FONKSİYONU ---
         function cleanUrl(url) {
             if (!url) return null;
-            // Eğer URL temizse dokunma
-            if (url.startsWith('http') && !url.includes('[')) return url;
+            let str = String(url).trim();
             
-            // [url](url)/path formatını temizle
-            let clean = url.replace(/[\[\]]/g, '');
-            // Tekrar eden (domain) kısmını sil
-            clean = clean.replace(/\([^\)]+\)/g, '');
+            // Eğer Markdown linki ise [text](url) -> sadece url'yi al
+            // Sadece başında köşeli parantez varsa markdown kontrolü yap
+            if (str.startsWith('[')) {
+                const markdownMatch = str.match(/\]\((https?:\/\/[^\)]+)\)/);
+                if (markdownMatch) {
+                    return markdownMatch[1];
+                }
+            }
             
-            return clean.trim();
+            // Köşeli parantez ve tırnak içinde dizi kalıntısı varsa temizle ["url"] -> url
+            if ((str.startsWith('["') || str.startsWith("['")) && (str.endsWith('"]') || str.endsWith("']"))) {
+                 str = str.slice(2, -2);
+            }
+            
+            // Basit temizlik (sadece dış tırnakları al, parantezlere dokunma)
+            str = str.replace(/^['"]|['"]$/g, '');
+
+            // Link geçerli bir http linki mi?
+            if (str.startsWith('http')) return str;
+            
+            return null;
         }
 
-        // --- UI TEXT ---
+        // --- UI TEXT TRANSLATIONS ---
         const uiText = {
             tr: { 
                 siteName: "SURİYE MİRASI", siteSubtitle: "DİJİTAL REHBER", searchPlaceholder: "Mekan, şehir veya eser arayın...", homeTitle: "Suriye'nin Kültürel Mirası", homeSubtitle: "Geçmişin izlerini, tarihi yapıları ve kültürel zenginlikleri dijital arşivimizde keşfedin.", readMore: "Detaylı İncele", back: "Geri Dön", gallery: "Galeri", location: "Konum", playAudio: "Sesli Anlatım", menuHome: "Anasayfa", menuMap: "Harita", menuAbout: "Hakkımızda", menuContact: "İletişim", aboutTitle: "Hakkımızda", aboutBody: "Suriye Mirası Projesi, bölgenin zengin tarihsel ve kültürel dokusunu dijital ortama taşıyarak gelecek nesillere aktarmayı hedefleyen bir girişimdir.", contactTitle: "İletişim", contactBody: "Görüş, öneri ve katkılarınız için bize ulaşabilirsiniz:<br><br><strong>E-posta:</strong> info@suriyemirasi.org"
@@ -303,7 +347,7 @@
             osm: { siteName: "سوريه ميراثي", siteSubtitle: "ديجيتال رهبر", searchPlaceholder: "آرامق...", homeTitle: "سوريه‌نك ثقافت ميراثي", homeSubtitle: "ماضينك ايزلريني كشف ايدك.", readMore: "تفصيلاتلي تدقيق", back: "كرو دون", gallery: "رسملر", location: "موقع", playAudio: "صوتي شرح", menuHome: "آنا صفحه", menuMap: "خريطه", menuAbout: "حقيمزده", menuContact: "مخابره", aboutTitle: "حقيمزده", aboutBody: "سوريه ميراثي پروژه‌سي.", contactTitle: "مخابره", contactBody: "ا-پوسته: info@suriyemirasi.org" }
         };
 
-        // --- STATE ---
+        // --- STATE MANAGEMENT ---
         let currentLang = 'tr';
         let currentView = 'home';
         let currentPlaceId = null;
@@ -314,15 +358,38 @@
             ar: "https://flagcdn.com/w40/sy.png",
             fr: "https://flagcdn.com/w40/fr.png",
             ru: "https://flagcdn.com/w40/ru.png",
-            osm: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Osmanli-nisani.svg/100px-Osmanli-nisani.svg.png"
+            osm: "https://www.tabloshop.com/image/cache/webp/data/urun/osmanli-oryantal-tablolar/OS-47__model_3-1000x1000.webp"
         };
 
-        // --- INIT ---
+        // --- FALLBACK DB (DEMO DATA) ---
+        const fallbackDB = [
+            {
+                id: 1,
+                coords: [33.511296, 36.306721],
+                mapUrl: "https://maps.google.com/maps?q=33.51129625696082,36.30672099150847&hl=tr&z=17&output=embed",
+                images: [
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Courtyard_of_the_Umayyad_Mosque.jpg/800px-Courtyard_of_the_Umayyad_Mosque.jpg",
+                    "https://madainproject.com/content/media/collect/umayyad_mosque_009921.jpg"
+                ],
+                content: {
+                    tr: { name: "Şam Emevi Camii (Demo)", location: "Şam", desc: "Demo veri.", detailDesc: "<p>Veritabanı bağlantısı yok.</p>", audioTitle: "Sesli Rehber", audioUrl: "" },
+                    en: { name: "Umayyad Mosque (Demo)", location: "Damascus", desc: "Demo data.", detailDesc: "<p>Demo</p>", audioTitle: "Audio Guide", audioUrl: "" },
+                    ar: { name: "الجامع الأموي", location: "دمشق", desc: "بيانات تجريبية", detailDesc: "<p>تجريبي</p>", audioTitle: "الدليل الصوتي", audioUrl: "" },
+                    fr: { name: "Grande Mosquée", location: "Damas", desc: "Demo", detailDesc: "<p>Demo</p>", audioTitle: "Guide", audioUrl: "" },
+                    ru: { name: "Мечеть", location: "Дамаск", desc: "Demo", detailDesc: "<p>Demo</p>", audioTitle: "Audio", audioUrl: "" },
+                    osm: { name: "جامع اموي", location: "شام", desc: "نمونه", detailDesc: "<p>نمونه</p>", audioTitle: "صوتي", audioUrl: "" }
+                }
+            }
+        ];
+
+        // --- INITIALIZATION ---
         window.onload = async function() {
             await initApp();
         };
 
+        // --- DATA FETCHING & INIT ---
         async function initApp() {
+            let useFallback = true;
             if (supabaseClient) { 
                 try {
                     const { data, error } = await supabaseClient 
@@ -331,51 +398,106 @@
                         .order('id', { ascending: true });
 
                     if (!error && data && data.length > 0) {
-                        db = data.map(item => ({
-                            id: item.id,
-                            coords: [item.lat, item.lng],
-                            mapUrl: item.map_url,
-                            images: item.images || [],
-                            content: {
-                                tr: { name: item.isim_tr, location: "Suriye", desc: item.aciklama_tr, detailDesc: item.detay_tr, audioTitle: "Sesli Rehber", audioUrl: cleanUrl(item.ses_tr) },
-                                en: { name: item.isim_en, location: "Syria", desc: item.aciklama_en, detailDesc: item.detay_en, audioTitle: "Audio Guide", audioUrl: cleanUrl(item.ses_en) },
-                                ar: { name: item.isim_ar, location: "سوريا", desc: item.aciklama_ar, detailDesc: item.detay_ar, audioTitle: "الدليل الصوتي", audioUrl: cleanUrl(item.ses_ar) },
-                                fr: { name: item.isim_fr || item.isim_en, location: "Syrie", desc: item.aciklama_fr || item.aciklama_en, detailDesc: item.detay_fr, audioTitle: "Guide Audio", audioUrl: cleanUrl(item.ses_fr) },
-                                ru: { name: item.isim_ru || item.isim_en, location: "Сирия", desc: item.aciklama_ru || item.aciklama_en, detailDesc: item.detay_ru, audioTitle: "Аудиогид", audioUrl: cleanUrl(item.ses_ru) },
-                                osm: { name: item.isim_osm || item.isim_tr, location: "سوريه", desc: item.aciklama_osm || item.aciklama_tr, detailDesc: item.detay_osm, audioTitle: "صوتي رهبر", audioUrl: cleanUrl(item.ses_osm) }
+                        useFallback = false;
+                        console.log("Veri Supabase 'mekanlar' tablosundan çekildi:", data);
+                        
+                        db = data.map(item => {
+                            // GÖRSEL LİNK İŞLEME (GELİŞMİŞ PARSER)
+                            let rawImages = item.images;
+                            let processedImages = [];
+
+                            // 1. JSON Array Kontrolü
+                            if (Array.isArray(rawImages)) {
+                                processedImages = rawImages;
+                            } 
+                            // 2. String Kontrolü
+                            else if (typeof rawImages === 'string') {
+                                rawImages = rawImages.trim();
+                                if (rawImages.startsWith('[') && rawImages.endsWith(']')) {
+                                    try {
+                                        processedImages = JSON.parse(rawImages);
+                                    } catch (e) {
+                                        // Basit virgülle ayrılmış ise
+                                        processedImages = rawImages.slice(1, -1).split(',').map(s => s.trim());
+                                    }
+                                } else if (rawImages.startsWith('{') && rawImages.endsWith('}')) {
+                                    // Postgres array formatı {link,link}
+                                    processedImages = rawImages.slice(1, -1).split(',').map(s => s.trim().replace(/^"?|"?$/g, ''));
+                                } else {
+                                    // Tek link
+                                    processedImages = [rawImages];
+                                }
                             }
-                        }));
+                            
+                            // 3. Link Temizleme ve Filtreleme
+                            processedImages = processedImages.map(img => cleanUrl(img)).filter(img => img !== null);
+                            
+                            // 4. Fallback Görsel
+                            if (processedImages.length === 0) {
+                                processedImages.push("https://via.placeholder.com/800x600?text=Gorsel+Yok");
+                            }
+
+                            return {
+                                id: item.id,
+                                coords: [item.lat, item.lng],
+                                mapUrl: item.map_url,
+                                images: processedImages,
+                                content: {
+                                    tr: { name: item.isim_tr, location: "Suriye", desc: item.aciklama_tr, detailDesc: item.detay_tr, audioTitle: "Sesli Rehber", audioUrl: cleanUrl(item.ses_tr) },
+                                    en: { name: item.isim_en, location: "Syria", desc: item.aciklama_en, detailDesc: item.detay_en, audioTitle: "Audio Guide", audioUrl: cleanUrl(item.ses_en) },
+                                    ar: { name: item.isim_ar, location: "سوريا", desc: item.aciklama_ar, detailDesc: item.detay_ar, audioTitle: "الدليل الصوتي", audioUrl: cleanUrl(item.ses_ar) },
+                                    fr: { name: item.isim_fr || item.isim_en, location: "Syrie", desc: item.aciklama_fr || item.aciklama_en, detailDesc: item.detay_fr, audioTitle: "Guide Audio", audioUrl: cleanUrl(item.ses_fr) },
+                                    ru: { name: item.isim_ru || item.isim_en, location: "Сирия", desc: item.aciklama_ru || item.aciklama_en, detailDesc: item.detay_ru, audioTitle: "Аудиогид", audioUrl: cleanUrl(item.ses_ru) },
+                                    osm: { name: item.isim_osm || item.isim_tr, location: "سوريه", desc: item.aciklama_osm || item.aciklama_tr, detailDesc: item.detay_osm, audioTitle: "صوتي رهبر", audioUrl: cleanUrl(item.ses_osm) }
+                                }
+                            };
+                        });
                     } else {
-                        db = [];
+                        console.warn("Supabase verisi boş veya hata var:", error);
                     }
                 } catch (err) {
-                    db = [];
+                    console.error("Supabase bağlantı hatası:", err);
                 }
-            } else {
-                db = [];
+            }
+
+            if (useFallback) {
+                console.log("Fallback verileri kullanılıyor.");
+                db = fallbackDB;
             }
 
             const urlParams = new URLSearchParams(window.location.search);
             const idParam = urlParams.get('id');
             const viewParam = urlParams.get('view');
 
-            if (idParam) renderDetail(parseInt(idParam));
-            else if (viewParam === 'map') renderMap();
-            else renderHome();
+            if (idParam) {
+                renderDetail(parseInt(idParam));
+            } else if (viewParam === 'map') {
+                renderMap();
+            } else {
+                renderHome();
+            }
             updateUIText();
         }
 
+        // --- ROUTING / NAVIGATION ---
         function router(view, id = null) {
             currentView = view;
             currentPlaceId = id;
             window.scrollTo(0, 0);
+
             try {
                 const url = new URL(window.location);
-                if (view === 'home') url.search = '';
-                else if (view === 'detail' && id) url.searchParams.set('id', id);
-                else if (view === 'map') { url.searchParams.set('view', 'map'); url.searchParams.delete('id'); }
+                if (view === 'home') {
+                    url.search = '';
+                } else if (view === 'detail' && id) {
+                    url.searchParams.set('id', id);
+                } else if (view === 'map') {
+                    url.searchParams.set('view', 'map');
+                    url.searchParams.delete('id');
+                }
                 window.history.pushState({}, '', url);
             } catch (e) {}
+
             if (view === 'home') renderHome();
             else if (view === 'detail' && id) renderDetail(id);
             else if (view === 'map') renderMap();
@@ -385,11 +507,13 @@
             const urlParams = new URLSearchParams(window.location.search);
             const idParam = urlParams.get('id');
             const viewParam = urlParams.get('view');
+
             if (idParam) renderDetail(parseInt(idParam));
             else if (viewParam === 'map') renderMap();
             else renderHome();
         };
 
+        // --- MOBILE MENU & MODAL & LIGHTBOX FUNCTIONS ---
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             if (menu.classList.contains('open')) menu.classList.remove('open'); else menu.classList.add('open');
@@ -400,6 +524,7 @@
             const title = document.getElementById('modalTitle');
             const body = document.getElementById('modalBody');
             const texts = uiText[currentLang];
+
             if (type === 'about') { title.innerText = texts.aboutTitle; body.innerHTML = texts.aboutBody; }
             else if (type === 'contact') { title.innerText = texts.contactTitle; body.innerHTML = texts.contactBody; }
             modal.classList.remove('hidden');
@@ -418,30 +543,46 @@
             setTimeout(() => { modal.classList.add('hidden'); }, 300);
         }
 
+        // --- LIGHTBOX FUNCTIONS ---
         function openLightbox(index, images) {
-            if (images) currentGalleryImages = images;
-            else if (currentGalleryImages.length === 0) return;
+            if (images) {
+                currentGalleryImages = images;
+            } else {
+                if (currentGalleryImages.length === 0) return;
+            }
+            
             currentImageIndex = index;
             updateLightboxImage();
+            
             const lightbox = document.getElementById('lightbox');
             lightbox.classList.remove('hidden');
-            setTimeout(() => { lightbox.classList.remove('opacity-0'); }, 10);
+            setTimeout(() => {
+                lightbox.classList.remove('opacity-0');
+            }, 10);
         }
 
         function updateLightboxImage() {
-            document.getElementById('lightbox-img').src = currentGalleryImages[currentImageIndex];
+            const img = document.getElementById('lightbox-img');
+            img.src = currentGalleryImages[currentImageIndex];
         }
 
         function closeLightbox(e) {
             if (e && e.target.id !== 'lightbox' && !e.target.closest('button')) return;
+            
             const lightbox = document.getElementById('lightbox');
             lightbox.classList.add('opacity-0');
-            setTimeout(() => { lightbox.classList.add('hidden'); document.getElementById('lightbox-img').src = ""; }, 300);
+            setTimeout(() => {
+                lightbox.classList.add('hidden');
+                document.getElementById('lightbox-img').src = "";
+            }, 300);
         }
+        
         function forceCloseLightbox() {
              const lightbox = document.getElementById('lightbox');
             lightbox.classList.add('opacity-0');
-            setTimeout(() => { lightbox.classList.add('hidden'); }, 300);
+            setTimeout(() => {
+                lightbox.classList.add('hidden');
+            }, 300);
         }
 
         function nextImage(e) {
@@ -459,18 +600,24 @@
         document.addEventListener('keydown', function(e) {
             const lightbox = document.getElementById('lightbox');
             if (lightbox.classList.contains('hidden')) return;
+
             if (e.key === 'Escape') forceCloseLightbox();
             if (e.key === 'ArrowRight') nextImage();
             if (e.key === 'ArrowLeft') prevImage();
         });
 
-        window.onclick = function(event) { if (event.target == document.getElementById('infoModal')) closeModal(); }
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('infoModal')) closeModal();
+        }
 
+        // --- RENDER FUNCTIONS ---
         function renderHome() {
             if (window.map && window.map.remove) { window.map.remove(); window.map = null; }
+
             const app = document.getElementById('app');
             const texts = uiText[currentLang];
             const isRTL = (currentLang === 'ar' || currentLang === 'osm');
+
             let html = `
                 <div class="relative pattern-bg rounded-3xl mb-12 shadow-xl overflow-hidden fade-in mx-2 lg:mx-0">
                     <div class="absolute inset-0 bg-black/10"></div>
@@ -480,21 +627,27 @@
                         <div class="max-w-2xl mx-auto relative group">
                             <div class="absolute inset-0 bg-white/20 blur-xl rounded-full transform group-hover:bg-white/30 transition duration-500"></div>
                             <div class="relative">
-                                <input type="text" id="searchInput" onkeyup="filterPlaces()" placeholder="${texts.searchPlaceholder}" class="w-full py-5 px-8 rounded-full shadow-2xl text-gray-800 placeholder-gray-400 focus:ring-4 focus:ring-white/30 border-0 outline-none pl-14 rtl:pl-8 rtl:pr-14 transition-all duration-300 text-lg font-medium"><i class="fa-solid fa-magnifying-glass absolute top-1/2 transform -translate-y-1/2 text-gray-400 left-6 rtl:left-auto rtl:right-6 text-xl group-hover:text-primary transition-colors"></i>
+                                <input type="text" id="searchInput" onkeyup="filterPlaces()" 
+                                    placeholder="${texts.searchPlaceholder}" 
+                                    class="w-full py-5 px-8 rounded-full shadow-2xl text-gray-800 placeholder-gray-400 focus:ring-4 focus:ring-white/30 border-0 outline-none pl-14 rtl:pl-8 rtl:pr-14 transition-all duration-300 text-lg font-medium">
+                                <i class="fa-solid fa-magnifying-glass absolute top-1/2 transform -translate-y-1/2 text-gray-400 left-6 rtl:left-auto rtl:right-6 text-xl group-hover:text-primary transition-colors"></i>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-2 lg:px-0" id="placesGrid">
             `;
+
             db.forEach(place => {
                 const content = place.content[currentLang] || place.content['tr']; 
                 html += `
                     <div class="bg-white rounded-2xl shadow-card hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer group flex flex-col h-full overflow-hidden border border-gray-100/50 card-item" onclick="router('detail', ${place.id})">
                         <div class="h-60 overflow-hidden relative">
-                            <img src="${place.images[0]}" onerror="this.src='https://via.placeholder.com/800x600?text=Gorsel+Yuklenemedi'" alt="${content.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-in-out">
+                            <img src="${place.images[0]}" onerror="this.src='https://via.placeholder.com/800x600?text=Gorsel+Yok'" referrerpolicy="no-referrer" alt="${content.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-in-out">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
-                            <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm"><span class="text-primary text-xs font-bold uppercase tracking-wider flex items-center gap-1"><i class="fa-solid fa-location-dot"></i> ${content.location}</span></div>
+                            <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">
+                                <span class="text-primary text-xs font-bold uppercase tracking-wider flex items-center gap-1"><i class="fa-solid fa-location-dot"></i> ${content.location}</span>
+                            </div>
                         </div>
                         <div class="p-6 flex flex-col flex-grow relative">
                             <h3 class="text-xl font-bold mb-3 text-gray-800 group-hover:text-primary transition-colors leading-snug">${content.name}</h3>
@@ -513,71 +666,142 @@
 
         function renderDetail(id) {
             if (window.map && window.map.remove) { window.map.remove(); window.map = null; }
+
             const place = db.find(p => p.id === id);
             if (!place) return renderHome();
+
             currentGalleryImages = place.images;
+
             const app = document.getElementById('app');
             const texts = uiText[currentLang];
             const content = place.content[currentLang] || place.content['tr'];
             const isRTL = (currentLang === 'ar' || currentLang === 'osm');
             const descriptionHtml = content.detailDesc || `<p>${content.desc}</p>`;
+
             app.innerHTML = `
                 <div class="fade-in max-w-6xl mx-auto px-2 lg:px-0">
-                    <div class="mb-6 flex items-center justify-between"><button onclick="router('home')" class="flex items-center text-gray-500 hover:text-primary transition font-semibold bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100 hover:shadow-md"><i class="fa-solid ${isRTL ? 'fa-arrow-right' : 'fa-arrow-left'} mr-2 rtl:mr-0 rtl:ml-2"></i> ${texts.back}</button><div class="hidden md:block text-sm text-gray-400 font-mono">ID: #${place.id.toString().padStart(4, '0')}</div></div>
+                    <div class="mb-6 flex items-center justify-between">
+                         <button onclick="router('home')" class="flex items-center text-gray-500 hover:text-primary transition font-semibold bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100 hover:shadow-md">
+                            <i class="fa-solid ${isRTL ? 'fa-arrow-right' : 'fa-arrow-left'} mr-2 rtl:mr-0 rtl:ml-2"></i> ${texts.back}
+                        </button>
+                        <div class="hidden md:block text-sm text-gray-400 font-mono">ID: #${place.id.toString().padStart(4, '0')}</div>
+                    </div>
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                         <div class="lg:col-span-8 space-y-8">
                             <div class="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-lg group">
-                                <img src="${place.images[0]}" onerror="this.src='https://via.placeholder.com/800x600?text=Gorsel+Yuklenemedi'" class="w-full h-full object-cover cursor-pointer" onclick="openLightbox(0)">
+                                <img src="${place.images[0]}" onerror="this.src='https://via.placeholder.com/800x600?text=Gorsel+Yok'" referrerpolicy="no-referrer" class="w-full h-full object-cover cursor-pointer" onclick="openLightbox(0)">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-8 pointer-events-none">
-                                    <div class="w-full"><div class="flex items-center text-orange-200 text-sm font-bold uppercase tracking-wider mb-2"><i class="fa-solid fa-location-dot mr-2"></i> ${content.location}</div><h1 class="text-3xl md:text-5xl font-bold text-white mb-2 shadow-sm leading-tight">${content.name}</h1></div>
+                                    <div class="w-full">
+                                        <div class="flex items-center text-orange-200 text-sm font-bold uppercase tracking-wider mb-2"><i class="fa-solid fa-location-dot mr-2"></i> ${content.location}</div>
+                                        <h1 class="text-3xl md:text-5xl font-bold text-white mb-2 shadow-sm leading-tight">${content.name}</h1>
+                                    </div>
                                 </div>
                             </div>
-                            ${content.audioUrl ? `<div class="bg-white p-5 rounded-xl shadow-card border border-gray-100 flex flex-col md:flex-row items-center gap-4"><div class="bg-orange-50 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-primary"><i class="fa-solid fa-headphones text-xl"></i></div><div class="flex-grow w-full md:w-auto text-center md:text-left rtl:md:text-right"><p class="text-xs text-primary font-bold uppercase tracking-wider mb-0.5 opacity-80">${texts.playAudio}</p><h4 class="text-sm font-bold text-gray-800">${content.audioTitle}</h4></div><audio controls preload="auto" class="w-full md:w-64 h-10 rounded-lg bg-gray-50" src="${content.audioUrl}">Tarayıcınız ses elementini desteklemiyor.</audio></div>` : ''}
-                            <div class="bg-white p-8 rounded-2xl shadow-card border border-gray-100"><h3 class="text-xl font-bold text-gray-800 mb-6 border-b border-gray-100 pb-4">Hakkında</h3><div class="leading-relaxed text-lg text-gray-600 text-justify detail-content font-light">${descriptionHtml}</div></div>
+                            
+                            ${content.audioUrl ? `
+                            <div class="bg-white p-5 rounded-xl shadow-card border border-gray-100 flex flex-col md:flex-row items-center gap-4">
+                                <div class="bg-orange-50 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-primary"><i class="fa-solid fa-headphones text-xl"></i></div>
+                                <div class="flex-grow w-full md:w-auto text-center md:text-left rtl:md:text-right">
+                                    <p class="text-xs text-primary font-bold uppercase tracking-wider mb-0.5 opacity-80">${texts.playAudio}</p>
+                                    <h4 class="text-sm font-bold text-gray-800">${content.audioTitle}</h4>
+                                </div>
+                                <audio controls preload="auto" class="w-full md:w-64 h-10 rounded-lg bg-gray-50" src="${content.audioUrl}">
+                                    Tarayıcınız ses elementini desteklemiyor.
+                                </audio>
+                            </div>` : ''}
+
+                            <div class="bg-white p-8 rounded-2xl shadow-card border border-gray-100">
+                                <h3 class="text-xl font-bold text-gray-800 mb-6 border-b border-gray-100 pb-4">Hakkında</h3>
+                                <div class="leading-relaxed text-lg text-gray-600 text-justify detail-content font-light">${descriptionHtml}</div>
+                            </div>
                         </div>
                         <div class="lg:col-span-4 space-y-6">
-                            <div class="bg-white p-1 rounded-2xl shadow-card border border-gray-100 overflow-hidden"><div class="p-4 border-b border-gray-50 flex justify-between items-center bg-gray-50/50"><h3 class="font-bold text-gray-800">${texts.location}</h3><i class="fa-solid fa-map text-gray-400"></i></div><iframe src="${place.mapUrl}" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe><a href="${place.mapUrl.replace('embed', 'search')}" target="_blank" class="block text-center py-3 text-sm text-primary font-semibold hover:bg-gray-50 transition">Haritada Aç <i class="fa-solid fa-external-link-alt ml-1 text-xs"></i></a></div>
-                            <div class="bg-white p-5 rounded-2xl shadow-card border border-gray-100"><h3 class="font-bold text-gray-800 mb-4 flex items-center"><i class="fa-regular fa-images mr-2 text-primary"></i> ${texts.gallery}</h3><div class="grid grid-cols-2 gap-3">${place.images.map((img, idx) => `<img src="${img}" onerror="this.src='https://via.placeholder.com/300?text=Yok'" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80 transition ring-2 ring-transparent hover:ring-primary/20" onclick="openLightbox(${idx})">`).join('')}</div></div>
+                            <div class="bg-white p-1 rounded-2xl shadow-card border border-gray-100 overflow-hidden">
+                                <div class="p-4 border-b border-gray-50 flex justify-between items-center bg-gray-50/50">
+                                    <h3 class="font-bold text-gray-800">${texts.location}</h3>
+                                    <i class="fa-solid fa-map text-gray-400"></i>
+                                </div>
+                                <iframe src="${place.mapUrl}" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                                <a href="${place.mapUrl.replace('embed', 'search')}" target="_blank" class="block text-center py-3 text-sm text-primary font-semibold hover:bg-gray-50 transition">Haritada Aç <i class="fa-solid fa-external-link-alt ml-1 text-xs"></i></a>
+                            </div>
+                            <div class="bg-white p-5 rounded-2xl shadow-card border border-gray-100">
+                                <h3 class="font-bold text-gray-800 mb-4 flex items-center"><i class="fa-regular fa-images mr-2 text-primary"></i> ${texts.gallery}</h3>
+                                <div class="grid grid-cols-2 gap-3">
+                                    ${place.images.map((img, idx) => `<img src="${img}" onerror="this.src='https://via.placeholder.com/300?text=Gorsel+Yok'" referrerpolicy="no-referrer" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80 transition ring-2 ring-transparent hover:ring-primary/20" onclick="openLightbox(${idx})">`).join('')}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             `;
+            
             const audioEl = document.querySelector('audio');
             if(audioEl) { audioEl.load(); }
         }
 
         function renderMap() {
             const container = document.getElementById('map-container');
-            if(container) { container.innerHTML = ""; container._leaflet_id = null; }
-            if (window.map) { window.map.remove(); window.map = null; }
+            if(container) {
+                container.innerHTML = ""; 
+                container._leaflet_id = null; 
+            }
+            if (window.map) {
+                window.map.remove();
+                window.map = null;
+            }
+
             const app = document.getElementById('app');
             const texts = uiText[currentLang];
             const isRTL = (currentLang === 'ar' || currentLang === 'osm');
+
             app.innerHTML = `
                 <div class="fade-in h-full relative">
-                    <div class="flex justify-between items-center mb-4 px-2"><h2 class="text-2xl font-bold text-gray-800">${texts.menuMap}</h2><button onclick="router('home')" class="text-sm font-semibold text-primary hover:underline flex items-center"><i class="fa-solid ${isRTL ? 'fa-arrow-right' : 'fa-arrow-left'} mr-1 rtl:mr-0 rtl:ml-1"></i> ${texts.back}</button></div>
-                    <div class="absolute top-16 left-4 z-[100] w-64 md:w-80 shadow-lg"><div class="relative"><input type="text" id="mapSearchInput" placeholder="${texts.searchPlaceholder}" class="w-full py-3 px-4 rounded-lg shadow-md border border-gray-200 focus:ring-2 focus:ring-primary outline-none text-sm" onkeyup="filterMapMarkers()"><i class="fa-solid fa-magnifying-glass absolute top-1/2 transform -translate-y-1/2 right-4 text-gray-400"></i></div><div id="mapSearchResults" class="bg-white mt-1 rounded-lg shadow-lg overflow-hidden hidden max-h-60 overflow-y-auto"></div></div>
+                    <div class="flex justify-between items-center mb-4 px-2">
+                        <h2 class="text-2xl font-bold text-gray-800">${texts.menuMap}</h2>
+                        <button onclick="router('home')" class="text-sm font-semibold text-primary hover:underline flex items-center">
+                            <i class="fa-solid ${isRTL ? 'fa-arrow-right' : 'fa-arrow-left'} mr-1 rtl:mr-0 rtl:ml-1"></i> ${texts.back}
+                        </button>
+                    </div>
+                    
+                    <div class="absolute top-16 left-4 z-[100] w-64 md:w-80 shadow-lg">
+                        <div class="relative">
+                            <input type="text" id="mapSearchInput" placeholder="${texts.searchPlaceholder}" class="w-full py-3 px-4 rounded-lg shadow-md border border-gray-200 focus:ring-2 focus:ring-primary outline-none text-sm" onkeyup="filterMapMarkers()">
+                            <i class="fa-solid fa-magnifying-glass absolute top-1/2 transform -translate-y-1/2 right-4 text-gray-400"></i>
+                        </div>
+                        <div id="mapSearchResults" class="bg-white mt-1 rounded-lg shadow-lg overflow-hidden hidden max-h-60 overflow-y-auto"></div>
+                    </div>
+                    
                     <div id="map-container" class="rounded-2xl shadow-xl overflow-hidden border border-gray-200 z-0"></div>
                 </div>
             `;
+
             setTimeout(() => {
                 window.map = L.map('map-container').setView([35.0, 38.0], 7);
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(window.map);
                 window.mapMarkers = [];
+                
                 db.forEach(place => {
                     if(place.coords) {
                         const content = place.content[currentLang] || place.content['tr'];
                         const marker = L.marker(place.coords).addTo(window.map);
-                        const popupContent = `<div class="text-center p-2"><h3 class="font-bold text-sm mb-2">${content.name}</h3><img src="${place.images[0]}" class="w-full h-24 object-cover rounded-md mb-2" onerror="this.src='https://via.placeholder.com/150'"><button onclick="router('detail', ${place.id})" class="text-xs bg-primary text-white px-3 py-1 rounded hover:bg-orange-700 transition w-full">${texts.readMore}</button></div>`;
+                        const popupContent = `
+                            <div class="text-center p-2">
+                                <h3 class="font-bold text-sm mb-2">${content.name}</h3>
+                                <img src="${place.images[0]}" class="w-full h-24 object-cover rounded-md mb-2" onerror="this.src='https://via.placeholder.com/150'" referrerpolicy="no-referrer">
+                                <button onclick="router('detail', ${place.id})" class="text-xs bg-primary text-white px-3 py-1 rounded hover:bg-orange-700 transition w-full">${texts.readMore}</button>
+                            </div>`;
                         marker.bindPopup(popupContent);
                         marker.placeData = { id: place.id, name: content.name.toLowerCase() };
                         window.mapMarkers.push(marker);
                     }
                 });
                 if (window.mapMarkers.length > 0) window.map.fitBounds(new L.featureGroup(window.mapMarkers).getBounds().pad(0.1));
-            }, 200); 
+                
+                window.map.invalidateSize();
+            }, 300); 
         }
 
+        // ... (Diğer fonksiyonlar aynı)
         function filterMapMarkers() {
             const input = document.getElementById('mapSearchInput');
             const filter = input.value.toLowerCase();
@@ -593,12 +817,20 @@
                     const place = db.find(p => p.id === marker.placeData.id);
                     const originalName = (place.content[currentLang] || place.content['tr']).name;
                     div.innerHTML = `<i class="fa-solid fa-location-dot text-primary mr-2"></i> ${originalName}`;
-                    div.onclick = function() { window.map.flyTo(marker.getLatLng(), 16); marker.openPopup(); resultsContainer.classList.add('hidden'); input.value = originalName; };
+                    div.onclick = function() {
+                        window.map.flyTo(marker.getLatLng(), 16);
+                        marker.openPopup();
+                        resultsContainer.classList.add('hidden');
+                        input.value = originalName;
+                    };
                     resultsContainer.appendChild(div);
                 }
             });
             resultsContainer.classList.toggle('hidden', !hasResults);
-            if (!hasResults) { resultsContainer.innerHTML = `<div class="p-3 text-gray-500 text-sm">Sonuç bulunamadı</div>`; resultsContainer.classList.remove('hidden'); }
+            if (!hasResults) {
+                resultsContainer.innerHTML = `<div class="p-3 text-gray-500 text-sm">Sonuç bulunamadı</div>`;
+                resultsContainer.classList.remove('hidden');
+            }
         }
 
         function setLanguage(lang) {
