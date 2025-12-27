@@ -304,28 +304,37 @@
         let currentImageIndex = 0;
 
         // --- GÜVENLİ URL TEMİZLEME FONKSİYONU ---
+        // BU FONKSİYON BOZUK VERİTABANI KAYITLARINI DÜZELTİR
         function cleanUrl(url) {
             if (!url) return null;
             let str = String(url).trim();
             
-            // Eğer Markdown linki ise [text](url) -> sadece url'yi al
-            // Sadece başında köşeli parantez varsa markdown kontrolü yap
-            if (str.startsWith('[')) {
-                const markdownMatch = str.match(/\]\((https?:\/\/[^\)]+)\)/);
-                if (markdownMatch) {
-                    return markdownMatch[1];
-                }
+            // 1. Markdown Link Temizliği: [Text](Link) veya [Link](Link)/ekstra
+            // Eski hatalı format: [https://site.com](https://site.com)/dosya.mp3
+            // Bu regex ile parantez içini ve devamını birleştiriyoruz
+            
+            // Eğer string içinde Markdown yapısı '](http' varsa:
+            if (str.includes('](')) {
+                // Regex ile parçala:
+                // \[.*?\] -> Köşeli parantez kısmı (atılır)
+                // \((.*?)\) -> Parantez içindeki URL (alınır)
+                // (.*) -> Parantezden sonra gelen kısım (varsa, o da alınır)
+                // Örn: [https://a.com](https://a.com)/b.mp3  --> https://a.com + /b.mp3
+                
+                // Basit bir replace ile [....](URL) yapısını URL ile değiştiriyoruz.
+                // Geri kalan kısım (suffix) zaten replace işleminden etkilenmez ve kalır.
+                str = str.replace(/\[.*?\]\((.*?)\)/, '$1');
             }
             
-            // Köşeli parantez ve tırnak içinde dizi kalıntısı varsa temizle ["url"] -> url
+            // 2. Dizi Formatı Temizliği: ["http..."] -> http...
             if ((str.startsWith('["') || str.startsWith("['")) && (str.endsWith('"]') || str.endsWith("']"))) {
                  str = str.slice(2, -2);
             }
             
-            // Basit temizlik (sadece dış tırnakları al, parantezlere dokunma)
+            // 3. Tırnak Temizliği
             str = str.replace(/^['"]|['"]$/g, '');
 
-            // Link geçerli bir http linki mi?
+            // 4. Geçerlilik Kontrolü
             if (str.startsWith('http')) return str;
             
             return null;
