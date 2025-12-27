@@ -310,19 +310,7 @@
             let str = String(url).trim();
             
             // 1. Markdown Link Temizliği: [Text](Link) veya [Link](Link)/ekstra
-            // Eski hatalı format: [https://site.com](https://site.com)/dosya.mp3
-            // Bu regex ile parantez içini ve devamını birleştiriyoruz
-            
-            // Eğer string içinde Markdown yapısı '](http' varsa:
             if (str.includes('](')) {
-                // Regex ile parçala:
-                // \[.*?\] -> Köşeli parantez kısmı (atılır)
-                // \((.*?)\) -> Parantez içindeki URL (alınır)
-                // (.*) -> Parantezden sonra gelen kısım (varsa, o da alınır)
-                // Örn: [https://a.com](https://a.com)/b.mp3  --> https://a.com + /b.mp3
-                
-                // Basit bir replace ile [....](URL) yapısını URL ile değiştiriyoruz.
-                // Geri kalan kısım (suffix) zaten replace işleminden etkilenmez ve kalır.
                 str = str.replace(/\[.*?\]\((.*?)\)/, '$1');
             }
             
@@ -338,6 +326,17 @@
             if (str.startsWith('http')) return str;
             
             return null;
+        }
+
+        // --- HARİTA URL DÜZELTİCİ ---
+        // ID 23 gibi bozuk veya search formatındaki linkleri düzeltir
+        function fixMapUrl(mapUrl, lat, lng) {
+            // Eğer lat ve lng varsa, güvenli embed linkini sıfırdan oluştur
+            if (lat && lng && lat !== 0 && lng !== 0) {
+                return `https://maps.google.com/maps?q=${lat},${lng}&hl=tr&z=17&output=embed`;
+            }
+            // Yoksa mevcut linki olduğu gibi döndür (belki çalışıyordur)
+            return mapUrl;
         }
 
         // --- UI TEXT TRANSLATIONS ---
@@ -446,10 +445,14 @@
                                 processedImages.push("https://via.placeholder.com/800x600?text=Gorsel+Yok");
                             }
 
+                            // --- BURASI DEĞİŞTİ: Harita URL'sini veritabanına bakmaksızın yeniden oluştur ---
+                            // Bu sayede "search" linkleri veya bozuk linkler otomatik düzelir
+                            const safeMapUrl = fixMapUrl(item.map_url, item.lat, item.lng);
+
                             return {
                                 id: item.id,
                                 coords: [item.lat, item.lng],
-                                mapUrl: item.map_url,
+                                mapUrl: safeMapUrl, // Artık her zaman güvenli embed linki kullanılır
                                 images: processedImages,
                                 content: {
                                     tr: { name: item.isim_tr, location: "Suriye", desc: item.aciklama_tr, detailDesc: item.detay_tr, audioTitle: "Sesli Rehber", audioUrl: cleanUrl(item.ses_tr) },
