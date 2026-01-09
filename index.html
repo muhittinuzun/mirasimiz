@@ -95,7 +95,7 @@
             overflow: hidden;
         }
         #mobile-menu.open {
-            max-height: 300px;
+            max-height: 500px;
             opacity: 1;
         }
         #map-container {
@@ -151,8 +151,8 @@
                 <!-- Logo Section -->
                 <div class="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer group flex-shrink-0" onclick="router('home')">
                     <!-- Bayrak Görseli -->
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Flag_of_Syria_%282025-%29.svg/1200px-Flag_of_Syria_%282025-%29.svg.png" 
-                         class="w-10 h-10 rounded-lg shadow-md object-cover border border-gray-200 group-hover:scale-105 transition duration-300" 
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Emblem_of_Syria_%282025%E2%80%93present%29.svg/2560px-Emblem_of_Syria_%282025%E2%80%93present%29.svg.png" 
+                         class="w-10 h-10 object-contain group-hover:scale-105 transition duration-300" 
                          alt="Site Logo">
                     
                     <div class="flex flex-col">
@@ -219,6 +219,37 @@
                 <button onclick="router('map'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50" id="mobile-menu-map">Harita</button>
                 <button onclick="openModal('about'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50" id="mobile-menu-about">Hakkımızda</button>
                 <button onclick="openModal('contact'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50" id="mobile-menu-contact">İletişim</button>
+                
+                <!-- Mobilde Dil Seçenekleri -->
+                <div class="border-t border-gray-100 pt-2 mt-2">
+                    <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Dil Seçimi / Language</p>
+                    <div class="grid grid-cols-2 gap-2 px-3 pb-2">
+                         <button onclick="setLanguage('tr'); toggleMobileMenu()" class="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-50 border border-gray-100">
+                            <img src="https://flagcdn.com/w40/tr.png" class="w-5 h-5 rounded-full border border-gray-200" alt="TR">
+                            <span class="text-sm font-medium text-gray-700">Türkçe</span>
+                        </button>
+                         <button onclick="setLanguage('en'); toggleMobileMenu()" class="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-50 border border-gray-100">
+                            <img src="https://flagcdn.com/w40/gb.png" class="w-5 h-5 rounded-full border border-gray-200" alt="EN">
+                            <span class="text-sm font-medium text-gray-700">English</span>
+                        </button>
+                        <button onclick="setLanguage('ar'); toggleMobileMenu()" class="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-50 border border-gray-100">
+                            <img src="https://flagcdn.com/w40/sy.png" class="w-5 h-5 rounded-full border border-gray-200" alt="AR">
+                            <span class="text-sm font-medium text-gray-700 font-arabic">العربية</span>
+                        </button>
+                        <button onclick="setLanguage('fr'); toggleMobileMenu()" class="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-50 border border-gray-100">
+                            <img src="https://flagcdn.com/w40/fr.png" class="w-5 h-5 rounded-full border border-gray-200" alt="FR">
+                            <span class="text-sm font-medium text-gray-700">Français</span>
+                        </button>
+                        <button onclick="setLanguage('ru'); toggleMobileMenu()" class="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-50 border border-gray-100">
+                            <img src="https://flagcdn.com/w40/ru.png" class="w-5 h-5 rounded-full border border-gray-200" alt="RU">
+                            <span class="text-sm font-medium text-gray-700">Русский</span>
+                        </button>
+                        <button onclick="setLanguage('osm'); toggleMobileMenu()" class="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-50 border border-gray-100">
+                            <img src="https://www.tabloshop.com/image/cache/webp/data/urun/osmanli-oryantal-tablolar/OS-47__model_3-1000x1000.webp" class="w-5 h-5 rounded-full border border-gray-200" alt="OSM">
+                            <span class="text-sm font-medium text-gray-700 font-arabic">عثمانليجه</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
@@ -274,8 +305,8 @@
         <div class="container mx-auto px-4 text-center">
              <div class="flex justify-center items-center space-x-2 mb-4 text-primary opacity-80">
                 <!-- Footer Logo -->
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Flag_of_Syria_%282025-%29.svg/1200px-Flag_of_Syria_%282025-%29.svg.png" 
-                     class="w-12 h-12 rounded-lg shadow-sm object-cover border border-gray-200" 
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Emblem_of_Syria_%282025%E2%80%93present%29.svg/2560px-Emblem_of_Syria_%282025%E2%80%93present%29.svg.png" 
+                     class="w-12 h-12 object-contain" 
                      alt="Site Logo">
             </div>
             <p class="text-sm text-gray-500 font-medium mb-2" id="footer-text">© 2025 Suriye Mirası Projesi. Tüm hakları saklıdır.</p>
@@ -287,6 +318,15 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
+        // --- GLOBAL DEĞİŞKENLER (window objesi üzerinden) ---
+        window.currentLang = 'tr';
+        window.currentView = 'home';
+        window.currentPlaceId = null;
+        window.db = [];
+        window.currentGalleryImages = [];
+        window.currentImageIndex = 0;
+        window.map = null; // Harita objesi için global değişken
+
         // --- SUPABASE KONFİGÜRASYONU ---
         const SUPABASE_URL = "https://kmgbjztsouolzarimebc.supabase.co"; 
         const SUPABASE_ANON_KEY = "sb_publishable_jZQ1O8C1UglGdrL-28Axfg_erTIuO-L";
@@ -298,45 +338,39 @@
             console.warn("UYARI: Supabase URL veya Anon Key eksik!");
         }
 
-        // --- GLOBAL DEĞİŞKENLER ---
-        let db = []; 
-        let currentGalleryImages = [];
-        let currentImageIndex = 0;
+        // --- GÜVENLİ MAP URL DÖNÜŞTÜRÜCÜ ---
+        function formatMapUrl(rawUrl) {
+            if (!rawUrl) return "";
+            if (rawUrl.includes("output=embed")) return rawUrl;
+            
+            const coordsMatch = rawUrl.match(/(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)/);
+            if (coordsMatch) {
+                const lat = coordsMatch[1];
+                const lng = coordsMatch[3];
+                return `https://maps.google.com/maps?q=${lat},${lng}&hl=tr&z=17&output=embed`;
+            }
+            return rawUrl;
+        }
 
-        // --- GÜVENLİ URL TEMİZLEME FONKSİYONU ---
-        // BU FONKSİYON BOZUK VERİTABANI KAYITLARINI DÜZELTİR
+        // --- YENİ: AKILLI URL TEMİZLEME ---
         function cleanUrl(url) {
             if (!url) return null;
             let str = String(url).trim();
             
-            // 1. Markdown Link Temizliği: [Text](Link) veya [Link](Link)/ekstra
-            if (str.includes('](')) {
-                str = str.replace(/\[.*?\]\((.*?)\)/, '$1');
+            const markdownMatch = str.match(/\((https?:\/\/[^\)]+)\)/);
+            if (markdownMatch) {
+                return markdownMatch[1];
             }
             
-            // 2. Dizi Formatı Temizliği: ["http..."] -> http...
-            if ((str.startsWith('["') || str.startsWith("['")) && (str.endsWith('"]') || str.endsWith("']"))) {
-                 str = str.slice(2, -2);
+            if ((str.startsWith("['") || str.startsWith('["')) && (str.endsWith("']") || str.endsWith('"]'))) {
+                 return str.slice(2, -2);
             }
             
-            // 3. Tırnak Temizliği
             str = str.replace(/^['"]|['"]$/g, '');
 
-            // 4. Geçerlilik Kontrolü
             if (str.startsWith('http')) return str;
             
             return null;
-        }
-
-        // --- HARİTA URL DÜZELTİCİ ---
-        // ID 23 gibi bozuk veya search formatındaki linkleri düzeltir
-        function fixMapUrl(mapUrl, lat, lng) {
-            // Eğer lat ve lng varsa, güvenli embed linkini sıfırdan oluştur
-            if (lat && lng && lat !== 0 && lng !== 0) {
-                return `https://maps.google.com/maps?q=${lat},${lng}&hl=tr&z=17&output=embed`;
-            }
-            // Yoksa mevcut linki olduğu gibi döndür (belki çalışıyordur)
-            return mapUrl;
         }
 
         // --- UI TEXT TRANSLATIONS ---
@@ -355,11 +389,6 @@
             osm: { siteName: "سوريه ميراثي", siteSubtitle: "ديجيتال رهبر", searchPlaceholder: "آرامق...", homeTitle: "سوريه‌نك ثقافت ميراثي", homeSubtitle: "ماضينك ايزلريني كشف ايدك.", readMore: "تفصيلاتلي تدقيق", back: "كرو دون", gallery: "رسملر", location: "موقع", playAudio: "صوتي شرح", menuHome: "آنا صفحه", menuMap: "خريطه", menuAbout: "حقيمزده", menuContact: "مخابره", aboutTitle: "حقيمزده", aboutBody: "سوريه ميراثي پروژه‌سي.", contactTitle: "مخابره", contactBody: "ا-پوسته: info@suriyemirasi.org" }
         };
 
-        // --- STATE MANAGEMENT ---
-        let currentLang = 'tr';
-        let currentView = 'home';
-        let currentPlaceId = null;
-        
         const flags = {
             tr: "https://flagcdn.com/w40/tr.png",
             en: "https://flagcdn.com/w40/gb.png",
@@ -369,25 +398,9 @@
             osm: "https://www.tabloshop.com/image/cache/webp/data/urun/osmanli-oryantal-tablolar/OS-47__model_3-1000x1000.webp"
         };
 
-        // --- FALLBACK DB (DEMO DATA) ---
+        // --- FALLBACK DB ---
         const fallbackDB = [
-            {
-                id: 1,
-                coords: [33.511296, 36.306721],
-                mapUrl: "https://maps.google.com/maps?q=33.51129625696082,36.30672099150847&hl=tr&z=17&output=embed",
-                images: [
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Courtyard_of_the_Umayyad_Mosque.jpg/800px-Courtyard_of_the_Umayyad_Mosque.jpg",
-                    "https://madainproject.com/content/media/collect/umayyad_mosque_009921.jpg"
-                ],
-                content: {
-                    tr: { name: "Şam Emevi Camii (Demo)", location: "Şam", desc: "Demo veri.", detailDesc: "<p>Veritabanı bağlantısı yok.</p>", audioTitle: "Sesli Rehber", audioUrl: "" },
-                    en: { name: "Umayyad Mosque (Demo)", location: "Damascus", desc: "Demo data.", detailDesc: "<p>Demo</p>", audioTitle: "Audio Guide", audioUrl: "" },
-                    ar: { name: "الجامع الأموي", location: "دمشق", desc: "بيانات تجريبية", detailDesc: "<p>تجريبي</p>", audioTitle: "الدليل الصوتي", audioUrl: "" },
-                    fr: { name: "Grande Mosquée", location: "Damas", desc: "Demo", detailDesc: "<p>Demo</p>", audioTitle: "Guide", audioUrl: "" },
-                    ru: { name: "Мечеть", location: "Дамаск", desc: "Demo", detailDesc: "<p>Demo</p>", audioTitle: "Audio", audioUrl: "" },
-                    osm: { name: "جامع اموي", location: "شام", desc: "نمونه", detailDesc: "<p>نمونه</p>", audioTitle: "صوتي", audioUrl: "" }
-                }
-            }
+            // Boş
         ];
 
         // --- INITIALIZATION ---
@@ -407,52 +420,27 @@
 
                     if (!error && data && data.length > 0) {
                         useFallback = false;
-                        console.log("Veri Supabase 'mekanlar' tablosundan çekildi:", data);
+                        console.log("Veri çekildi:", data);
                         
-                        db = data.map(item => {
-                            // GÖRSEL LİNK İŞLEME (GELİŞMİŞ PARSER)
+                        window.db = data.map(item => {
+                            // GÖRSEL LİNK İŞLEME
                             let rawImages = item.images;
                             let processedImages = [];
-
-                            // 1. JSON Array Kontrolü
-                            if (Array.isArray(rawImages)) {
-                                processedImages = rawImages;
-                            } 
-                            // 2. String Kontrolü
+                            if (Array.isArray(rawImages)) { processedImages = rawImages; } 
                             else if (typeof rawImages === 'string') {
                                 rawImages = rawImages.trim();
                                 if (rawImages.startsWith('[') && rawImages.endsWith(']')) {
-                                    try {
-                                        processedImages = JSON.parse(rawImages);
-                                    } catch (e) {
-                                        // Basit virgülle ayrılmış ise
-                                        processedImages = rawImages.slice(1, -1).split(',').map(s => s.trim());
-                                    }
-                                } else if (rawImages.startsWith('{') && rawImages.endsWith('}')) {
-                                    // Postgres array formatı {link,link}
-                                    processedImages = rawImages.slice(1, -1).split(',').map(s => s.trim().replace(/^"?|"?$/g, ''));
-                                } else {
-                                    // Tek link
-                                    processedImages = [rawImages];
-                                }
+                                    try { processedImages = JSON.parse(rawImages); } 
+                                    catch (e) { processedImages = rawImages.slice(1, -1).split(',').map(s => s.trim().replace(/^['"]|['"]$/g, '')); }
+                                } else { processedImages = [rawImages]; }
                             }
-                            
-                            // 3. Link Temizleme ve Filtreleme
                             processedImages = processedImages.map(img => cleanUrl(img)).filter(img => img !== null);
-                            
-                            // 4. Fallback Görsel
-                            if (processedImages.length === 0) {
-                                processedImages.push("https://via.placeholder.com/800x600?text=Gorsel+Yok");
-                            }
-
-                            // --- BURASI DEĞİŞTİ: Harita URL'sini veritabanına bakmaksızın yeniden oluştur ---
-                            // Bu sayede "search" linkleri veya bozuk linkler otomatik düzelir
-                            const safeMapUrl = fixMapUrl(item.map_url, item.lat, item.lng);
+                            if (processedImages.length === 0) processedImages.push("https://via.placeholder.com/800x600?text=Gorsel+Yok");
 
                             return {
                                 id: item.id,
                                 coords: [item.lat, item.lng],
-                                mapUrl: safeMapUrl, // Artık her zaman güvenli embed linki kullanılır
+                                mapUrl: formatMapUrl(item.map_url),
                                 images: processedImages,
                                 content: {
                                     tr: { name: item.isim_tr, location: "Suriye", desc: item.aciklama_tr, detailDesc: item.detay_tr, audioTitle: "Sesli Rehber", audioUrl: cleanUrl(item.ses_tr) },
@@ -473,8 +461,7 @@
             }
 
             if (useFallback) {
-                console.log("Fallback verileri kullanılıyor.");
-                db = fallbackDB;
+                window.db = fallbackDB;
             }
 
             const urlParams = new URLSearchParams(window.location.search);
@@ -493,8 +480,8 @@
 
         // --- ROUTING / NAVIGATION ---
         function router(view, id = null) {
-            currentView = view;
-            currentPlaceId = id;
+            window.currentView = view;
+            window.currentPlaceId = id;
             window.scrollTo(0, 0);
 
             try {
@@ -535,7 +522,7 @@
             const modal = document.getElementById('infoModal');
             const title = document.getElementById('modalTitle');
             const body = document.getElementById('modalBody');
-            const texts = uiText[currentLang];
+            const texts = uiText[window.currentLang];
 
             if (type === 'about') { title.innerText = texts.aboutTitle; body.innerHTML = texts.aboutBody; }
             else if (type === 'contact') { title.innerText = texts.contactTitle; body.innerHTML = texts.contactBody; }
@@ -555,15 +542,15 @@
             setTimeout(() => { modal.classList.add('hidden'); }, 300);
         }
 
-        // --- LIGHTBOX FUNCTIONS ---
+        // --- LIGHTBOX FUNCTIONS (GÜNCELLENDİ) ---
         function openLightbox(index, images) {
             if (images) {
-                currentGalleryImages = images;
+                window.currentGalleryImages = images;
             } else {
-                if (currentGalleryImages.length === 0) return;
+                if (window.currentGalleryImages.length === 0) return;
             }
             
-            currentImageIndex = index;
+            window.currentImageIndex = index;
             updateLightboxImage();
             
             const lightbox = document.getElementById('lightbox');
@@ -575,7 +562,7 @@
 
         function updateLightboxImage() {
             const img = document.getElementById('lightbox-img');
-            img.src = currentGalleryImages[currentImageIndex];
+            img.src = window.currentGalleryImages[window.currentImageIndex];
         }
 
         function closeLightbox(e) {
@@ -599,13 +586,13 @@
 
         function nextImage(e) {
             if(e) e.stopPropagation();
-            currentImageIndex = (currentImageIndex + 1) % currentGalleryImages.length;
+            window.currentImageIndex = (window.currentImageIndex + 1) % window.currentGalleryImages.length;
             updateLightboxImage();
         }
 
         function prevImage(e) {
             if(e) e.stopPropagation();
-            currentImageIndex = (currentImageIndex - 1 + currentGalleryImages.length) % currentGalleryImages.length;
+            window.currentImageIndex = (window.currentImageIndex - 1 + window.currentGalleryImages.length) % window.currentGalleryImages.length;
             updateLightboxImage();
         }
 
@@ -627,8 +614,8 @@
             if (window.map && window.map.remove) { window.map.remove(); window.map = null; }
 
             const app = document.getElementById('app');
-            const texts = uiText[currentLang];
-            const isRTL = (currentLang === 'ar' || currentLang === 'osm');
+            const texts = uiText[window.currentLang];
+            const isRTL = (window.currentLang === 'ar' || window.currentLang === 'osm');
 
             let html = `
                 <div class="relative pattern-bg rounded-3xl mb-12 shadow-xl overflow-hidden fade-in mx-2 lg:mx-0">
@@ -650,8 +637,8 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-2 lg:px-0" id="placesGrid">
             `;
 
-            db.forEach(place => {
-                const content = place.content[currentLang] || place.content['tr']; 
+            window.db.forEach(place => {
+                const content = place.content[window.currentLang] || place.content['tr']; 
                 html += `
                     <div class="bg-white rounded-2xl shadow-card hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer group flex flex-col h-full overflow-hidden border border-gray-100/50 card-item" onclick="router('detail', ${place.id})">
                         <div class="h-60 overflow-hidden relative">
@@ -679,15 +666,15 @@
         function renderDetail(id) {
             if (window.map && window.map.remove) { window.map.remove(); window.map = null; }
 
-            const place = db.find(p => p.id === id);
+            const place = window.db.find(p => p.id === id);
             if (!place) return renderHome();
 
-            currentGalleryImages = place.images;
+            window.currentGalleryImages = place.images;
 
             const app = document.getElementById('app');
-            const texts = uiText[currentLang];
-            const content = place.content[currentLang] || place.content['tr'];
-            const isRTL = (currentLang === 'ar' || currentLang === 'osm');
+            const texts = uiText[window.currentLang];
+            const content = place.content[window.currentLang] || place.content['tr'];
+            const isRTL = (window.currentLang === 'ar' || window.currentLang === 'osm');
             const descriptionHtml = content.detailDesc || `<p>${content.desc}</p>`;
 
             app.innerHTML = `
@@ -763,8 +750,8 @@
             }
 
             const app = document.getElementById('app');
-            const texts = uiText[currentLang];
-            const isRTL = (currentLang === 'ar' || currentLang === 'osm');
+            const texts = uiText[window.currentLang];
+            const isRTL = (window.currentLang === 'ar' || window.currentLang === 'osm');
 
             app.innerHTML = `
                 <div class="fade-in h-full relative">
@@ -792,9 +779,9 @@
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(window.map);
                 window.mapMarkers = [];
                 
-                db.forEach(place => {
+                window.db.forEach(place => {
                     if(place.coords) {
-                        const content = place.content[currentLang] || place.content['tr'];
+                        const content = place.content[window.currentLang] || place.content['tr'];
                         const marker = L.marker(place.coords).addTo(window.map);
                         const popupContent = `
                             <div class="text-center p-2">
@@ -826,8 +813,8 @@
                     hasResults = true;
                     const div = document.createElement('div');
                     div.className = 'p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-0 text-sm font-medium';
-                    const place = db.find(p => p.id === marker.placeData.id);
-                    const originalName = (place.content[currentLang] || place.content['tr']).name;
+                    const place = window.db.find(p => p.id === marker.placeData.id);
+                    const originalName = (place.content[window.currentLang] || place.content['tr']).name;
                     div.innerHTML = `<i class="fa-solid fa-location-dot text-primary mr-2"></i> ${originalName}`;
                     div.onclick = function() {
                         window.map.flyTo(marker.getLatLng(), 16);
@@ -846,7 +833,7 @@
         }
 
         function setLanguage(lang) {
-            currentLang = lang;
+            window.currentLang = lang;
             const isRTL = (lang === 'ar' || lang === 'osm');
             document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
             document.documentElement.lang = lang;
@@ -855,14 +842,14 @@
             const flagImg = document.getElementById('current-lang-flag');
             if(flagImg && flags[lang]) { flagImg.src = flags[lang]; flagImg.alt = lang.toUpperCase(); }
             updateUIText();
-            if (currentView === 'home') renderHome(); else if (currentView === 'map') renderMap(); else renderDetail(currentPlaceId);
+            if (window.currentView === 'home') renderHome(); else if (window.currentView === 'map') renderMap(); else renderDetail(window.currentPlaceId);
         }
 
         function updateUIText() {
-            const texts = uiText[currentLang];
+            const texts = uiText[window.currentLang];
             document.getElementById('nav-title').innerText = texts.siteName;
             document.getElementById('nav-subtitle').innerText = texts.siteSubtitle;
-            document.getElementById('current-lang-label').innerText = currentLang.toUpperCase();
+            document.getElementById('current-lang-label').innerText = window.currentLang.toUpperCase();
             document.getElementById('menu-home').innerText = texts.menuHome;
             document.getElementById('menu-map').innerText = texts.menuMap;
             document.getElementById('menu-about').innerText = texts.menuAbout;
@@ -871,7 +858,7 @@
             document.getElementById('mobile-menu-map').innerText = texts.menuMap;
             document.getElementById('mobile-menu-about').innerText = texts.menuAbout;
             document.getElementById('mobile-menu-contact').innerText = texts.menuContact;
-            if(currentLang === 'ar' || currentLang === 'osm') document.getElementById('footer-text').innerText = "© 2025 مشروع التراث السوري. جميع الحقوق محفوظة.";
+            if(window.currentLang === 'ar' || window.currentLang === 'osm') document.getElementById('footer-text').innerText = "© 2025 مشروع التراث السوري. جميع الحقوق محفوظة.";
             else document.getElementById('footer-text').innerText = "© 2025 Syrian Heritage Project. All rights reserved.";
         }
 
