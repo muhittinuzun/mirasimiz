@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Yönlendiriliyorsunuz...</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #fff; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin-bottom: 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="loader"></div>
+    <div id="msg">Bağlantı çözülüyor...</div>
+
+    <script>
+        (function() {
+            // URL yapısını kontrol et: /k/abc12
+            const path = window.location.pathname;
+            const segments = path.split('/');
+            
+            // "k" klasöründen sonraki 5-6 haneli kodu bul
+            const kIndex = segments.indexOf('k');
+            const slug = segments[kIndex + 1];
+
+            if (slug) {
+                // Senin paylaştığın PROD Webhook adresi
+                const n8nUrl = `https://n8n.ittyazilim.com/webhook/3308d458-ad86-4211-9131-c9912492df5f/k/${slug}`;
+                
+                // n8n'e yönlendir
+                window.location.replace(n8nUrl);
+            } else {
+                document.getElementById('msg').innerText = "Kod bulunamadı, ana sayfaya dönülüyor...";
+                setTimeout(() => { window.location.href = '/'; }, 2000);
+            }
+        })();
+    </script>
+</body>
+</html>
