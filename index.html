@@ -697,17 +697,16 @@
                                 </div>
                             </div>
                             
-                            ${content.audioUrl ? `
-                            <div class="bg-white p-5 rounded-xl shadow-card border border-gray-100 flex flex-col md:flex-row items-center gap-4">
+                            <div id="audio-section" class="bg-white p-5 rounded-xl shadow-card border border-gray-100 flex flex-col md:flex-row items-center gap-4" style="display:none;">
                                 <div class="bg-orange-50 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-primary"><i class="fa-solid fa-headphones text-xl"></i></div>
                                 <div class="flex-grow w-full md:w-auto text-center md:text-left rtl:md:text-right">
                                     <p class="text-xs text-primary font-bold uppercase tracking-wider mb-0.5 opacity-80">${texts.playAudio}</p>
                                     <h4 class="text-sm font-bold text-gray-800">${content.audioTitle}</h4>
                                 </div>
-                                <audio controls preload="auto" class="w-full md:w-64 h-10 rounded-lg bg-gray-50" src="${content.audioUrl}">
+                                <audio id="audioPlayer" controls preload="auto" class="w-full md:w-64 h-10 rounded-lg bg-gray-50">
                                     Tarayıcınız ses elementini desteklemiyor.
                                 </audio>
-                            </div>` : ''}
+                            </div>
 
                             <div class="bg-white p-8 rounded-2xl shadow-card border border-gray-100">
                                 <h3 class="text-xl font-bold text-gray-800 mb-6 border-b border-gray-100 pb-4">Hakkında</h3>
@@ -734,8 +733,27 @@
                 </div>
             `;
             
-            const audioEl = document.querySelector('audio');
-            if(audioEl) { audioEl.load(); }
+            // Ses oynatıcıyı ayarla
+            const audioPlayer = document.getElementById('audioPlayer');
+            const audioSection = document.getElementById('audio-section');
+            const currentLang = window.currentLang;
+            const audioUrl = content.audioUrl;
+            console.log('Ses URL:', audioUrl); // Debug için
+            console.log('Mevcut dil:', currentLang); // Debug için
+
+            if (audioUrl && audioUrl.trim() !== '') {
+                audioPlayer.src = audioUrl;
+                audioSection.style.display = 'flex';
+                
+                // Ses yükleme hatalarını yakala
+                audioPlayer.onerror = function() {
+                    console.error('Ses dosyası yüklenemedi:', audioUrl);
+                    audioSection.style.display = 'none';
+                };
+            } else {
+                audioSection.style.display = 'none';
+                console.warn('Ses dosyası bulunamadı:', currentLang);
+            }
         }
 
         function renderMap() {
